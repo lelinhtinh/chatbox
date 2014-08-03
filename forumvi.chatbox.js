@@ -2,21 +2,6 @@
  * 	Chatbox forumvi v0.1 by Zzbaivong <http://devs.forumvi.com>
  */
 $(function () {
-	/*	
-	 * 	Tabs
-	*/
-	$('#chatbox_tabs li').click(function () {
-		$(this).addClass('active');
-		var id = $(this).attr('data-id');
-		$('.chatbox_content').hide();
-		$('.chatbox_change').removeClass('active');
-		$(this).closest('#chatbox_tabs').find('.chatbox_change[data-id="'+id+'"]').addClass('active');
-		$('.chatbox_content[data-id="'+id+'"]').show();
-		$('#chatbox_send').attr('data-id', id)
-	})
-
-
-
 	/*
 	 * 	Process the chat message
 	*/
@@ -129,5 +114,18 @@ $(function () {
 		} else {
 			$mess.attr("class", "chatbox_row clearfix").appendTo('.chatbox_content[data-id="publish"]'); // Thêm tin nhắn thường vào mục chat chung
 		}
+	});
+
+
+	/*	
+	 * 	Tabs
+	*/
+	$('#chatbox_tabs li').click(function () {
+		$(this).addClass('active');
+		var id = $(this).attr('data-id');
+		$('.chatbox_content').hide();
+		$('.chatbox_change').removeClass('active');
+		$(this).closest('#chatbox_tabs').find('.chatbox_change[data-id="'+id+'"]').addClass('active');
+		$('.chatbox_content[data-id="'+id+'"]').show();
 	});
 });

@@ -42,7 +42,6 @@ ul#chatbox_tabs {
 
 ul#chatbox_tabs li {
 	display: inline;
-	margin: 0 10px;
 	padding: 11px;
 	cursor: pointer
 }
