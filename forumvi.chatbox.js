@@ -100,25 +100,27 @@ $(function () {
 				var $private = $('.chatbox_content[data-id="' + arrMess[4] + '"]'); // Đặt biến cho mục chat riêng
 				var $tabPrivate = $('.chatbox_change[data-id="' + arrMess[4] + '"]'); // Đặt biến cho tab của mục
 				var chat_name;
-
-				if (arrMess[5] == '{}')
-					chat_name = $.grep(arrUsers, function (n, i) {
+				var chatUsers = $.grep(arrUsers, function (n, i) {
 						return (n !== uName);
-					}).join(", "); // Đặt tên tab là các nickname đang chat với mình
-				else chat_name = arrMess[5].slice(1, -1);
+					}).join(", ");
+				if (arrMess[5] == '{}') data_chat_name = chat_name = chatUsers; // Đặt tên tab là các nickname đang chat với mình
+				else {
+					data_chat_name = chat_name = arrMess[5].slice(1, -1);
+					chat_name += '<div class="chat-users">' + chatUsers + '</div>';
+				}
 
 				if (!$private.length) { // Nếu chưa có mục chat riêng thì tạo mới
 					$(".chatbox_content").hide();
 					$private = $("<div>", {
 						"class": "chatbox_content",
 						"data-id": arrMess[4],
-						"data-name": chat_name
+						"data-name": data_chat_name
 					}).appendTo("#chatbox_forumvi"); // Thêm vào khu vực chatbox
 
 					$tabPrivate = $("<li>", {
 						"class": "chatbox_change",
 						"data-id": arrMess[4],
-						text: chat_name
+						html: chat_name
 					}).appendTo("#chatbox_tabs"); // Thêm vào tab
 				}
 

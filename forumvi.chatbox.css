@@ -20,9 +20,8 @@
 	background:#fbfbfb;
 	position:relative;
 	height: 100%;
+	overflow:hidden;
 	border-right: 1px solid #f3f3f3;
-	overflow-x:hidden;
-	overflow-y:auto;
 }
 
 .chatbox_main {
@@ -43,17 +42,27 @@
 .chat-head {
 	background: #fafafa;
 	border-bottom: 1px solid #f3f3f3;
-	padding: 14px
+	height: 55px;
+	padding: 0 15px;
+	line-height: 55px
 }
-
+.chat-head div {
+	line-height: 22px
+}
 ul#chatbox_tabs {
 	list-style: none;
 	margin: 0;
-	padding: 0
+	padding: 0;
+	position:relative;
+	height: calc(100% - 55px);
+	height: -webkit-calc(100% - 55px);
+	height: -moz-calc(100% - 55px);
+	overflow-x:hidden;
+	overflow-y:auto;
 }
 
 ul#chatbox_tabs li {
-	padding: 11px;
+	padding: 15px 11px;
 	cursor: pointer;
 	border:solid transparent;
 	border-width: 1px 0 1px 0
@@ -65,8 +74,18 @@ ul#chatbox_tabs li.active {
 	padding-right: 22px
 }
 
+ul#chatbox_tabs li .chat-users {
+	margin-top:6px;
+	font-size:12px;
+	color:#999;
+	display:block;
+	width:100%;
+	overflow:hidden;
+	text-overflow:ellipsis
+}
+
 #chattab_action, #chat-create {
-	margin-top: -7px
+	margin-top: 11px
 }
 
 #chatbox_send {
@@ -79,3 +98,8 @@ ul#chatbox_tabs li.active {
 	padding: 10px
 }
 
+#chatbox_members h4 {
+	margin: 0;
+	padding: 7px;
+	border-bottom: 1px solid #f3f3f3
+}

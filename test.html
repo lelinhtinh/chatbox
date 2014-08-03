@@ -23,13 +23,15 @@
 			<div id="chatbox_members"></div>
 		</div>
 
-		<ul class="chatbox_left" id="chatbox_tabs">
+		<div class="chatbox_left">
 			<div class="chat-head">
 				<div id="chat-create" class="right button button-remark-add">Add</div>
 				[Title]
 			</div>
-			<li class="chatbox_change active" data-id="publish">Kênh chung</li>
-		</ul>
+			<ul id="chatbox_tabs">
+				<li class="chatbox_change active" data-id="publish">Kênh chung</li>
+			</ul>
+		</div>
 
 		<div class="chatbox_main">
 			<div class="chat-head" id="chattab_manage">
@@ -41,7 +43,7 @@
 						</ul>
 					</div>
 				</div>
-				<div id="chattab_name">Public</div>
+				<span id="chattab_name">Public</span>
 			</div>
 			<div id="chatbox_forumvi">
 				<div class="chatbox_content" data-id="publish"></div>
