@@ -2,19 +2,31 @@
  * Chatbox forumvi v0.1 by Zzbaivong <devs.forumvi.com>
  */
 
+#chatbox {
+	position:absolute;
+	top:0;bottom:0;left:0;right:0
+}
+
+#chatbox_forumvi {
+	margin: 0 10px
+}
+
 .chatbox_content {
-	border: 2px solid #666;
-	margin: 20px 0;
 }
 
 .chatbox_left {
 	float:left;
 	width:250px;
-	background:#fff
+	background:#fff;
+	position:relative;
+	height: 100%;
+	border-right: 1px solid #f3f3f3
 }
 
 .chatbox_main {
-	margin-left: 250px
+	margin-left: 250px;
+	position:relative;
+	height:100%
 }
 
 .chat-head {
@@ -30,7 +42,23 @@ ul#chatbox_tabs {
 
 ul#chatbox_tabs li {
 	display: inline;
-	background: #fff;
 	margin: 0 10px;
+	padding: 11px;
+	cursor: pointer
+}
+
+ul#chatbox_tabs li.active {
+	background: #fff;
+	border:1px solid #f3f3f3;
+	border-bottom:0
+}
+
+#chatbox_send {
+	position: absolute;
+	bottom: 0;
+	width: calc(100% - 20px);
+	width: -webkit-calc(100% - 20px);
+	width: -moz-calc(100% - 20px);
+	background: #fafafa;
 	padding: 10px
 }
