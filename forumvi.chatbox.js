@@ -212,6 +212,11 @@ $(function () {
 		});
 
 	});
+
+	/*! Dropdown menu */
+	$('.dropdown-toggle').click(function () {
+		$(this).next('.dropdown-menu').toggle()
+	});
 });
 
 //document.getElementById('refresh_auto').checked = false;
