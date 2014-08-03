@@ -17,27 +17,28 @@
 
 <body>
 
-<div id="chatbox">
-	<div class="chatbox_left">
-		<div class="chat-head">Thành viên</div>
-		<div id="chatbox_members"></div>
-	</div>
-
-	<div class="chatbox_main">
-		<ul class="chat-head" id="chatbox_tabs">
-			<li class="chatbox_change" data-id="publish">Kênh chung</li>
-		</ul>
-		<div id="chatbox_forumvi">
-			<div class="chatbox_content" data-id="publish"></div>
+	<div id="chatbox">
+		<div class="chatbox_left">
+			<div class="chat-head">Thành viên</div>
+			<div id="chatbox_members"></div>
 		</div>
-		<form id="chatbox_send" data-id="publish">
-			Mes: <input type="text" name="chat_mes"/>
-			<input type="submit" value="Submit"/>
-		</form>
+
+		<div class="chatbox_main">
+			<ul class="chat-head" id="chatbox_tabs">
+				<li class="chatbox_change active" data-id="publish">Kênh chung</li>
+			</ul>
+			<div id="chatbox_forumvi">
+				<div class="chatbox_content" data-id="publish"></div>
+			</div>
+			<form id="chatbox_send" data-id="publish">
+				Mes:
+				<input type="text" name="chat_mes" />
+				<input type="submit" value="Submit" />
+			</form>
+		</div>
+
+		<div class="clearfix"></div>
 	</div>
-	
-	<div class="clearfix"></div>
-</div>
 </body>
 
 </html>

@@ -4,7 +4,7 @@
 $(function () {
 	/*
 	 * 	Process the chat message
-	*/
+	 */
 	// Tin nhắn chatbox
 	var chatbox_messages = '<p class=\"chatbox_row_1 clearfix\"><span class=\"date-and-time\" title=\"03 Aug 2014\">[02:36:42 03/08/14]</span>&nbsp;<span class=\"user-msg\"><span class=\"user\"><span style=\"color:#FF3F8B\"><strong>@</strong></span>&nbsp;<a href=\"/u2\" onclick=\"return copy_user_name(\'baivong\');\" target=\"_blank\"><span style=\"color:#FF3F8B\"><strong>baivong</strong></span></a>&nbsp;:&nbsp;</span><span class=\"msg\"><span style=\"color: #777777\"><strike><i><u><strong>1407003001044_2{Name}[\"baivong\"&#044;\"Zzbaivong\"&#044;\"miamor\"]asdasasd</strong></u></i></strike></span></span></span></p><p class=\"chatbox_row_2 clearfix\"><span class=\"date-and-time\" title=\"03 Aug 2014\">[02:36:46 03/08/14]</span>&nbsp;<span class=\"user-msg\"><span class=\"user\"><span style=\"color:#FF3F8B\"><strong>@</strong></span>&nbsp;<a href=\"/u2\" onclick=\"return copy_user_name(\'baivong\');\" target=\"_blank\"><span style=\"color:#FF3F8B\"><strong>baivong</strong></span></a>&nbsp;:&nbsp;</span><span class=\"msg\"><span style=\"color: #777777\">1407003001044_2{Name}[\"baivong\"&#044;\"Zzbaivong\"&#044;\"miamor\"]kkkkkk</span></span></span></p><p class=\"chatbox_row_1 clearfix\"><span class=\"date-and-time\" title=\"03 Aug 2014\">[02:36:49 03/08/14]</span>&nbsp;<span class=\"user-msg\"><span class=\"user\"><span style=\"color:#F00000\"><strong>@</strong></span>&nbsp;<a href=\"/u1\" onclick=\"return copy_user_name(\'Zzbaivong\');\" target=\"_blank\"><span style=\"color:#F00000\"><strong>Zzbaivong</strong></span></a>&nbsp;:&nbsp;</span><span class=\"msg\"><span style=\"color: #CC00FF\">asdas</span></span></span></p><p class=\"chatbox_row_2 clearfix\"><span class=\"date-and-time\" title=\"03 Aug 2014\">[02:36:50 03/08/14]</span>&nbsp;<span class=\"user-msg\"><span class=\"user\"><span style=\"color:#F00000\"><strong>@</strong></span>&nbsp;<a href=\"/u1\" onclick=\"return copy_user_name(\'Zzbaivong\');\" target=\"_blank\"><span style=\"color:#F00000\"><strong>Zzbaivong</strong></span></a>&nbsp;:&nbsp;</span><span class=\"msg\"><span style=\"color: #CC00FF\">aaaaaaaaaaaaaaa</span></span></span></p><p class=\"chatbox_row_1 clearfix\"><span class=\"date-and-time\" title=\"03 Aug 2014\">[02:36:52 03/08/14]</span>&nbsp;<span class=\"user-msg\"><span class=\"user\"><span style=\"color:#F00000\"><strong>@</strong></span>&nbsp;<a href=\"/u1\" onclick=\"return copy_user_name(\'Zzbaivong\');\" target=\"_blank\"><span style=\"color:#F00000\"><strong>Zzbaivong</strong></span></a>&nbsp;:&nbsp;</span><span class=\"msg\"><span style=\"color: #CC00FF\">sssssssssssss</span></span></span></p><p class=\"chatbox_row_2 clearfix\"><span class=\"date-and-time\" title=\"03 Aug 2014\">[02:36:53 03/08/14]</span>&nbsp;<span class=\"user-msg\"><span class=\"user\"><span style=\"color:#F00000\"><strong>@</strong></span>&nbsp;<a href=\"/u1\" onclick=\"return copy_user_name(\'Zzbaivong\');\" target=\"_blank\"><span style=\"color:#F00000\"><strong>Zzbaivong</strong></span></a>&nbsp;:&nbsp;</span><span class=\"msg\"><span style=\"color: #CC00FF\">eeeeeeeeeeeeeeee</span></span></span></p><p class=\"chatbox_row_1 clearfix\"><span class=\"date-and-time\" title=\"03 Aug 2014\">[02:37:00 03/08/14]</span>&nbsp;<span class=\"user-msg\"><span class=\"user\"><span style=\"color:#F00000\"><strong>@</strong></span>&nbsp;<a href=\"/u1\" onclick=\"return copy_user_name(\'Zzbaivong\');\" target=\"_blank\"><span style=\"color:#F00000\"><strong>Zzbaivong</strong></span></a>&nbsp;:&nbsp;</span><span class=\"msg\"><span style=\"color: #CC00FF\">1407003001099_1{}[\"baivong\"&#044;\"Zzbaivong\"]zzzzzzzzzzzzzzzzzzzzz</span></span></span></p>';
 	// Thành viên đang truy cập
@@ -14,6 +14,18 @@ $(function () {
 
 
 	// CHATBOX FORUMVI
+
+	/*	
+	 * 	Tabs
+	 */
+	$('#chatbox_tabs').on("click", "li", function () {
+		$('.chatbox_change.active').removeClass('active');
+		$(this).addClass('active');
+		var id = $(this).attr('data-id');
+		$('.chatbox_content').hide();
+		$('.chatbox_content[data-id="' + id + '"]').show();
+		$('#chatbox_send').attr('data-id', id);
+	});
 
 	$("#chatbox_members").html(chatbox_memberlist); // Thêm dach sách thành viên
 
@@ -38,7 +50,6 @@ $(function () {
 		 * 11 ";" (không quan trọng)
 		 */
 		var dataMenu = $(this).attr("oncontextmenu").split(/\(|,|\)/);
-		console.log(dataMenu);
 
 		if (dataMenu[1] === dataMenu[3]) { // Nếu user_id trùng với my_user_id
 
@@ -82,50 +93,39 @@ $(function () {
 			if (indexUser !== -1) { // Nếu có nickname của thành viên đang truy cập trong danh sách				
 
 				var $private = $('.chatbox_content[data-id="' + arrMess[4] + '"]'); // Đặt biến cho mục chat riêng
+				var $tabPrivate = $('.chatbox_change[data-id="' + arrMess[4] + '"]'); // Đặt biến cho tab của mục
 				if (!$private.length) { // Nếu chưa có mục chat riêng thì tạo mới
 					$(".chatbox_content").hide();
 					$private = $("<div>", {
 						"class": "chatbox_content",
 						"data-id": arrMess[4],
 						"data-name": arrMess[10]
-					}).appendTo("#chatbox_forumvi").show(); // Thêm vào khu vực chatbox
+					}).appendTo("#chatbox_forumvi"); // Thêm vào khu vực chatbox
 
 					var chat_name;
 					if (arrMess[5] == '{}') {
 						chat_name = $.grep(arrUsers, function (n, i) {
-								return (n !== uName);
-							}).join(", "); // Đặt tên tab là các nickname đang chat với mình
-					} else chat_name = arrMess[5].split(/\{|}/)[1];
-					
-					$('#chatbox_tabs li').removeClass('active');
-					$("<li>", {
+							return (n !== uName);
+						}).join(", "); // Đặt tên tab là các nickname đang chat với mình
+					} else {
+						chat_name = arrMess[5].slice(1, -1);
+					}
+
+					$tabPrivate = $("<li>", {
 						"class": "chatbox_change",
 						"data-id": arrMess[4],
 						text: chat_name
-					}).appendTo("#chatbox_tabs").addClass('active'); // Thêm vào tab
-					
-					$('#chatbox_send').attr('data-id', arrMess[4])
+					}).appendTo("#chatbox_tabs"); // Thêm vào tab
 				}
 
 				$(".msg", $mess).html(arrMess[1] + arrMess[8]); // Xóa phần đánh dấu tin nhắn
 				$mess.attr("class", "chatbox_row clearfix").appendTo($private); // Thêm tin nhắn vào mục chat riêng theo data-id
+				$tabPrivate.click(); // Kích hoạt tab
 			}
-			
+
 		} else {
 			$mess.attr("class", "chatbox_row clearfix").appendTo('.chatbox_content[data-id="publish"]'); // Thêm tin nhắn thường vào mục chat chung
 		}
 	});
 
-
-	/*	
-	 * 	Tabs
-	*/
-	$('#chatbox_tabs li').click(function () {
-		$(this).addClass('active');
-		var id = $(this).attr('data-id');
-		$('.chatbox_content').hide();
-		$('.chatbox_change').removeClass('active');
-		$(this).closest('#chatbox_tabs').find('.chatbox_change[data-id="'+id+'"]').addClass('active');
-		$('.chatbox_content[data-id="'+id+'"]').show();
-	});
 });
