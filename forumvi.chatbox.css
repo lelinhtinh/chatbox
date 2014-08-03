@@ -16,40 +16,57 @@
 
 .chatbox_left {
 	float:left;
-	width:250px;
-	background:#fff;
+	width: 250px;
+	background:#fbfbfb;
 	position:relative;
 	height: 100%;
-	border-right: 1px solid #f3f3f3
+	border-right: 1px solid #f3f3f3;
+	overflow-x:hidden;
+	overflow-y:auto;
 }
 
 .chatbox_main {
-	margin-left: 250px;
+	margin: 0 250px;
 	position:relative;
 	height:100%
+}
+
+.chatbox_right {
+	float: right;
+	width: 250px;
+	position:relative;
+	height: 100%;
+	border-left:1px solid #f3f3f3;
+	background: #fbfbfb
 }
 
 .chat-head {
 	background: #fafafa;
 	border-bottom: 1px solid #f3f3f3;
-	padding: 10px
+	padding: 14px
 }
 
 ul#chatbox_tabs {
 	list-style: none;
 	margin: 0;
+	padding: 0
 }
 
 ul#chatbox_tabs li {
-	display: inline;
 	padding: 11px;
-	cursor: pointer
+	cursor: pointer;
+	border:solid transparent;
+	border-width: 1px 0 1px 0
 }
 
 ul#chatbox_tabs li.active {
 	background: #fff;
-	border:1px solid #f3f3f3;
-	border-bottom:0
+	border-color: #f3f3f3;
+	padding-right: 22px
+}
+
+#chattab_action, #chat-create {
+	margin-top: -7px
 }
 
 #chatbox_send {
@@ -61,3 +78,4 @@ ul#chatbox_tabs li.active {
 	background: #fafafa;
 	padding: 10px
 }
+
