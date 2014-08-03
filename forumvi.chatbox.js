@@ -33,15 +33,12 @@ function my_setcookie(name, value, sticky, path) {
 var params = "?archives=1"; // Thiết lập có lấy tin lưu trữ trước đó hay không
 
 $(function () {
-<<<<<<< HEAD
 	// Tin nhắn chatbox
 	var chatbox_messages = '<p class=\"chatbox_row_1 clearfix\"><span class=\"date-and-time\" title=\"03 Aug 2014\">[02:36:42 03/08/14]</span>&nbsp;<span class=\"user-msg\"><span class=\"user\"><span style=\"color:#FF3F8B\"><strong>@</strong></span>&nbsp;<a href=\"/u2\" onclick=\"return copy_user_name(\'baivong\');\" target=\"_blank\"><span style=\"color:#FF3F8B\"><strong>baivong</strong></span></a>&nbsp;:&nbsp;</span><span class=\"msg\"><span style=\"color: #777777\"><strike><i><u><strong>1407003001044_2{Name}[\"baivong\"&#044;\"Zzbaivong\"&#044;\"miamor\"]asdasasd</strong></u></i></strike></span></span></span></p><p class=\"chatbox_row_2 clearfix\"><span class=\"date-and-time\" title=\"03 Aug 2014\">[02:36:46 03/08/14]</span>&nbsp;<span class=\"user-msg\"><span class=\"user\"><span style=\"color:#FF3F8B\"><strong>@</strong></span>&nbsp;<a href=\"/u2\" onclick=\"return copy_user_name(\'baivong\');\" target=\"_blank\"><span style=\"color:#FF3F8B\"><strong>baivong</strong></span></a>&nbsp;:&nbsp;</span><span class=\"msg\"><span style=\"color: #777777\">1407003001044_2{Name}[\"baivong\"&#044;\"Zzbaivong\"&#044;\"miamor\"]kkkkkk</span></span></span></p><p class=\"chatbox_row_2 clearfix\"><span class=\"date-and-time\" title=\"03 Aug 2014\">[20:55:15]</span>&nbsp;<span class=\"user-msg\"><span class=\"user\"><span style=\"color:#1ba1e2\"><strong>@</strong></span>&nbsp;<a href=\"/u64\" onclick=\"return copy_user_name(\'miamor\');\" target=\"_blank\"><span style=\"color:#1ba1e2\"><strong>miamor</strong></span></a>&nbsp;:&nbsp;</span><span class=\"msg\"><span style=\"color: #777777\">1407003001044_2{Name}[\"baivong\"&#044;\"Zzbaivong\"&#044;\"miamor\"&#044;\"K\"]hiu</span></span></span></p><p class=\"chatbox_row_1 clearfix\"><span class=\"date-and-time\" title=\"03 Aug 2014\">[02:36:49 03/08/14]</span>&nbsp;<span class=\"user-msg\"><span class=\"user\"><span style=\"color:#F00000\"><strong>@</strong></span>&nbsp;<a href=\"/u1\" onclick=\"return copy_user_name(\'Zzbaivong\');\" target=\"_blank\"><span style=\"color:#F00000\"><strong>Zzbaivong</strong></span></a>&nbsp;:&nbsp;</span><span class=\"msg\"><span style=\"color: #CC00FF\">asdas</span></span></span></p><p class=\"chatbox_row_2 clearfix\"><span class=\"date-and-time\" title=\"03 Aug 2014\">[02:36:50 03/08/14]</span>&nbsp;<span class=\"user-msg\"><span class=\"user\"><span style=\"color:#F00000\"><strong>@</strong></span>&nbsp;<a href=\"/u1\" onclick=\"return copy_user_name(\'Zzbaivong\');\" target=\"_blank\"><span style=\"color:#F00000\"><strong>Zzbaivong</strong></span></a>&nbsp;:&nbsp;</span><span class=\"msg\"><span style=\"color: #CC00FF\">aaaaaaaaaaaaaaa</span></span></span></p><p class=\"chatbox_row_1 clearfix\"><span class=\"date-and-time\" title=\"03 Aug 2014\">[02:36:52 03/08/14]</span>&nbsp;<span class=\"user-msg\"><span class=\"user\"><span style=\"color:#F00000\"><strong>@</strong></span>&nbsp;<a href=\"/u1\" onclick=\"return copy_user_name(\'Zzbaivong\');\" target=\"_blank\"><span style=\"color:#F00000\"><strong>Zzbaivong</strong></span></a>&nbsp;:&nbsp;</span><span class=\"msg\"><span style=\"color: #CC00FF\">sssssssssssss</span></span></span></p><p class=\"chatbox_row_2 clearfix\"><span class=\"date-and-time\" title=\"03 Aug 2014\">[02:36:53 03/08/14]</span>&nbsp;<span class=\"user-msg\"><span class=\"user\"><span style=\"color:#F00000\"><strong>@</strong></span>&nbsp;<a href=\"/u1\" onclick=\"return copy_user_name(\'Zzbaivong\');\" target=\"_blank\"><span style=\"color:#F00000\"><strong>Zzbaivong</strong></span></a>&nbsp;:&nbsp;</span><span class=\"msg\"><span style=\"color: #CC00FF\">eeeeeeeeeeeeeeee</span></span></span></p><p class=\"chatbox_row_1 clearfix\"><span class=\"date-and-time\" title=\"03 Aug 2014\">[02:37:00 03/08/14]</span>&nbsp;<span class=\"user-msg\"><span class=\"user\"><span style=\"color:#F00000\"><strong>@</strong></span>&nbsp;<a href=\"/u1\" onclick=\"return copy_user_name(\'Zzbaivong\');\" target=\"_blank\"><span style=\"color:#F00000\"><strong>Zzbaivong</strong></span></a>&nbsp;:&nbsp;</span><span class=\"msg\"><span style=\"color: #CC00FF\">1407003001099_1{}[\"baivong\"&#044;\"Zzbaivong\"]zzzzzzzzzzzzzzzzzzzzz</span></span></span></p>';
 	// Thành viên đang truy cập
 	var chatbox_memberlist = '<h4 class=\"member-title online\">Online</h4><ul class=\"online-users\"><li><a href=\"/u2\" oncontextmenu=\"return showMenu(2,\'baivong\',1,2,1,2,2,event,\'\');\" onclick=\"return copy_user_name(\'baivong\');\" target=\"_blank\"><span style=\"color:#FF3F8B\"><strong>@</strong></span>&nbsp;<span style=\"color:#FF3F8B\"><strong>baivong</strong></span></a></li><li><a href=\"/u1\" oncontextmenu=\"return showMenu(1,\'Zzbaivong\',1,2,1,2,1,event,\'\');\" onclick=\"return copy_user_name(\'Zzbaivong\');\" target=\"_blank\"><span style=\"color:#F00000\"><strong>@</strong></span>&nbsp;<span style=\"color:#F00000\"><strong>Zzbaivong</strong></span></a></li><li><a href=\"/u64\" oncontextmenu=\"return showMenu(1,\'miamor\',1,2,1,1,0,event,\'\');\" onclick=\"return copy_user_name(\'miamor\');\" target=\"_blank\"><span style=\"color:#1ba1e2\"><strong>K</strong></span></a></li></ul><br /><br /><h4 class=\"member-title away\">Away</h4><ul class=\"online-users\"><li><a href=\"/u64\" oncontextmenu=\"return showMenu(64,\'miamor\',1,2,1,1,0,event,\'\');\" onclick=\"return copy_user_name(\'miamor\');\" target=\"_blank\"><span style=\"color:#1ba1e2\"><strong>miamor</strong></span></a></li></ul>';
 	// Thời điểm cập nhật cuối
 	var chatbox_last_update = 1407008249.58;
-=======
->>>>>>> c67142ce96f7e584f62daf02ec8683e1119b28c0
 
 	/**
 	 * Tải dữ liệu chatbox
@@ -72,7 +69,6 @@ $(function () {
 			my_setcookie("chatbox_active", id, false); // Lưu cookie cho tab vừa click
 		});
 
-<<<<<<< HEAD
 	/*	
 	 * 	Tabs
 	 */
@@ -90,15 +86,12 @@ $(function () {
 	});
 
 	$("#chatbox_members").html(chatbox_memberlist); // Thêm dach sách thành viên
-=======
 		$("#chatbox_members").html(chatbox_memberlist); // Thêm dach sách thành viên
->>>>>>> c67142ce96f7e584f62daf02ec8683e1119b28c0
 
 		var uId, uName; // Đặt biến lấy id, nickname của thành viên đang truy cập chatbox
 
 		$("a", "#chatbox_members").each(function () { // Duyệt từng thành viên trong danh sách
 
-<<<<<<< HEAD
 		/**
 		 * Tạo một array các thành phần trong oncontextmenu
 		 *
@@ -116,7 +109,6 @@ $(function () {
 		 * 11 ";" (không quan trọng)
 		 */
 		var dataMenu = $(this).attr("oncontextmenu").split(/\(|,|\)/);
-=======
 			/**
 			 * Tạo một array các thành phần trong oncontextmenu
 			 *
@@ -134,7 +126,6 @@ $(function () {
 			 * 11 ";" (không quan trọng)
 			 */
 			var dataMenu = $(this).attr("oncontextmenu").split(/\(|,|\)/);
->>>>>>> c67142ce96f7e584f62daf02ec8683e1119b28c0
 
 			if (dataMenu[1] === dataMenu[3]) { // Nếu user_id trùng với my_user_id
 
@@ -145,15 +136,11 @@ $(function () {
 			}
 		});
 
-<<<<<<< HEAD
-
 	/*
 	 * 	Process the chat message
 	 */
 	var allMess = $.parseHTML(chatbox_messages); // Tạo một array các tin nhắn trong chatbox
-=======
 		var allMess = $.parseHTML(chatbox_messages); // Tạo một array các tin nhắn trong chatbox
->>>>>>> c67142ce96f7e584f62daf02ec8683e1119b28c0
 
 		$.each(allMess, function (i, val) { // Duyệt qua từng tin
 
@@ -183,7 +170,6 @@ $(function () {
 
 				var indexUser = $.inArray(uName, arrUsers); // Lấy vị trí index nickname của thành viên đang truy cập trong arrayString
 
-<<<<<<< HEAD
 			if (indexUser !== -1) { // Nếu có nickname của thành viên đang truy cập trong danh sách				
 				var tabID = arrMess[4];
 				
@@ -241,7 +227,6 @@ $(function () {
 	 */
 	$('.dropdown-toggle').click(function () {
 		$(this).next('.dropdown-menu').toggle()
-=======
 				if (indexUser !== -1) { // Nếu có nickname của thành viên đang truy cập trong danh sách				
 					
 					var dataId = arrMess[4];
@@ -314,7 +299,6 @@ $(function () {
 			});
 		});
 
->>>>>>> c67142ce96f7e584f62daf02ec8683e1119b28c0
 	});
 
 });
