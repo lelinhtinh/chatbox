@@ -7,11 +7,17 @@
 	top:0;bottom:0;left:0;right:0
 }
 
-#chatbox_forumvi {
-	margin: 0 10px
+.chatbox_row {
+	margin: 0;
+	padding: 8px 10px
 }
 
 .chatbox_content {
+}
+
+.chatbox_row_action {
+	background: #fbfbfb;
+	border: 1px solid #f3f3f3
 }
 
 .chatbox_left {
@@ -91,10 +97,11 @@ ul#chatbox_tabs li .chat-users {
 #chatbox_send {
 	position: absolute;
 	bottom: 0;
-	width: calc(100% - 20px);
-	width: -webkit-calc(100% - 20px);
-	width: -moz-calc(100% - 20px);
-	background: #fafafa;
+	width: calc(100% - 22px);
+	width: -webkit-calc(100% - 22px);
+	width: -moz-calc(100% - 22px);
+	background: #fbfbfb;
+	border: 1px solid #f3f3f3;
 	padding: 10px
 }
 
