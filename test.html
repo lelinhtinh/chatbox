@@ -5,6 +5,7 @@
 	<meta charset="utf-8">
 	<title>Chatbox forumvi</title>
 	<link rel="stylesheet" type="text/css" href="forumvi.chatbox.css" />
+	<link rel="stylesheet" type="text/css" href="common.css" />
 	<script type="text/javascript" src="jquery-1.11.1.min.js"></script>
 	<script type="text/javascript" src="forumvi.chatbox.js"></script>
 	<script type="text/javascript">
@@ -15,16 +16,24 @@
 </head>
 
 <body>
-	<h1>Thành viên</h1>
-	<div id="chatbox_members"></div>
 
-	<h1>Chatbox</h1>
-	<ul id="chatbox_tabs">
-		<li class="chatbox_change" data-id="publish">Kênh chung</li>
-	</ul>
-	<div id="chatbox_forumvi">
-		<div class="chatbox_content" data-id="publish"></div>
+<div id="chatbox">
+	<div class="chatbox_left">
+		<div class="chat-head">Thành viên</div>
+		<div id="chatbox_members"></div>
 	</div>
+
+	<div class="chatbox_main">
+		<ul class="chat-head" id="chatbox_tabs">
+			<li class="chatbox_change" data-id="publish">Kênh chung</li>
+		</ul>
+		<div id="chatbox_forumvi">
+			<div class="chatbox_content" data-id="publish"></div>
+		</div>
+	</div>
+	
+	<div class="clearfix"></div>
+</div>
 </body>
 
 </html>

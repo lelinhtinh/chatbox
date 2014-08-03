@@ -6,3 +6,31 @@
 	border: 2px solid #666;
 	margin: 20px 0;
 }
+
+.chatbox_left {
+	float:left;
+	width:250px;
+	background:#fff
+}
+
+.chatbox_main {
+	margin-left: 250px
+}
+
+.chat-head {
+	background: #fafafa;
+	border-bottom: 1px solid #f3f3f3;
+	padding: 10px
+}
+
+ul#chatbox_tabs {
+	list-style: none;
+	margin: 0;
+}
+
+ul#chatbox_tabs li {
+	display: inline;
+	background: #fff;
+	margin: 0 10px;
+	padding: 10px
+}
