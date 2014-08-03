@@ -36,6 +36,7 @@
 	height:100%
 }
 
+<<<<<<< HEAD
 .chatbox_right {
 	float: right;
 	width: 250px;
@@ -46,6 +47,9 @@
 }
 
 .chat-head {
+=======
+.chat_head {
+>>>>>>> c67142ce96f7e584f62daf02ec8683e1119b28c0
 	background: #fafafa;
 	border-bottom: 1px solid #f3f3f3;
 	height: 55px;
