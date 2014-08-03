@@ -2,6 +2,12 @@
  * 	Chatbox forumvi v0.1 by Zzbaivong <http://devs.forumvi.com>
  */
 $(function () {
+<<<<<<< HEAD
+=======
+	/*
+	 * 	Process the chat message
+	 */
+>>>>>>> upstream/master
 	// Tin nhắn chatbox
 	var chatbox_messages = '<p class=\"chatbox_row_1 clearfix\"><span class=\"date-and-time\" title=\"03 Aug 2014\">[02:36:42 03/08/14]</span>&nbsp;<span class=\"user-msg\"><span class=\"user\"><span style=\"color:#FF3F8B\"><strong>@</strong></span>&nbsp;<a href=\"/u2\" onclick=\"return copy_user_name(\'baivong\');\" target=\"_blank\"><span style=\"color:#FF3F8B\"><strong>baivong</strong></span></a>&nbsp;:&nbsp;</span><span class=\"msg\"><span style=\"color: #777777\"><strike><i><u><strong>1407003001044_2{Name}[\"baivong\"&#044;\"Zzbaivong\"&#044;\"miamor\"]asdasasd</strong></u></i></strike></span></span></span></p><p class=\"chatbox_row_2 clearfix\"><span class=\"date-and-time\" title=\"03 Aug 2014\">[02:36:46 03/08/14]</span>&nbsp;<span class=\"user-msg\"><span class=\"user\"><span style=\"color:#FF3F8B\"><strong>@</strong></span>&nbsp;<a href=\"/u2\" onclick=\"return copy_user_name(\'baivong\');\" target=\"_blank\"><span style=\"color:#FF3F8B\"><strong>baivong</strong></span></a>&nbsp;:&nbsp;</span><span class=\"msg\"><span style=\"color: #777777\">1407003001044_2{Name}[\"baivong\"&#044;\"Zzbaivong\"&#044;\"miamor\"]kkkkkk</span></span></span></p><p class=\"chatbox_row_1 clearfix\"><span class=\"date-and-time\" title=\"03 Aug 2014\">[02:36:49 03/08/14]</span>&nbsp;<span class=\"user-msg\"><span class=\"user\"><span style=\"color:#F00000\"><strong>@</strong></span>&nbsp;<a href=\"/u1\" onclick=\"return copy_user_name(\'Zzbaivong\');\" target=\"_blank\"><span style=\"color:#F00000\"><strong>Zzbaivong</strong></span></a>&nbsp;:&nbsp;</span><span class=\"msg\"><span style=\"color: #CC00FF\">asdas</span></span></span></p><p class=\"chatbox_row_2 clearfix\"><span class=\"date-and-time\" title=\"03 Aug 2014\">[02:36:50 03/08/14]</span>&nbsp;<span class=\"user-msg\"><span class=\"user\"><span style=\"color:#F00000\"><strong>@</strong></span>&nbsp;<a href=\"/u1\" onclick=\"return copy_user_name(\'Zzbaivong\');\" target=\"_blank\"><span style=\"color:#F00000\"><strong>Zzbaivong</strong></span></a>&nbsp;:&nbsp;</span><span class=\"msg\"><span style=\"color: #CC00FF\">aaaaaaaaaaaaaaa</span></span></span></p><p class=\"chatbox_row_1 clearfix\"><span class=\"date-and-time\" title=\"03 Aug 2014\">[02:36:52 03/08/14]</span>&nbsp;<span class=\"user-msg\"><span class=\"user\"><span style=\"color:#F00000\"><strong>@</strong></span>&nbsp;<a href=\"/u1\" onclick=\"return copy_user_name(\'Zzbaivong\');\" target=\"_blank\"><span style=\"color:#F00000\"><strong>Zzbaivong</strong></span></a>&nbsp;:&nbsp;</span><span class=\"msg\"><span style=\"color: #CC00FF\">sssssssssssss</span></span></span></p><p class=\"chatbox_row_2 clearfix\"><span class=\"date-and-time\" title=\"03 Aug 2014\">[02:36:53 03/08/14]</span>&nbsp;<span class=\"user-msg\"><span class=\"user\"><span style=\"color:#F00000\"><strong>@</strong></span>&nbsp;<a href=\"/u1\" onclick=\"return copy_user_name(\'Zzbaivong\');\" target=\"_blank\"><span style=\"color:#F00000\"><strong>Zzbaivong</strong></span></a>&nbsp;:&nbsp;</span><span class=\"msg\"><span style=\"color: #CC00FF\">eeeeeeeeeeeeeeee</span></span></span></p><p class=\"chatbox_row_1 clearfix\"><span class=\"date-and-time\" title=\"03 Aug 2014\">[02:37:00 03/08/14]</span>&nbsp;<span class=\"user-msg\"><span class=\"user\"><span style=\"color:#F00000\"><strong>@</strong></span>&nbsp;<a href=\"/u1\" onclick=\"return copy_user_name(\'Zzbaivong\');\" target=\"_blank\"><span style=\"color:#F00000\"><strong>Zzbaivong</strong></span></a>&nbsp;:&nbsp;</span><span class=\"msg\"><span style=\"color: #CC00FF\">1407003001099_1{}[\"baivong\"&#044;\"Zzbaivong\"]zzzzzzzzzzzzzzzzzzzzz</span></span></span></p>';
 	// Thành viên đang truy cập
@@ -19,6 +25,7 @@ $(function () {
 		$('.chatbox_change.active').removeClass('active');
 		$(this).addClass('active');
 		var id = $(this).attr('data-id');
+<<<<<<< HEAD
 		var name;
 		if (id == 'publish') name = '[Public]';
 		else name = $('.chatbox_content[data-id="' + id + '"]').attr('data-name');
@@ -26,6 +33,11 @@ $(function () {
 		$('.chatbox_content[data-id="' + id + '"]').show();
 		$('#chatbox_send').attr('data-id', id);
 		$('#chattab_name').text(name)
+=======
+		$('.chatbox_content').hide();
+		$('.chatbox_content[data-id="' + id + '"]').show();
+		$('#chatbox_send').attr('data-id', id);
+>>>>>>> upstream/master
 	});
 
 	$("#chatbox_members").html(chatbox_memberlist); // Thêm dach sách thành viên
@@ -99,6 +111,7 @@ $(function () {
 
 				var $private = $('.chatbox_content[data-id="' + arrMess[4] + '"]'); // Đặt biến cho mục chat riêng
 				var $tabPrivate = $('.chatbox_change[data-id="' + arrMess[4] + '"]'); // Đặt biến cho tab của mục
+<<<<<<< HEAD
 				var chat_name;
 				var chatUsers = $.grep(arrUsers, function (n, i) {
 						return (n !== uName);
@@ -109,11 +122,14 @@ $(function () {
 					chat_name += '<div class="chat-users">' + chatUsers + '</div>';
 				}
 
+=======
+>>>>>>> upstream/master
 				if (!$private.length) { // Nếu chưa có mục chat riêng thì tạo mới
 					$(".chatbox_content").hide();
 					$private = $("<div>", {
 						"class": "chatbox_content",
 						"data-id": arrMess[4],
+<<<<<<< HEAD
 						"data-name": data_chat_name
 					}).appendTo("#chatbox_forumvi"); // Thêm vào khu vực chatbox
 
@@ -121,6 +137,24 @@ $(function () {
 						"class": "chatbox_change",
 						"data-id": arrMess[4],
 						html: chat_name
+=======
+						"data-name": arrMess[10]
+					}).appendTo("#chatbox_forumvi"); // Thêm vào khu vực chatbox
+
+					var chat_name;
+					if (arrMess[5] == '{}') {
+						chat_name = $.grep(arrUsers, function (n, i) {
+							return (n !== uName);
+						}).join(", "); // Đặt tên tab là các nickname đang chat với mình
+					} else {
+						chat_name = arrMess[5].slice(1, -1);
+					}
+
+					$tabPrivate = $("<li>", {
+						"class": "chatbox_change",
+						"data-id": arrMess[4],
+						text: chat_name
+>>>>>>> upstream/master
 					}).appendTo("#chatbox_tabs"); // Thêm vào tab
 				}
 
@@ -134,6 +168,7 @@ $(function () {
 		}
 	});
 
+<<<<<<< HEAD
 
 	/* 
 	 * Dropdown menu
@@ -143,3 +178,6 @@ $(function () {
 	});
 
 });
+=======
+});
+>>>>>>> upstream/master
