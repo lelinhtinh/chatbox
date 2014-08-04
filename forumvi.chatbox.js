@@ -133,27 +133,40 @@ $(function () {
 					var $private = $('.chatbox_content[data-id="' + dataId + '"]'); // Đặt biến cho mục chat riêng
 					var $tabPrivate = $('.chatbox_change[data-id="' + dataId + '"]'); // Đặt biến cho tab của mục
 					
+					var chat_name;
+					var chatUsers = $.grep(arrUsers, function (n, i) {
+							return (n !== uName);
+						}).join(", ");
+					if (arrMess[5] == '{}') data_chat_name = chat_name = chatUsers; // Đặt tên tab là các nickname đang chat với mình
+					else {
+						data_chat_name = chat_name = arrMess[5].slice(1, -1);
+						chat_name += '<div class="chat-users">' + chatUsers + '</div>';
+					}
+
 					if (!$private.length) { // Nếu chưa có mục chat riêng thì tạo mới
 						$private = $("<div>", {
 							"class": "chatbox_content",
-							"data-id": dataId
+							"data-id": dataId,
+							"data-name": data_chat_name,
+							"data-users": chatUsers
 						}).appendTo("#chatbox_forumvi"); // Thêm vào khu vực chatbox
-
-						var chat_name = arrMess[5].slice(1, -1);
-
-						if (chat_name === '') {
-							chat_name = $.grep(arrUsers, function (n, i) {
-								return (n !== uName);
-							}).join(", "); // Đặt tên tab là các nickname đang chat với mình
-						}
 
 						$tabPrivate = $("<li>", {
 							"class": "chatbox_change",
 							"data-id": dataId,
 							"data-name": arrMess[5],
 							"data-users": arrMess[6],
-							text: chat_name
+							html: chat_name
 						}).appendTo("#chatbox_tabs"); // Thêm vào tab
+					}
+					var oldChatUsers = $private.attr('data-users');
+					if (chatUsers != oldChatUsers) { // Check if any users are added
+						$private.attr('data-users', chatUsers);
+						$tabPrivate.html(chat_name);
+						var chatUsersAr = chatUsers.split(',');
+						$.grep(chatUsersAr, function (newUser) {
+							if ($.inArray(newUser, oldChatUsers.split(',')) == -1) $private.append('<div class="chatbox_row chatbox_row_action">' + newUser + ' is added in conversation.</div>');
+						});
 					}
 
 					$(".msg", $mess).html(arrMess[1] + arrMess[8]); // Xóa phần đánh dấu tin nhắn
@@ -198,6 +211,11 @@ $(function () {
 			});
 		});
 
+	});
+
+	/*! Dropdown menu */
+	$('.dropdown-toggle').click(function () {
+		$(this).next('.dropdown-menu').toggle()
 	});
 });
 
