@@ -25,18 +25,37 @@
 	</p>
 	
 	<div id="chatbox">
-		<div class="chatbox_left">
-			<div class="chat_head">Thành viên</div>
+		<div class="chatbox_right">
+			<div class="chat-head">Thành viên</div>
 			<div id="chatbox_members"></div>
 		</div>
 
-		<div class="chatbox_main">
-			<ul class="chat_head" id="chatbox_tabs">
+		<div class="chatbox_left">
+			<div class="chat-head">
+				<div id="chat-create" class="right button button-remark-add">Add</div>
+				[Title]
+			</div>
+			<ul id="chatbox_tabs">
 				<li class="chatbox_change active" data-id="publish">Kênh chung</li>
 			</ul>
+		</div>
+
+		<div class="chatbox_main">
+			<div class="chat-head" id="chattab_manage">
+				<div id="chattab_action" class="right">
+					<div class="dropdown open">
+						<div class="dropdown-toggle button button-remark-custom">Actions</div>
+						<ul class="dropdown-menu hide">
+							<li>Add people</li>
+						</ul>
+					</div>
+				</div>
+				<span id="chattab_name">Public</span>
+			</div>
 			<div id="chatbox_forumvi">
 				<div class="chatbox_content" data-id="publish"></div>
 			</div>
+
 			<form id="chatbox_send" data-key="">
 				<input type="hidden" name="sbold" id="chatbox_sbold" value="0" />
 				<input type="hidden" name="sitalic" id="chatbox_sitalic" value="0" />

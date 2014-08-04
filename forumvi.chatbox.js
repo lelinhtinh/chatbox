@@ -268,6 +268,7 @@ $(function () {
 
 					var indexUser = $.inArray(uName, arrUsers); // Lấy vị trí index nickname của thành viên đang truy cập trong arrayString
 
+<<<<<<< HEAD
 					if (indexUser !== -1) { // Nếu có nickname của thành viên đang truy cập trong danh sách
 
 						var dataId = arrMess[4];
@@ -308,6 +309,49 @@ $(function () {
 							$tabPrivate.click();
 						}
 
+=======
+				if (indexUser !== -1) { // Nếu có nickname của thành viên đang truy cập trong danh sách				
+					
+					var dataId = arrMess[4];
+					
+					var $private = $('.chatbox_content[data-id="' + dataId + '"]'); // Đặt biến cho mục chat riêng
+					var $tabPrivate = $('.chatbox_change[data-id="' + dataId + '"]'); // Đặt biến cho tab của mục
+					
+					var chat_name;
+					var chatUsers = $.grep(arrUsers, function (n, i) {
+							return (n !== uName);
+						}).join(", ");
+					if (arrMess[5] == '{}') data_chat_name = chat_name = chatUsers; // Đặt tên tab là các nickname đang chat với mình
+					else {
+						data_chat_name = chat_name = arrMess[5].slice(1, -1);
+						chat_name += '<div class="chat-users">' + chatUsers + '</div>';
+					}
+
+					if (!$private.length) { // Nếu chưa có mục chat riêng thì tạo mới
+						$private = $("<div>", {
+							"class": "chatbox_content",
+							"data-id": dataId,
+							"data-name": data_chat_name,
+							"data-users": chatUsers
+						}).appendTo("#chatbox_forumvi"); // Thêm vào khu vực chatbox
+
+						$tabPrivate = $("<li>", {
+							"class": "chatbox_change",
+							"data-id": dataId,
+							"data-name": arrMess[5],
+							"data-users": arrMess[6],
+							html: chat_name
+						}).appendTo("#chatbox_tabs"); // Thêm vào tab
+>>>>>>> origin/master
+					}
+					var oldChatUsers = $private.attr('data-users');
+					if (chatUsers != oldChatUsers) { // Check if any users are added
+						$private.attr('data-users', chatUsers);
+						$tabPrivate.html(chat_name);
+						var chatUsersAr = chatUsers.split(',');
+						$.grep(chatUsersAr, function (newUser) {
+							if ($.inArray(newUser, oldChatUsers.split(',')) == -1) $private.append('<div class="chatbox_row chatbox_row_action">' + newUser + ' is added in conversation.</div>');
+						});
 					}
 
 				} else {
@@ -441,6 +485,11 @@ $(function () {
 			return false;
 		}
 	});
+
+	/*! Dropdown menu */
+	$('.dropdown-toggle').click(function () {
+		$(this).next('.dropdown-menu').toggle()
+	});
 });
 
 //document.getElementById('refresh_auto').checked = false;
@@ -454,6 +503,7 @@ $(function () {
 //var chatbox_messages = '<p class=\"chatbox_row_1 clearfix\"><span title=\"03 Aug 2014\">[20:41:52]</span>&nbsp;<span style=\"font-style:italic\">You are disconnected.</span></span></p>';
 //var chatbox_memberlist = '';
 //var chatbox_last_update = 1407073312.0527;
+<<<<<<< HEAD
 
 //function ajax_connect(params, mode) {
 //	if (params == '' || params == undefined) {
@@ -524,3 +574,5 @@ $(function () {
 //		refresh_chatbox('?archives');
 //	} catch (err) {}
 //}
+=======
+>>>>>>> origin/master

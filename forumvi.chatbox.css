@@ -9,8 +9,15 @@
 	left: 0;
 	right: 0;
 }
+<<<<<<< HEAD
 #chatbox_forumvi {
 	margin: 0 10px
+=======
+
+.chatbox_row {
+	margin: 0;
+	padding: 8px 10px
+>>>>>>> origin/master
 }
 .chatbox_content {} .chatbox_row.chatbox_newMess {
 	-webkit-animation: chatbox_row .7s;
@@ -38,42 +45,123 @@
 		background: transparent;
 	}
 }
+<<<<<<< HEAD
 .chatbox_left {
 	float: left;
 	width: 250px;
 	background: #fff;
 	position: relative;
+=======
+
+.chatbox_row_action {
+	background: #fbfbfb;
+	border: 1px solid #f3f3f3
+}
+
+.chatbox_left {
+	float:left;
+	width: 250px;
+	background:#fbfbfb;
+	position:relative;
+>>>>>>> origin/master
 	height: 100%;
-	border-right: 1px solid #f3f3f3
+	overflow:hidden;
+	border-right: 1px solid #f3f3f3;
 }
 .chatbox_main {
+<<<<<<< HEAD
 	margin-left: 250px;
 	position: relative;
 	height: 100%
 }
 .chat_head {
+=======
+	margin: 0 250px;
+	position:relative;
+	height:100%
+}
+
+.chatbox_right {
+	float: right;
+	width: 250px;
+	position:relative;
+	height: 100%;
+	border-left:1px solid #f3f3f3;
+	background: #fbfbfb
+}
+
+.chat-head {
+>>>>>>> origin/master
 	background: #fafafa;
 	border-bottom: 1px solid #f3f3f3;
-	padding: 10px
+	height: 55px;
+	padding: 0 15px;
+	line-height: 55px
+}
+.chat-head div {
+	line-height: 22px
 }
 ul#chatbox_tabs {
 	list-style: none;
 	margin: 0;
+	padding: 0;
+	position:relative;
+	height: calc(100% - 55px);
+	height: -webkit-calc(100% - 55px);
+	height: -moz-calc(100% - 55px);
+	overflow-x:hidden;
+	overflow-y:auto;
 }
 ul#chatbox_tabs li {
-	display: inline;
-	padding: 11px;
-	cursor: pointer
+	padding: 15px 11px;
+	cursor: pointer;
+	border:solid transparent;
+	border-width: 1px 0 1px 0
 }
 ul#chatbox_tabs li.active {
 	background: #fff;
+<<<<<<< HEAD
 	border: 1px solid #f3f3f3;
 	border-bottom: 0
+=======
+	border-color: #f3f3f3;
+	padding-right: 22px
+}
+
+ul#chatbox_tabs li .chat-users {
+	margin-top:6px;
+	font-size:12px;
+	color:#999;
+	display:block;
+	width:100%;
+	overflow:hidden;
+	text-overflow:ellipsis
+}
+
+#chattab_action, #chat-create {
+	margin-top: 11px
+>>>>>>> origin/master
 }
 #chatbox_send {
 	position: absolute;
 	bottom: 0;
+<<<<<<< HEAD
 	width: calc(100% - 20px);
 	background: #fafafa;
 	padding: 10px
 }
+=======
+	width: calc(100% - 22px);
+	width: -webkit-calc(100% - 22px);
+	width: -moz-calc(100% - 22px);
+	background: #fbfbfb;
+	border: 1px solid #f3f3f3;
+	padding: 10px
+}
+
+#chatbox_members h4 {
+	margin: 0;
+	padding: 7px;
+	border-bottom: 1px solid #f3f3f3
+}
+>>>>>>> origin/master
