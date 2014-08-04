@@ -3,61 +3,77 @@
  */
 
 #chatbox {
-	position:absolute;
-	top:0;bottom:0;left:0;right:0
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
 }
-
 #chatbox_forumvi {
 	margin: 0 10px
 }
-
-.chatbox_content {
+.chatbox_content {} .chatbox_row.chatbox_newMess {
+	-webkit-animation: chatbox_row .7s;
+	animation: chatbox_row .7s;
 }
-
+@-webkit-keyframes chatbox_row {
+	0% {
+		background: rgb(252, 255, 213);
+	}
+	50% {
+		background: rgb(252, 255, 213);
+	}
+	100% {
+		background: transparent;
+	}
+}
+@keyframes chatbox_row {
+	0% {
+		background: rgb(252, 255, 213);
+	}
+	50% {
+		background: rgb(252, 255, 213);
+	}
+	100% {
+		background: transparent;
+	}
+}
 .chatbox_left {
-	float:left;
-	width:250px;
-	background:#fff;
-	position:relative;
+	float: left;
+	width: 250px;
+	background: #fff;
+	position: relative;
 	height: 100%;
 	border-right: 1px solid #f3f3f3
 }
-
 .chatbox_main {
 	margin-left: 250px;
-	position:relative;
-	height:100%
+	position: relative;
+	height: 100%
 }
-
 .chat_head {
 	background: #fafafa;
 	border-bottom: 1px solid #f3f3f3;
 	padding: 10px
 }
-
 ul#chatbox_tabs {
 	list-style: none;
 	margin: 0;
 }
-
 ul#chatbox_tabs li {
 	display: inline;
 	padding: 11px;
 	cursor: pointer
 }
-
 ul#chatbox_tabs li.active {
 	background: #fff;
-	border:1px solid #f3f3f3;
-	border-bottom:0
+	border: 1px solid #f3f3f3;
+	border-bottom: 0
 }
-
 #chatbox_send {
 	position: absolute;
 	bottom: 0;
 	width: calc(100% - 20px);
-	width: -webkit-calc(100% - 20px);
-	width: -moz-calc(100% - 20px);
 	background: #fafafa;
 	padding: 10px
 }
