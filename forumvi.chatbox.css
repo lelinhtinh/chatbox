@@ -2,26 +2,295 @@
  * Chatbox forumvi v0.1 by Zzbaivong <devs.forumvi.com>
  */
 
-#chatbox {
+* {
+	margin: 0;
+	padding: 0;
+}
+@font-face {
+	font-family: 'Roboto';font-style: normal;font-weight: 300;src: local('Roboto Light'), local('Roboto-Light'), url(http://themes.googleusercontent.com/static/fonts/roboto/v10/NYDWBdD4gIq26G5XYbHsFD8E0i7KZn-EPnyo3HZu7kw.woff) format('woff');}@font-face {font-family: 'Roboto';font-style: normal;font-weight: 400;src: local('Roboto Regular'), local('Roboto-Regular'), url(http://themes.googleusercontent.com/static/fonts/roboto/v10/HV_H5nosKj8mZupFxrHqHA.woff) format('woff');}@font-face {font-family: 'Roboto';font-style: normal;font-weight: 700;src: local('Roboto Bold'), local('Roboto-Bold'), url(http://themes.googleusercontent.com/static/fonts/roboto/v10/PwZc-YbIL414wB9rB1IAPT8E0i7KZn-EPnyo3HZu7kw.woff) format('woff');
+}
+body {
+	font: 13px Roboto, Helvetica;
+	color: #444;
+	font-weight: 400;
+}
+a {
+	text-decoration: none;
+}
+#chatbox-alert {
+	display: none;
 	position: absolute;
+	left: 0;
 	top: 0;
+	right: 0;
+	padding: 7px 15px;
+	text-align: center;
+	background: rgb(250, 255, 194);
+	z-index: 50;
+}
+#chatbox-forumvi {
+	position: fixed;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+}
+#chatbox-header {
+	height: 30px;
+	padding: 10px;
+	position: relative;
+	border-bottom: 1px solid #DDD;
+}
+#chatbox-header > div {
+	height: 30px;
+	line-height: 30px;
+	float: left;
+	font-weight: bold;
+}
+#chatbox-header h2 {
+	font-weight: 300;
+}
+#chatbox-me {
+	width: 250px;
+	padding-right: 10px;
+	border-right: 1px solid #DFDFDF;
+}
+#chatbox-title {
+	padding-left: 20px;
+}
+#chatbox-tabs {
+	position: absolute;
+	left: 0;
+	top: 51px;
+	bottom: 0;
+	width: 256px;
+	background: #f2f2f2;
+	border-right: 1px dashed #DDD;
+	padding: 2px 7px;
+	overflow: auto;
+}
+#chatbox-members {
+	margin-bottom: 80px;
+}
+#chatbox-list,
+#chatbox-members > ul {
+	margin: 5px 0;
+}
+#chatbox-members > ul > li,
+.chatbox-change {
+	position: relative;
+	height: 40px;
+	line-height: 40px;
+	font-size: 1.1em;
+	padding: 0 17px;
+	background: #FFF;
+	font-weight: bold;
+}
+.chatbox-change:hover,
+#chatbox-members > ul > li:hover {
+	background: #f9ffdd;
+}
+.chatbox-change.active {
+	background: #0DA96C;
+	color: #FFF;
+}
+.chatbox-change-mess {
+	float: right;
+}
+.chatbox-change-mess[data-mess="0"],
+#chatbox-members > h4,
+#chatbox-members .chatbox-setting {
+	display: none;
+}
+#chatbox-main {
+	position: absolute;
+	right: 0;
+	top: 51px;
+	bottom: 0;
+	left: 270px;
+	padding: 10px;
+	border-left: 1px solid #DDD;
+}
+.chatbox-setting {
+	position: absolute;
+	width: 20px;
+	height: 20px;
+	right: 10px;
+	top: 50%;
+	margin-top: -10px;
+	background: url(http://i.imgur.com/EgIPX1U.jpg) no-repeat center center transparent;
+	z-index: 10;
+}
+#chatbox-members li:hover .chatbox-setting {
+	display: block;
+}
+ul.chatbox-dropdown {
+	display: none;
+	position: absolute;
+	width: 180px;
+	right: 20px;
+	top: 0;
+	background: #FFF;
+	border: 1px solid #DDD;
+	line-height: 24px;
+	text-align: right;
+	padding: 3px;
+	z-index: 20;
+}
+.chatbox-setting:hover ul.chatbox-dropdown {
+	display: block;
+}
+ul.chatbox-dropdown > li {
+	list-style: none;
+	padding: 0 10px;
+	height: 24px;
+}
+ul.chatbox-dropdown > li:hover {
+	background: #444;
+	color: #FFF;
+	cursor: pointer;
+}
+#chatbox-members ul.chatbox-dropdown {
+	width: 150px;
+}
+#chatbox-copyright {
+	position: absolute;
 	bottom: 0;
 	left: 0;
 	right: 0;
+	height: 19px;
+	line-height: 19px;
+	text-align: center;
+	color: #888;
+	border-top: 1px solid #DDD;
+	background: #F8F8F8;
+	font-size: 11px;
 }
-<<<<<<< HEAD
-#chatbox_forumvi {
-	margin: 0 10px
-=======
-
-.chatbox_row {
-	margin: 0;
-	padding: 8px 10px
->>>>>>> origin/master
+#chatbox-wrap {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 90px;
+	overflow: auto;
 }
-.chatbox_content {} .chatbox_row.chatbox_newMess {
-	-webkit-animation: chatbox_row .7s;
-	animation: chatbox_row .7s;
+.chatbox-content {
+	padding: 3px;
+}
+.chatbox-content > p {
+	padding: 2px 7px;
+}
+.chatbox-content > p:hover {
+	background: #f4f4f4;
+}
+.chatbox-content > p:nth-child(odd) {
+	background: #fafafa;
+}
+#chatbox-messenger-form {
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	height: 70px;
+	padding: 10px;
+	border-top: 1px solid #DDD;
+	background: #F4FDDF;
+}
+#chatbox-messenger {
+	position: absolute;
+	left: 10px;
+	top: 9px;
+	right: 42px;
+	height: 30px;
+}
+#chatbox-messenger-input {
+	width: 100%;
+	height: 100%;
+	line-height: 32px;
+	border: 1px solid #B6B6B6;
+	padding: 0 15px;
+}
+#chatbox-option {
+	position: absolute;
+	left: 10px;
+	top: 50px;
+	right: 10px;
+	height: 30px;
+}
+#chatbox-option > div {
+	width: 30px;
+	height: 30px;
+	line-height: 30px;
+	text-align: center;
+	float: left;
+	margin-right: 7px;
+	background: #FFF;
+	border: 1px outset;
+	font-size: 1.3em;
+}
+#chatbox-option > div.active,
+#chatbox-option > div:hover {
+	cursor: pointer;
+	border: 1px inset;
+}
+#chatbox-option-bold {
+	font-weight: bold;
+}
+#chatbox-option-italic {
+	font-style: italic;
+}
+#chatbox-option-underline {
+	text-decoration: underline;
+}
+#chatbox-option-strike {
+	text-decoration: line-through;
+}
+#chatbox-option-color {
+	position: relative;
+}
+#chatbox-option-color > ul {
+	width: 100px;
+	height: 75px;
+	position: absolute;
+	bottom: 30px;
+	left: -35px;
+	background: #FFF;
+	border: 1px solid #DDD;
+	list-style: none;
+	display: none;
+}
+#chatbox-option-color:hover > ul {
+	display: block;
+}
+#chatbox-option-color > ul > li {
+	width: 25px;
+	height: 25px;
+	float: left;
+	text-indent: -9999px;
+}
+#chatbox-option > div#chatbox-option-submit {
+	float: right;
+	margin-right: 0;
+	width: 100px;
+	border: 0 none;
+	background: transparent;
+}
+#chatbox-submit {
+	width: 100%;
+	height: 100%;
+	background: #0DA96C;
+	border: 0;
+	color: #FFF;
+	font-weight: bold;
+	border: 1px outset;
+}
+#chatbox-submit:hover {
+	background: #333;
+	border: 1px inset;
+}
+.chatbox-content > p.chatbox-newmess {
+	-webkit-animation: chatbox_row .5s;
+	animation: chatbox_row .5s;
 }
 @-webkit-keyframes chatbox_row {
 	0% {
@@ -45,123 +314,3 @@
 		background: transparent;
 	}
 }
-<<<<<<< HEAD
-.chatbox_left {
-	float: left;
-	width: 250px;
-	background: #fff;
-	position: relative;
-=======
-
-.chatbox_row_action {
-	background: #fbfbfb;
-	border: 1px solid #f3f3f3
-}
-
-.chatbox_left {
-	float:left;
-	width: 250px;
-	background:#fbfbfb;
-	position:relative;
->>>>>>> origin/master
-	height: 100%;
-	overflow:hidden;
-	border-right: 1px solid #f3f3f3;
-}
-.chatbox_main {
-<<<<<<< HEAD
-	margin-left: 250px;
-	position: relative;
-	height: 100%
-}
-.chat_head {
-=======
-	margin: 0 250px;
-	position:relative;
-	height:100%
-}
-
-.chatbox_right {
-	float: right;
-	width: 250px;
-	position:relative;
-	height: 100%;
-	border-left:1px solid #f3f3f3;
-	background: #fbfbfb
-}
-
-.chat-head {
->>>>>>> origin/master
-	background: #fafafa;
-	border-bottom: 1px solid #f3f3f3;
-	height: 55px;
-	padding: 0 15px;
-	line-height: 55px
-}
-.chat-head div {
-	line-height: 22px
-}
-ul#chatbox_tabs {
-	list-style: none;
-	margin: 0;
-	padding: 0;
-	position:relative;
-	height: calc(100% - 55px);
-	height: -webkit-calc(100% - 55px);
-	height: -moz-calc(100% - 55px);
-	overflow-x:hidden;
-	overflow-y:auto;
-}
-ul#chatbox_tabs li {
-	padding: 15px 11px;
-	cursor: pointer;
-	border:solid transparent;
-	border-width: 1px 0 1px 0
-}
-ul#chatbox_tabs li.active {
-	background: #fff;
-<<<<<<< HEAD
-	border: 1px solid #f3f3f3;
-	border-bottom: 0
-=======
-	border-color: #f3f3f3;
-	padding-right: 22px
-}
-
-ul#chatbox_tabs li .chat-users {
-	margin-top:6px;
-	font-size:12px;
-	color:#999;
-	display:block;
-	width:100%;
-	overflow:hidden;
-	text-overflow:ellipsis
-}
-
-#chattab_action, #chat-create {
-	margin-top: 11px
->>>>>>> origin/master
-}
-#chatbox_send {
-	position: absolute;
-	bottom: 0;
-<<<<<<< HEAD
-	width: calc(100% - 20px);
-	background: #fafafa;
-	padding: 10px
-}
-=======
-	width: calc(100% - 22px);
-	width: -webkit-calc(100% - 22px);
-	width: -moz-calc(100% - 22px);
-	background: #fbfbfb;
-	border: 1px solid #f3f3f3;
-	padding: 10px
-}
-
-#chatbox_members h4 {
-	margin: 0;
-	padding: 7px;
-	border-bottom: 1px solid #f3f3f3
-}
->>>>>>> origin/master
