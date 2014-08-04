@@ -25,7 +25,7 @@ a {
 	right: 0;
 	padding: 7px 15px;
 	text-align: center;
-	background: rgb(250, 255, 194);
+	background-color: rgb(250, 255, 194);
 	z-index: 50;
 }
 #chatbox-forumvi {
@@ -55,6 +55,23 @@ a {
 	padding-right: 10px;
 	border-right: 1px solid #DFDFDF;
 }
+#chatbox-hidetab {
+	float: right;
+	background: url(http://i.imgur.com/QnKeV3q.png) no-repeat center center transparent;
+	width: 30px;
+	height: 30px;
+}
+#chatbox-hidetab.show {
+	background-image: url(http://i.imgur.com/PQmqEvd.png);
+}
+#chatbox-hidetab:hover {
+	background-color: #f2f2f2;
+	cursor: pointer;
+}
+#chatbox-tabs, #chatbox-main {
+	-webkit-transition: left .7s;
+	transition: left .7s;
+}
 #chatbox-title {
 	padding-left: 20px;
 }
@@ -64,7 +81,7 @@ a {
 	top: 51px;
 	bottom: 0;
 	width: 256px;
-	background: #f2f2f2;
+	background-color: #f2f2f2;
 	border-right: 1px dashed #DDD;
 	padding: 2px 7px;
 	overflow: auto;
@@ -83,16 +100,20 @@ a {
 	line-height: 40px;
 	font-size: 1.1em;
 	padding: 0 17px;
-	background: #FFF;
+	background-color: #FFF;
 	font-weight: bold;
 }
 .chatbox-change:hover,
 #chatbox-members > ul > li:hover {
-	background: #f9ffdd;
+	background-color: #f9ffdd;
 }
 .chatbox-change.active {
-	background: #0DA96C;
+	background-color: #0DA96C!important;
 	color: #FFF;
+}
+.chatbox-change.active[data-id="publish"] {
+	padding-left: 30px;
+	background: url(http://i.imgur.com/BvBPWqY.gif) no-repeat 10px center transparent;
 }
 .chatbox-change-mess {
 	float: right;
@@ -130,7 +151,7 @@ ul.chatbox-dropdown {
 	width: 180px;
 	right: 20px;
 	top: 0;
-	background: #FFF;
+	background-color: #FFF;
 	border: 1px solid #DDD;
 	line-height: 24px;
 	text-align: right;
@@ -146,7 +167,7 @@ ul.chatbox-dropdown > li {
 	height: 24px;
 }
 ul.chatbox-dropdown > li:hover {
-	background: #444;
+	background-color: #444;
 	color: #FFF;
 	cursor: pointer;
 }
@@ -163,7 +184,7 @@ ul.chatbox-dropdown > li:hover {
 	text-align: center;
 	color: #888;
 	border-top: 1px solid #DDD;
-	background: #F8F8F8;
+	background-color: #F8F8F8;
 	font-size: 11px;
 }
 #chatbox-wrap {
@@ -181,10 +202,10 @@ ul.chatbox-dropdown > li:hover {
 	padding: 2px 7px;
 }
 .chatbox-content > p:hover {
-	background: #f4f4f4;
+	background-color: #f4f4f4;
 }
 .chatbox-content > p:nth-child(odd) {
-	background: #fafafa;
+	background-color: #fafafa;
 }
 #chatbox-messenger-form {
 	position: absolute;
@@ -194,7 +215,7 @@ ul.chatbox-dropdown > li:hover {
 	height: 70px;
 	padding: 10px;
 	border-top: 1px solid #DDD;
-	background: #F4FDDF;
+	background-color: #F4FDDF;
 }
 #chatbox-messenger {
 	position: absolute;
@@ -224,7 +245,7 @@ ul.chatbox-dropdown > li:hover {
 	text-align: center;
 	float: left;
 	margin-right: 7px;
-	background: #FFF;
+	background-color: #FFF;
 	border: 1px outset;
 	font-size: 1.3em;
 }
@@ -254,7 +275,7 @@ ul.chatbox-dropdown > li:hover {
 	position: absolute;
 	bottom: 30px;
 	left: -35px;
-	background: #FFF;
+	background-color: #FFF;
 	border: 1px solid #DDD;
 	list-style: none;
 	display: none;
@@ -273,19 +294,19 @@ ul.chatbox-dropdown > li:hover {
 	margin-right: 0;
 	width: 100px;
 	border: 0 none;
-	background: transparent;
+	background-color: transparent;
 }
 #chatbox-submit {
 	width: 100%;
 	height: 100%;
-	background: #0DA96C;
+	background-color: #0DA96C;
 	border: 0;
 	color: #FFF;
 	font-weight: bold;
 	border: 1px outset;
 }
 #chatbox-submit:hover {
-	background: #333;
+	background-color: #333;
 	border: 1px inset;
 }
 .chatbox-content > p.chatbox-newmess {
@@ -294,23 +315,23 @@ ul.chatbox-dropdown > li:hover {
 }
 @-webkit-keyframes chatbox_row {
 	0% {
-		background: rgb(252, 255, 213);
+		background-color: rgb(252, 255, 213);
 	}
 	50% {
-		background: rgb(252, 255, 213);
+		background-color: rgb(252, 255, 213);
 	}
 	100% {
-		background: transparent;
+		background-color: transparent;
 	}
 }
 @keyframes chatbox_row {
 	0% {
-		background: rgb(252, 255, 213);
+		background-color: rgb(252, 255, 213);
 	}
 	50% {
-		background: rgb(252, 255, 213);
+		background-color: rgb(252, 255, 213);
 	}
 	100% {
-		background: transparent;
+		background-color: transparent;
 	}
 }

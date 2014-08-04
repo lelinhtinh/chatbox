@@ -1,0 +1,163 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<meta charset="utf-8" />
+	<title>Chatbox forumvi</title>
+	<link rel="stylesheet" type="text/css" href="forumvi.chatbox.css" />
+</head>
+
+<body>
+
+	<div id="chatbox-forumvi">
+
+		<!--<div id="chatbox-alert">Thông báo logout/disconnect hoặc tặng quà</div>-->
+
+		<div id="chatbox-header">
+			<div id="chatbox-me">
+				<!--<h2>Username</h2>-->
+				<div id="chatbox-hidetab" class="show"></div>
+			</div>
+			<div id="chatbox-title">
+				<h2>Kênh chung</h2>
+<!--
+				<div class="chatbox-setting">
+					<ul class="chatbox-dropdown">
+						<li>Thêm người...</li>
+						<li>Sửa tên cuộc trò chuyện</li>
+						<li class="chatbox-dropdown-line">Rời cuộc trò chuyện</li>
+						<li>Dừng cuộc trò chuyện</li>
+					</ul>
+				</div>
+-->
+			</div>
+		</div>
+
+		<div id="chatbox-tabs">
+			<div id="chatbox-list">
+				<div class="chatbox-change active" data-id="publish">
+					Kênh chung
+					<span class="chatbox-change-mess" data-mess="0">0</span>
+				</div>
+<!--
+				<div class="chatbox-change" data-id="xxx">
+					<span style="color:green"><strong>baivong</strong></span>
+					<span class="chatbox-change-mess" data-mess="0">0</span>
+				</div>
+				<div class="chatbox-change" data-id="xxx">
+					<span style="color:#000099"><strong>miamor</strong></span>	
+					<span class="chatbox-change-mess" data-mess="5">5</span>
+				</div>
+-->
+			</div>
+			<div id="chatbox-members">
+<!--
+				<h4 class="member-title online">Online</h4>
+				<ul class="online-users">
+					<li>
+						<a href="/u1" target="_blank">
+							<span style="color:red"><strong>@</strong></span>&nbsp;<span style="color:red"><strong>Admin</strong></span>
+						</a>
+						<div class="chatbox-setting">
+							<ul class="chatbox-dropdown">
+								<li>Trò chuyện riêng</li>
+								<li>Mời ra khỏi phòng</li>
+								<li>Thăng cấp quản lý</li>
+								<li>Xóa quyền quản lý</li>
+							</ul>
+						</div>
+					</li>
+					<li style="display: none;">
+						<a href="/u1" target="_blank">
+							<span style="color:green"><strong>baivong</strong></span>
+						</a>
+						<div class="chatbox-setting">
+							<ul class="chatbox-dropdown">
+								<li>Trò chuyện riêng</li>
+								<li>Mời ra khỏi phòng</li>
+								<li>Thăng cấp quản lý</li>
+								<li>Xóa quyền quản lý</li>
+							</ul>
+						</div>
+					</li>
+					<li style="display: none;">
+						<a href="/u1" target="_blank">
+							<span style="color:#000099"><strong>miamor</strong></span>
+						</a>
+						<div class="chatbox-setting">
+							<ul class="chatbox-dropdown">
+								<li>Trò chuyện riêng</li>
+								<li>Mời ra khỏi phòng</li>
+								<li>Thăng cấp quản lý</li>
+								<li>Xóa quyền quản lý</li>
+							</ul>
+						</div>
+					</li>
+				</ul>
+-->
+			</div>
+			<div id="chatbox-copyright">© 2014 - devs forumvi</div>
+		</div>
+
+		<div id="chatbox-main">
+			<div id="chatbox-wrap">
+				<div class="chatbox-content" data-id="publish">
+<!--
+					<p class="chatbox_row clearfix"><span class="date-and-time" title="04 Aug 2014">[15:21:07]</span>&nbsp;<span class="user-msg"><span class="user"><span style="color:red"><strong>@</strong></span>&nbsp;<a href="/u1" onclick="return copy_user_name('Admin');" target="_blank"><span style="color:red"><strong>Admin</strong></span></a>&nbsp;:&nbsp;</span><span class="msg"><span style="color: #333333">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</span></span>
+						</span>
+					</p>
+					<p class="chatbox_row clearfix"><span class="date-and-time" title="04 Aug 2014">[15:21:07]</span>&nbsp;<span class="user-msg"><span class="user"><span style="color:#000099"><strong>@</strong></span>&nbsp;<a href="/u1" onclick="return copy_user_name('Admin');" target="_blank"><span style="color:#000099"><strong>baivong</strong></span></a>&nbsp;:&nbsp;</span><span class="msg"><span style="color: #333333">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</span></span>
+						</span>
+					</p>
+					<p class="chatbox_row clearfix"><span class="date-and-time" title="04 Aug 2014">[15:21:07]</span>&nbsp;<span class="user-msg"><span class="user"><span style="color:red"><strong>@</strong></span>&nbsp;<a href="/u1" onclick="return copy_user_name('Admin');" target="_blank"><span style="color:red"><strong>Admin</strong></span></a>&nbsp;:&nbsp;</span><span class="msg"><span style="color: #333333">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</span></span>
+						</span>
+					</p>
+-->
+				</div>
+			</div>
+			<div id="chatbox-messenger-form">
+				<form id="chatbox-form" data-key="">
+					<input type="hidden" name="sbold" id="chatbox-input-bold" value="0" />
+					<input type="hidden" name="sitalic" id="chatbox-input-italic" value="0" />
+					<input type="hidden" name="sunderline" id="chatbox-input-underline" value="0" />
+					<input type="hidden" name="sstrike" id="chatbox-input-strike" value="0" />
+					<input type="hidden" name="scolor" id="chatbox-input-color" value="333333" />
+					<div id="chatbox-messenger">
+						<input type="text" name="message" id="chatbox-messenger-input" />
+					</div>
+					<div id="chatbox-option">
+						<div id="chatbox-option-bold">B</div>
+						<div id="chatbox-option-italic">I</div>
+						<div id="chatbox-option-underline">U</div>
+						<div id="chatbox-option-strike">S</div>
+						<div id="chatbox-option-color" style="background: #333333;">
+							<ul>
+<!--
+								<li style="background: red;">red</li>
+								<li style="background: blue;">blue</li>
+								<li style="background: green;">green</li>
+								<li style="background: violet;">violet</li>
+								<li style="background: cyan;">cyan</li>
+								<li style="background: olive;">olive</li>
+-->
+							</ul>
+						</div>
+						<div id="chatbox-option-submit">
+							<input type="submit" value="Submit" id="chatbox-submit" />
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+
+	</div>
+	
+	<script type="text/javascript" src="jquery-1.11.1.min.js"></script>
+	<script type="text/javascript" src="forumvi.chatbox.function.js"></script>
+	<script type="text/javascript" src="forumvi.chatbox.message.js"></script>
+	<script type="text/javascript" src="forumvi.chatbox.tabs.js"></script>
+	<script type="text/javascript" src="forumvi.chatbox.submit.js"></script>
+	<script type="text/javascript" src="forumvi.chatbox.editor.js"></script>
+</body>
+
+</html>

@@ -3,6 +3,7 @@
  */
 
 // Chuyển tab
+
 $("#chatbox-tabs").on("click", "li", function () {
 	var $this = $(this);
 	$(".chatbox-change.active").removeClass("active");
@@ -18,3 +19,28 @@ $("#chatbox-tabs").on("click", "li", function () {
 
 	my_setcookie("chatbox_active", dataID, false); // Lưu cookie cho tab vừa click
 });
+
+// Ẩn/hiện tab
+
+$("#chatbox-hidetab").click(function () {
+	var $this = $(this),
+		tabs, main, status;
+	$this.toggleClass(function () {
+		if ($this.hasClass("show")) { // ẩn tab
+			tabs = -270;
+			main = 0;
+			status = "hide";
+		} else { // hiện tab
+			tabs = 0;
+			main = 270;
+			status = "show";
+		}
+		$("#chatbox-tabs").css("left", tabs);
+		$("#chatbox-main").css("left", main);
+		my_setcookie("chatbox_tabs", status, false); // Lưu cookie cho tab vừa click
+	});
+});
+
+if(my_getcookie("chatbox_tabs") === "hide") {
+	$("#chatbox-hidetab").click();
+}
