@@ -101,6 +101,18 @@ var filterMess = function (chatsource) {
 				$this.appendTo('.chatbox-content[data-id="publish"]'); // Thêm tin nhắn thường vào mục chat chung
 			}
 
+			if ($this.find(".msg").text() == "/buzz") { // Nếu có ký hiệu buzz
+				$this.find(".msg").html('<img src="http://i.imgur.com/9GvQ6Gd.gif" width="62" height="16" />'); // Thay bằng ảnh buzz
+				if (lastMess) { // Không chạy hiệu ứng buzz trong lần truy cập đầu tiên
+					$(".chatbox-change[data-id='" + $this.closest(".chatbox-content").attr("data-id") + "']").click();
+					$("#chatbox-forumvi").addClass("chatbox-buzz");
+					$("#chatbox-buzz-audio")[0].play();
+					setTimeout(function () {
+						$("#chatbox-forumvi").removeClass("chatbox-buzz");
+					}, 1000);
+				}
+			}
+
 			var messTime = $(".date-and-time", $this), // Lấy định dạng thời gian
 				messTimeText = messTime.text();
 			var arrTime = messTimeText.match(/\[(\S+)\s(\S+)\]/);
@@ -111,13 +123,6 @@ var filterMess = function (chatsource) {
 				$this.before('<p class="chatbox-date clearfix">' + arrTime[2] + '</p>'); // Thêm vào thông số ngày/tháng/năm
 			}
 
-			// Hiệu ứng cho tin nhắn mới
-			if (lastMess) { // Không chạy với lần tải đầu tiên
-				$this.addClass("chatbox-newmess");
-				setTimeout(function () {
-					$this.removeClass("chatbox-newmess");
-				}, 700);
-			}
 		});
 
 		lastMess = chatbox_messages.match(/<p class="chatbox_row_(1|2) clearfix">(?:.(?!<p class="chatbox_row_(1|2) clearfix">))*<\/p>$/)[0]; // Cập nhật tin nhắn cuối
@@ -129,7 +134,7 @@ var filterMess = function (chatsource) {
 		}
 
 		var messCounterObj = JSON.parse(sessionStorage.getItem("messCounter"));
-
+		var allNewMess = 0; // Đếm số tin nhắn mới
 		$(".chatbox-content").each(function () {
 			var $this = $(this),
 				dataID = $this.attr("data-id");
@@ -143,163 +148,30 @@ var filterMess = function (chatsource) {
 			}
 
 			mLength = messLength - oldMessLength; // trừ lấy số tin mới
-			
+
 			if (mLength <= 0) { // Nếu không có tin mới
 				mLength = ""; // Xóa bộ đếm
+			} else {
+				allNewMess += mLength; // Lấy tổng số tin mới
 			}
 
 			$count.text(mLength);
 
 		});
 
+		if (allNewMess > 0) { // Nếu có tin nhắn mới
+			var tit = $title.text();
+			var regexpTit = /^\(\d+(\)\s.*$)/;
+			if (regexpTit.test(tit)) { // Đã có số đếm
+				tit = "(" + allNewMess + tit.match(regexpTit)[1];
+			} else { // Chưa có số đếm
+				tit = "(" + allNewMess + ") " + tit;
+			}
+			$title.text(tit);
+		}
+
+		$("#chatbox-forumvi:hidden").fadeIn();
+
 		$wrap.scrollTop(99999); // Cuộn xuống dòng cuối cùng	
 	}
 };
-
-var getDone = function (chatsource) { // Xử lý khi tải xong dữ liệu tin nhắn
-
-	if (chatsource.indexOf("<!DOCTYPE html PUBLIC") === 0) { // Lỗi do logout hoặc bị ban
-		if (chatsource.indexOf("You have been banned from the ChatBox") !== -1) {
-			alert("Bạn đã bị cấm truy cập chatbox!");
-		} else {
-			alert("Mất kết nối đến máy chủ. Vui lòng đăng nhập lại!");
-		}
-		clearInterval(autoRefresh);
-		return false;
-	} else { // Đã login
-
-		/**
-		 * Tải dữ liệu chatbox
-		 *
-		 * chatbox_messages     Tin nhắn chatbox
-		 * chatbox_memberlist   Thành viên đang truy cập
-		 * chatbox_last_update  Thời điểm cập nhật cuối
-		 */
-
-		$("#chatbox-members").html(chatbox_memberlist); // Thêm dach sách thành viên
-
-		$("a", "#chatbox-members").each(function () { // Duyệt từng thành viên trong danh sách
-
-			var $this = $(this);
-
-			/**
-			 * Tạo một array các thành phần trong oncontextmenu
-			 *
-			 * 0  "return showMenu" (không quan trọng)
-			 * 1  user_id
-			 * 2  user_name
-			 * 3  my_user_id
-			 * 4  my_chat_level
-			 * 5  my_user_level
-			 * 6  user_chat_level
-			 * 7  user_level
-			 * 8  event
-			 * 9  sid
-			 * 10 ";" (không quan trọng)
-			 */
-			var dataMenu = $this.attr("oncontextmenu").split(/\(|,|\)/);
-			$this.removeAttr("oncontextmenu"); // Xóa contextmenu để tạo menu mới
-
-			var user_id = dataMenu[1],
-				user_name = dataMenu[2].slice(1, -1),
-				my_user_id = dataMenu[3],
-				my_chat_level = dataMenu[4],
-				my_user_level = dataMenu[5],
-				user_chat_level = dataMenu[6],
-				user_level = dataMenu[7],
-				event = dataMenu[8],
-				sid = dataMenu[9];
-
-			$(".chatbox-change > h3").each(function () {
-				var $h3 = $(this);
-				if ($h3.text() == user_name) {
-					$this.parent().hide(); // Ẩn nick trong danh sách
-					return false;
-				}
-			});
-
-			if (user_id === my_user_id) { // Nếu user_id trùng với my_user_id
-				uId = my_user_id; // Lấy ra id của mình
-				uName = user_name; // Lấy ra nickname của mình
-				$("#chatbox-me > h2").html('<a href="/u' + user_id + '" target="_blank" style="color:' + $this.find('span').css('color') + '">' + uName + '</a>');
-				$this.parent().remove();
-
-			} else {
-
-				var $setting = $("<div>").addClass("chatbox-setting");
-				$setting.insertAfter($this);
-				var $list = $("<ul>").addClass("chatbox-dropdown");
-				$list.appendTo($setting);
-
-				var quickAction = function (cmd, txt) { // Tạo nhanh menu action
-					$("<li>", {
-						"class": "chatbox-action",
-						"data-action": "/" + cmd + " " + user_name,
-						text: txt
-					}).appendTo($list);
-				};
-
-				quickAction("chat", "Trò chuyện riêng");
-				// quickAction("gift", "Tặng video, nhạc");
-
-				if (my_chat_level == 2) { // Mình có quyền quản lý				
-					if (user_chat_level != 2) { // Nick này cấp bậc thấp hơn mình
-
-						quickAction("kick", "Mời ra khỏi chatbox");
-						quickAction("ban", "Cấm người này truy cập");
-					}
-					if (my_user_level == 1 && user_chat_level == 2 && user_level != 1) { // Nick này có quyền quản lý nhưng cấp thấp hơn mình
-						quickAction("unmod", "Xóa quyền quản lý");
-					} else if (my_user_level == 1 && user_chat_level != 2) { // Nick này chưa có quền quản lý và cấp thấp hơn mình
-						quickAction("mod", "Thăng cấp quản lý");
-					}
-				}
-			}
-
-		});
-
-		filterMess(chatsource); // Lọc và xử lý các tin nhắn trong chatbox_messages
-
-		// Đặt icon online và away dựa vào class ở tiêu đề
-		$(".chatbox-change > h3").each(function () { // Duyệt qua từng tab riêng			
-			var $this = $(this),
-				$status = $("#chatbox-members").find('a[onclick="return copy_user_name(\'' + $this.text() + '\');"]').closest("ul").prev("h4"),
-				clas;
-			if ($status.hasClass("online")) {
-				clas = "online";
-			} else if ($status.hasClass("away")) {
-				clas = "away";
-			}
-			$this.parent().removeClass("online away").addClass(clas);
-		});
-	}
-};
-
-var update = function (url) {
-	$.get(url).done(function (data) { // Tải dữ liệu chatbox
-		getDone(data);
-	}).fail(function (data) {
-		if (data.responseText.indexOf("document.getElementById('refresh_auto')") === 0) { // Nếu disconnect
-			$.post("/chatbox/chatbox_actions.forum?archives=1", { // Gửi tin nhắn rỗng để connect
-				mode: "send",
-				sent: ""
-			}).done(function () {
-				$.get(url).done(function (data) { // Tải dữ liệu chatbox
-					getDone(data);
-				});
-			});
-		} else {
-			// Xử lý cho các lỗi khác không phải do disconnect như mất kết nối internet (có thể xảy ra do refresh trang trong lúc đang tải)
-			clearInterval(autoRefresh); // Dừng tự cập nhật
-		}
-	});
-};
-
-var autoUpdate = function () {
-	autoRefresh = setInterval(function () {
-		update("/chatbox/chatbox_actions.forum?archives=1&mode=refresh");
-	}, 5000);
-};
-
-update("/chatbox/chatbox_actions.forum?archives=1");
-autoUpdate();

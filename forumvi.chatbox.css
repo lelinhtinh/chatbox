@@ -34,6 +34,7 @@ a {
 	top: 0;
 	right: 0;
 	bottom: 0;
+	display: none;
 }
 #chatbox-header {
 	height: 30px;
@@ -160,7 +161,6 @@ a {
 	right: 10px;
 	top: 0;
 }
-/*.chatbox-change-mess[data-mess="0"],*/
 #chatbox-members > h4,
 #chatbox-members > br,
 #chatbox-members .chatbox-setting {
@@ -357,6 +357,11 @@ ul.chatbox-dropdown > li:hover {
 	float: left;
 	text-indent: -9999px;
 }
+#chatbox-option > div#chatbox-option-buzz {
+	width: 75px;
+	background: url(http://i.imgur.com/9GvQ6Gd.gif) no-repeat center center transparent;
+	text-indent: -9999px;
+}
 #chatbox-option > div#chatbox-option-submit {
 	float: right;
 	margin-right: 0;
@@ -376,10 +381,6 @@ ul.chatbox-dropdown > li:hover {
 #chatbox-submit:hover {
 	background-color: #333;
 	border: 1px inset;
-}
-.chatbox-content > p.chatbox-newmess {
-	-webkit-animation: chatbox_row 3s;
-	animation: chatbox_row 3s;
 }
 @-webkit-keyframes chatbox_row {
 	0% {
@@ -402,4 +403,61 @@ ul.chatbox-dropdown > li:hover {
 	100% {
 		background-color: transparent;
 	}
+}
+.chatbox-content > p.chatbox-newmess {
+	-webkit-animation: chatbox_row 3s;
+	animation: chatbox_row 3s;
+}
+@-webkit-keyframes shake {
+	0%, 100% {
+		-webkit-transform: translate3d(0, 0, 0);
+		transform: translate3d(0, 0, 0);
+	}
+	10%,
+	30%,
+	50%,
+	70%,
+	90% {
+		-webkit-transform: translate3d(-10px, 0, 0);
+		transform: translate3d(-10px, 0, 0);
+	}
+	20%,
+	40%,
+	60%,
+	80% {
+		-webkit-transform: translate3d(10px, 0, 0);
+		transform: translate3d(10px, 0, 0);
+	}
+}
+@keyframes shake {
+	0%, 100% {
+		-webkit-transform: translate3d(0, 0, 0);
+		-ms-transform: translate3d(0, 0, 0);
+		transform: translate3d(0, 0, 0);
+	}
+	10%,
+	30%,
+	50%,
+	70%,
+	90% {
+		-webkit-transform: translate3d(-10px, 0, 0);
+		-ms-transform: translate3d(-10px, 0, 0);
+		transform: translate3d(-10px, 0, 0);
+	}
+	20%,
+	40%,
+	60%,
+	80% {
+		-webkit-transform: translate3d(10px, 0, 0);
+		-ms-transform: translate3d(10px, 0, 0);
+		transform: translate3d(10px, 0, 0);
+	}
+}
+.chatbox-buzz {
+	-webkit-animation-name: shake;
+	animation-name: shake;
+	-webkit-animation-duration: 1s;
+	animation-duration: 1s;
+	-webkit-animation-fill-mode: both;
+	animation-fill-mode: both;
 }
