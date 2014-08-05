@@ -19,10 +19,12 @@ $("#chatbox-list").on("click", ".chatbox-change", function () {
 	$("#chatbox-title > h2").text($("h3", $this).text());
 
 	my_setcookie("chatbox_active", dataID, false); // Lưu cookie cho tab vừa click
-	
+
 	$wrap.scrollTop(99999); // Cuộn xuống dòng cuối cùng
-	
+
 });
+
+// Tạo tab chat riêng
 
 $("#chatbox-members").on("click", ".chatbox-action", function () {
 	var $this = $(this);
@@ -32,9 +34,9 @@ $("#chatbox-members").on("click", ".chatbox-action", function () {
 		nickname = cmd[2];
 	if (action === "chat" || action === "gift") {
 		if (action === "chat") {
-			
+
 			var dataId = new Date().getTime() + "_" + uId; // Tạo data-id
-			
+
 			var $newTab = $("<div>", {
 				"class": "chatbox-change",
 				"data-id": dataId,
@@ -42,13 +44,13 @@ $("#chatbox-members").on("click", ".chatbox-action", function () {
 				"data-users": '["' + uName + '","' + nickname + '"]',
 				html: '<h3>' + nickname + '</h3><span class="chatbox-change-mess" data-mess="0">0</span>'
 			}).appendTo("#chatbox-list"); // Tạo tab chat riêng mới
-			
+
 			$("<div>", {
 				"class": "chatbox-content",
 				"data-id": dataId,
 				"style": "display: none;"
 			}).appendTo($wrap); // Tạo mục chat riêng mới
-			
+
 			$newTab.click(); // Kích hoạt tab chat riêng
 			$this.parents("li").hide(); // Ẩn nickname trong danh sách
 		}
@@ -78,7 +80,6 @@ $("#chatbox-hidetab").click(function () {
 		my_setcookie("chatbox_tabs", status, false); // Lưu cookie cho tab vừa click
 	});
 });
-
 if (my_getcookie("chatbox_tabs") === "hide") {
 	$("#chatbox-hidetab").click();
 }
