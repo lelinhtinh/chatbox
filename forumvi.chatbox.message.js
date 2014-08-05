@@ -89,18 +89,6 @@ var filterMess = function (chatsource) {
 							html: '<h3>' + chat_name + '</h3><span class="chatbox-change-mess" data-mess="0">0</span>'
 						}).appendTo("#chatbox-list"); // Thêm vào khu vực tab
 
-						var clas,
-							$user = $("#chatbox-members").find('a[onclick="return copy_user_name(\'' + chat_name + '\');"]');
-						if ($user.length) {
-
-							if ($user.closest("ul").prev("h4").attr("class") == "member-title online") {
-								clas = "online";
-							} else {
-								clas = "away";
-							}
-							$tabPrivate.addClass(clas);
-						}
-
 						$("#chatbox-title > h2").text(chat_name);
 					}
 
@@ -145,8 +133,13 @@ var filterMess = function (chatsource) {
 
 var getDone = function (chatsource) { // Xử lý khi tải xong dữ liệu tin nhắn
 
-	if (chatsource.indexOf("<!DOCTYPE html PUBLIC") === 0) { // Lỗi do logout
-		alert("Mất kết nối đến máy chủ. Vui lòng đăng nhập lại!");
+	if (chatsource.indexOf("<!DOCTYPE html PUBLIC") === 0) { // Lỗi do logout hoặc bị ban
+		if (chatsource.indexOf("You have been banned from the ChatBox") !== -1) {
+			alert("Bạn đã bị cấm truy cập chatbox!");
+		} else {
+			alert("Mất kết nối đến máy chủ. Vui lòng đăng nhập lại!");
+		}
+		clearInterval(autoRefresh);
 		return false;
 	} else { // Đã login
 
@@ -193,16 +186,9 @@ var getDone = function (chatsource) { // Xử lý khi tải xong dữ liệu tin
 				sid = dataMenu[9];
 
 			$(".chatbox-change > h3").each(function () {
-				var $h3 = $(this),
-					clas;
+				var $h3 = $(this);
 				if ($h3.text() == user_name) {
-					$this.parent().hide();
-					if ($this.closest("ul").prev("h4").attr("class") == "member-title online") {
-						clas = "online";
-					} else {
-						clas = "away";
-					}
-					$h3.parent().removeClass("online away").addClass(clas);
+					$this.parent().hide(); // Ẩn nick trong danh sách
 					return false;
 				}
 			});
@@ -229,7 +215,7 @@ var getDone = function (chatsource) { // Xử lý khi tải xong dữ liệu tin
 				};
 
 				quickAction("chat", "Trò chuyện riêng");
-				//				quickAction("gift", "Tặng video, nhạc");
+				// quickAction("gift", "Tặng video, nhạc");
 
 				if (my_chat_level == 2) { // Mình có quyền quản lý				
 					if (user_chat_level != 2) { // Nick này cấp bậc thấp hơn mình
@@ -247,7 +233,20 @@ var getDone = function (chatsource) { // Xử lý khi tải xong dữ liệu tin
 
 		});
 
-		filterMess(chatsource); // Lọc và xử lý các tin nhắn trong chatbox_messages		
+		filterMess(chatsource); // Lọc và xử lý các tin nhắn trong chatbox_messages
+
+		// Đặt icon online và away dựa vào class ở tiêu đề
+		$(".chatbox-change > h3").each(function () { // Duyệt qua từng tab riêng			
+			var $this = $(this),
+				$status = $("#chatbox-members").find('a[onclick="return copy_user_name(\'' + $this.text() + '\');"]').closest("ul").prev("h4"),
+				clas;
+			if ($status.hasClass("online")) {
+				clas = "online";
+			} else if ($status.hasClass("away")) {
+				clas = "away";
+			}
+			$this.parent().removeClass("online away").addClass(clas);
+		});
 	}
 };
 
@@ -265,14 +264,17 @@ var update = function (url) {
 				});
 			});
 		} else {
-			// Xử lý cho các lỗi khác không phải do disconnect
-			alert("Lỗi chưa xác định!");
+			// Xử lý cho các lỗi khác không phải do disconnect như mất kết nối internet (có thể xảy ra do refresh trang trong lúc đang tải)
+			clearInterval(autoRefresh); // Dừng tự cập nhật
 		}
 	});
 };
 
-update("/chatbox/chatbox_actions.forum?archives=1");
+var autoUpdate = function () {
+	autoRefresh = setInterval(function () {
+		update("/chatbox/chatbox_actions.forum?archives=1&mode=refresh");
+	}, 5000);
+};
 
-setInterval(function () {
-	update("/chatbox/chatbox_actions.forum?archives=1&mode=refresh");
-}, 5000);
+update("/chatbox/chatbox_actions.forum?archives=1");
+autoUpdate();

@@ -24,48 +24,11 @@ $("#chatbox-list").on("click", ".chatbox-change", function () {
 
 });
 
-// Tạo tab chat riêng
+// Chạy cách chức năng từ menu
 
 $("#chatbox-members").on("click", ".chatbox-action", function () {
-	var $this = $(this);
-	var dataAction = $this.attr("data-action"),
-		cmd = dataAction.match(/^\/(chat|gift|kick|ban|mod|unmod)\s(.+)$/);
-	var action = cmd[1],
-		nickname = cmd[2];
-	if (action === "chat" || action === "gift") {
-		if (action === "chat") {
-
-			var dataId = new Date().getTime() + "_" + uId; // Tạo data-id
-
-			var $newTab = $("<div>", {
-				"class": "chatbox-change",
-				"data-id": dataId,
-				"data-name": "{}",
-				"data-users": '["' + uName + '","' + nickname + '"]',
-				html: '<h3>' + nickname + '</h3><span class="chatbox-change-mess" data-mess="0">0</span>'
-			}).appendTo("#chatbox-list"); // Tạo tab chat riêng mới
-
-			$("<div>", {
-				"class": "chatbox-content",
-				"data-id": dataId,
-				"style": "display: none;"
-			}).appendTo($wrap); // Tạo mục chat riêng mới
-
-			var clas;
-			if ($this.parents("ul").prev("h4").attr("class") == "member-title online") {
-				clas = "online";
-			} else {
-				clas = "away";
-			}
-			$newTab.addClass(clas);
-			
-			$newTab.click(); // Kích hoạt tab chat riêng
-			$this.parents("li").hide(); // Ẩn nickname trong danh sách
-		}
-	} else {
-		$messenger.val(dataAction);
-		$form.submit();
-	}
+	$messenger.val($(this).attr("data-action"));
+	$form.submit();
 });
 
 // Ẩn/hiện tab
