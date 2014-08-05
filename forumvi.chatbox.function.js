@@ -7,6 +7,7 @@
  * my_setcookie
  */
 
+var $wrap = $("#chatbox-wrap"); // Khối bao quanh tin nhắn
 var $messenger = $("#chatbox-messenger-input"); // input nhập liệu
 var $form = $("#chatbox-form"); // form gửi tin
 var uId, uName; // user id, user name của thành viên đang truy cập chatbox(mình)

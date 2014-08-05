@@ -19,6 +19,9 @@ $("#chatbox-list").on("click", ".chatbox-change", function () {
 	$("#chatbox-title > h2").text($("h3", $this).text());
 
 	my_setcookie("chatbox_active", dataID, false); // Lưu cookie cho tab vừa click
+	
+	$wrap.scrollTop(99999); // Cuộn xuống dòng cuối cùng
+	
 });
 
 $("#chatbox-members").on("click", ".chatbox-action", function () {
@@ -44,7 +47,7 @@ $("#chatbox-members").on("click", ".chatbox-action", function () {
 				"class": "chatbox-content",
 				"data-id": dataId,
 				"style": "display: none;"
-			}).appendTo("#chatbox-wrap"); // Tạo mục chat riêng mới
+			}).appendTo($wrap); // Tạo mục chat riêng mới
 			
 			$newTab.click(); // Kích hoạt tab chat riêng
 			$this.parents("li").hide(); // Ẩn nickname trong danh sách

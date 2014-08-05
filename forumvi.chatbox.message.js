@@ -20,109 +20,112 @@ var filterMess = function (chatsource) {
 		if (lastMess) { // Có tin nhắn cuối
 			chatbox_messages = chatbox_messages.split(lastMess)[1]; // Cắt bỏ tin nhắn cũ, lấy tin mới
 		}
+		
+		if (chatbox_messages) { // Có tin nhắn mới
+			var arr = $.parseHTML(chatbox_messages); // Chuyển htmlString tin nhắn thành HTML
 
-		var arr = $.parseHTML(chatbox_messages); // Chuyển htmlString tin nhắn thành HTML
+			$.each(arr, function (i, val) { // Duyệt qua từng tin
 
-		$.each(arr, function (i, val) { // Duyệt qua từng tin
+				var $this = $(this); // Đặt biến cho tin nhắn đang xét
 
-			var $this = $(this); // Đặt biến cho tin nhắn đang xét
+				var messText = $(".msg", $this).html(); // Lấy HTML phần nội dung tin nhắn
 
-			var messText = $(".msg", $this).html(); // Lấy HTML phần nội dung tin nhắn
+				if (regexpPM.test(messText)) { // Nếu đúng định dạng tin riêng
 
-			if (regexpPM.test(messText)) { // Nếu đúng định dạng tin riêng
+					/**
+					 * Tạo array chứa các thành phần của tin nhắn riêng
+					 *
+					 * 0  htmlString
+					 * 1  Tag định dạng văn bản
+					 * 2  Tag (không quan trọng)
+					 * 3  Tag (không quan trọng)
+					 * 4  data-id
+					 * 5  conversation name
+					 * 6  arrayString nickname các thành viên
+					 * 7  Nickname thành viên cuối (không quan trọng)
+					 * 8  nội dung và tag đóng
+					 */
+					var arrMess = messText.match(regexpPM);
 
-				/**
-				 * Tạo array chứa các thành phần của tin nhắn riêng
-				 *
-				 * 0  htmlString
-				 * 1  Tag định dạng văn bản
-				 * 2  Tag (không quan trọng)
-				 * 3  Tag (không quan trọng)
-				 * 4  data-id
-				 * 5  conversation name
-				 * 6  arrayString nickname các thành viên
-				 * 7  Nickname thành viên cuối (không quan trọng)
-				 * 8  nội dung và tag đóng
-				 */
-				var arrMess = messText.match(regexpPM);
+					var arrUsers = JSON.parse(arrMess[6]); // Array nickname các thành viên
 
-				var arrUsers = JSON.parse(arrMess[6]); // Array nickname các thành viên
+					var indexUser = $.inArray(uName, arrUsers); // Lấy vị trí index nickname của thành viên đang truy cập trong arrayString
 
-				var indexUser = $.inArray(uName, arrUsers); // Lấy vị trí index nickname của thành viên đang truy cập trong arrayString
+					if (indexUser !== -1) { // Nếu có nickname của thành viên đang truy cập trong danh sách
 
-				if (indexUser !== -1) { // Nếu có nickname của thành viên đang truy cập trong danh sách
+						var dataId = arrMess[4]; // data-id lấy từ tin nhắn
 
-					var dataId = arrMess[4]; // data-id lấy từ tin nhắn
+						var $private = $('.chatbox-content[data-id="' + dataId + '"]'); // Đặt biến cho mục chat riêng ứng với data-id lấy được
+						var $tabPrivate = $('.chatbox-change[data-id="' + dataId + '"]'); // Đặt biến cho tab của mục tương ứng
 
-					var $private = $('.chatbox-content[data-id="' + dataId + '"]'); // Đặt biến cho mục chat riêng ứng với data-id lấy được
-					var $tabPrivate = $('.chatbox-change[data-id="' + dataId + '"]'); // Đặt biến cho tab của mục tương ứng
+						if (!$tabPrivate.length) { // Nếu chưa có mục chat riêng thì tạo mới
+							$private = $("<div>", {
+								"class": "chatbox-content",
+								"data-id": dataId
+							}).appendTo("#chatbox-wrap"); // Thêm vào khu vực chatbox
 
-					if (!$tabPrivate.length) { // Nếu chưa có mục chat riêng thì tạo mới
-						$private = $("<div>", {
-							"class": "chatbox-content",
-							"data-id": dataId
-						}).appendTo("#chatbox-wrap"); // Thêm vào khu vực chatbox
+							var chat_name = arrMess[5].slice(1, -1); // Đặt biến cho tên tab là phần ký tự trong dấu {}
 
-						var chat_name = arrMess[5].slice(1, -1); // Đặt biến cho tên tab là phần ký tự trong dấu {}
+							if (chat_name === '') {
+								chat_name = $.grep(arrUsers, function (n, i) {
+									return (n !== uName);
+								});
 
-						if (chat_name === '') {
-							chat_name = $.grep(arrUsers, function (n, i) {
-								return (n !== uName);
-							});
-
-							if (chat_name.length === 1) {
-								chat_name = chat_name[0];
-								$("#chatbox-members").find('a[onclick="return copy_user_name(\'' + chat_name + '\');"]').parent().hide();
-							} else {
-								chat_name = chat_name.join(", "); // Đặt tên tab là các nickname đang chat với mình
+								if (chat_name.length === 1) {
+									chat_name = chat_name[0];
+									$("#chatbox-members").find('a[onclick="return copy_user_name(\'' + chat_name + '\');"]').parent().hide();
+								} else {
+									chat_name = chat_name.join(", "); // Đặt tên tab là các nickname đang chat với mình
+								}
 							}
+
+							$tabPrivate = $("<div>", {
+								"class": "chatbox-change",
+								"data-id": dataId,
+								"data-name": arrMess[5],
+								"data-users": arrMess[6],
+								html: '<h3>' + chat_name + '</h3><span class="chatbox-change-mess" data-mess="0">0</span>'
+							}).appendTo("#chatbox-list"); // Thêm vào khu vực tab
+
+							$("#chatbox-title > h2").text(chat_name);
 						}
 
-						$tabPrivate = $("<div>", {
-							"class": "chatbox-change",
-							"data-id": dataId,
-							"data-name": arrMess[5],
-							"data-users": arrMess[6],
-							html: '<h3>' + chat_name + '</h3><span class="chatbox-change-mess" data-mess="0">0</span>'
-						}).appendTo("#chatbox-list"); // Thêm vào khu vực tab
-						
-						$("#chatbox-title > h2").text(chat_name);
+						$(".msg", $this).html(arrMess[1] + arrMess[8]); // Xóa phần đánh dấu tin nhắn
+						$this.appendTo($private.hide()); // Thêm tin nhắn vào mục chat riêng theo data-id
+
+						if (my_getcookie("chatbox_active") === dataId) { // Active tab khi có cookie
+							$tabPrivate.click();
+						}
+
 					}
 
-					$(".msg", $this).html(arrMess[1] + arrMess[8]); // Xóa phần đánh dấu tin nhắn
-					$this.appendTo($private.hide()); // Thêm tin nhắn vào mục chat riêng theo data-id
-
-					if (my_getcookie("chatbox_active") === dataId) { // Active tab khi có cookie
-						$tabPrivate.click();						
-					}
-
+				} else { // Nếu không đúng định dạng mã tin riêng
+					$this.appendTo('.chatbox-content[data-id="publish"]'); // Thêm tin nhắn thường vào mục chat chung
 				}
 
-			} else { // Nếu không đúng định dạng mã tin riêng
-				$this.appendTo('.chatbox-content[data-id="publish"]'); // Thêm tin nhắn thường vào mục chat chung
-			}
+				var messTime = $(".date-and-time", $this), // Lấy định dạng thời gian
+					messTimeText = messTime.text();
+				var arrTime = messTimeText.match(/\[(\S+)\s(\S+)\]/);
 
-			var messTime = $(".date-and-time", $this), // Lấy định dạng thời gian
-				messTimeText = messTime.text();
-			var arrTime = messTimeText.match(/\[(\S+)\s(\S+)\]/);
+				messTime.text("[" + arrTime[1] + "]"); // Dùng thông số giờ:phút:giây cho tin nhắn
 
-			messTime.text("[" + arrTime[1] + "]"); // Dùng thông số giờ:phút:giây cho tin nhắn
+				if (!$this.closest(".chatbox-content").find(".chatbox-date:contains('" + arrTime[2] + "')").length) { // Nếu trong mục chưa có thông số ngày/tháng/năm
+					$this.before('<p class="chatbox_row_1 chatbox-date clearfix">' + arrTime[2] + '</p>'); // Thêm vào thông số ngày/tháng/năm
+				}
 
-			if (!$this.closest(".chatbox-content").find(".chatbox-date:contains('" + arrTime[2] + "')").length) { // Nếu trong mục chưa có thông số ngày/tháng/năm
-				$this.before('<p class="chatbox_row_1 chatbox-date clearfix">' + arrTime[2] + '</p>'); // Thêm vào thông số ngày/tháng/năm
-			}
+				// Hiệu ứng cho tin nhắn mới
+				if (lastMess) { // Không chạy với lần tải đầu tiên
+					$this.addClass("chatbox-newmess");
+					setTimeout(function () {
+						$this.removeClass("chatbox-newmess");
+					}, 700);
+				}
+			});
 
-			// Hiệu ứng cho tin nhắn mới
-			if (lastMess) { // Không chạy với lần tải đầu tiên
-				$this.addClass("chatbox-newmess");
-				setTimeout(function () {
-					$this.removeClass("chatbox-newmess");
-				}, 700);
-			}
-		});
+			lastMess = chatbox_messages.match(/<p class="chatbox_row_(1|2) clearfix">(?:.(?!<p class="chatbox_row_(1|2) clearfix">))*<\/p>$/)[0]; // Cập nhật tin nhắn cuối
 
-		lastMess = chatbox_messages.match(/<p class="chatbox_row_(1|2) clearfix">(?:.(?!<p class="chatbox_row_(1|2) clearfix">))*<\/p>$/)[0]; // Cập nhật tin nhắn cuối
-
+			$wrap.scrollTop(99999); // Cuộn xuống dòng cuối cùng
+		}
 	}
 };
 
@@ -165,8 +168,6 @@ var getDone = function (chatsource) { // Xử lý khi tải xong dữ liệu tin
 			var dataMenu = $this.attr("oncontextmenu").split(/\(|,|\)/);
 			$this.removeAttr("oncontextmenu"); // Xóa contextmenu để tạo menu mới
 
-
-
 			var user_id = dataMenu[1],
 				user_name = dataMenu[2].slice(1, -1),
 				my_user_id = dataMenu[3],
@@ -176,6 +177,13 @@ var getDone = function (chatsource) { // Xử lý khi tải xong dữ liệu tin
 				user_level = dataMenu[7],
 				event = dataMenu[8],
 				sid = dataMenu[9];
+
+			$(".chatbox-change > h3").each(function () {
+				if ($(this).text() == user_name) {
+					$this.parent().hide();
+					return false;
+				}
+			});
 
 			if (user_id === my_user_id) { // Nếu user_id trùng với my_user_id
 				uId = my_user_id; // Lấy ra id của mình
@@ -217,24 +225,32 @@ var getDone = function (chatsource) { // Xử lý khi tải xong dữ liệu tin
 
 		});
 
-		filterMess(chatsource); // Lọc và xử lý các tin nhắn trong chatbox_messages
-
+		filterMess(chatsource); // Lọc và xử lý các tin nhắn trong chatbox_messages		
 	}
 };
 
-$.get("/chatbox/chatbox_actions.forum?archives=1").done(function (data) { // Tải dữ liệu chatbox
-	getDone(data);
-}).fail(function (data) {
-	if (data.responseText.indexOf("document.getElementById('refresh_auto')") === 0) { // Nếu disconnect
-		$.post("/chatbox/chatbox_actions.forum?archives=1", { // Gửi tin nhắn rỗng để connect
-			mode: "send",
-			sent: ""
-		}).done(function () {
-			$.get("/chatbox/chatbox_actions.forum?archives=1").done(function (data) { // Tải dữ liệu chatbox
-				getDone(data);
+var update = function (url) {
+	$.get(url).done(function (data) { // Tải dữ liệu chatbox
+		getDone(data);
+	}).fail(function (data) {
+		if (data.responseText.indexOf("document.getElementById('refresh_auto')") === 0) { // Nếu disconnect
+			$.post("/chatbox/chatbox_actions.forum?archives=1", { // Gửi tin nhắn rỗng để connect
+				mode: "send",
+				sent: ""
+			}).done(function () {
+				$.get(url).done(function (data) { // Tải dữ liệu chatbox
+					getDone(data);
+				});
 			});
-		});
-	} else {
-		// Xử lý cho các lỗi khác không phải do disconnect
-	}
-});
+		} else {
+			// Xử lý cho các lỗi khác không phải do disconnect
+			alert("Lỗi chưa xác định!");
+		}
+	});
+};
+
+update("/chatbox/chatbox_actions.forum?archives=1");
+
+setInterval(function () {
+	update("/chatbox/chatbox_actions.forum?archives=1&mode=refresh");
+}, 5000);
