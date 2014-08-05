@@ -2,6 +2,19 @@
  * Chuyển/xóa/thêm tab chat
  */
 
+// Đánh dấu đã xem hết tin nhắn
+var resetCount = function (dataID) {
+	var $countMess = $(".chatbox-change[data-id='" + dataID + "']").find(".chatbox-change-mess");
+	var obj = JSON.parse(sessionStorage.getItem("messCounter")) || {};
+	obj[dataID] = $(".chatbox_row_1, .chatbox_row_2", $(".chatbox-content[data-id='" + dataID + "']")).length;
+	sessionStorage.setItem("messCounter", JSON.stringify(obj)); // Lưu vào sessionStorage
+	$countMess.empty();
+};
+
+$messenger.focus(function () {
+	resetCount($messenger.attr("data-id"));
+});
+
 // Chuyển tab
 
 $("#chatbox-list").on("click", ".chatbox-change", function () {
@@ -16,10 +29,11 @@ $("#chatbox-list").on("click", ".chatbox-change", function () {
 		key = dataID + $this.attr("data-name") + $this.attr("data-users");
 	}
 	$form.attr("data-key", key);
+	$messenger.attr("data-id", dataID);
 	$("#chatbox-title > h2").text($("h3", $this).text());
 
+	resetCount(dataID);
 	my_setcookie("chatbox_active", dataID, false); // Lưu cookie cho tab vừa click
-
 	$wrap.scrollTop(99999); // Cuộn xuống dòng cuối cùng
 
 });

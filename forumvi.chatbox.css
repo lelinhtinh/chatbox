@@ -160,7 +160,7 @@ a {
 	right: 10px;
 	top: 0;
 }
-.chatbox-change-mess[data-mess="0"],
+/*.chatbox-change-mess[data-mess="0"],*/
 #chatbox-members > h4,
 #chatbox-members > br,
 #chatbox-members .chatbox-setting {
