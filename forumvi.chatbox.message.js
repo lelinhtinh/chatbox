@@ -207,7 +207,7 @@ var getDone = function (chatsource) { // Xử lý khi tải xong dữ liệu tin
 				};
 
 				quickAction("chat", "Trò chuyện riêng");
-				quickAction("gift", "Tặng video, nhạc");
+//				quickAction("gift", "Tặng video, nhạc");
 
 				if (my_chat_level == 2) { // Mình có quyền quản lý				
 					if (user_chat_level != 2) { // Nick này cấp bậc thấp hơn mình
