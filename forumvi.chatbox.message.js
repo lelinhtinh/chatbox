@@ -18,7 +18,7 @@ var filterMess = function (chatsource) {
 	if (!chatbox_messages) { // Không có tin nhắn
 		lastMess = false;
 	}
-	
+
 	if (lastMess) { // Có tin nhắn cuối
 		chatbox_messages = chatbox_messages.split(lastMess)[1]; // Cắt bỏ tin nhắn cũ, lấy tin mới
 	}
@@ -88,6 +88,18 @@ var filterMess = function (chatsource) {
 							"data-users": arrMess[6],
 							html: '<h3>' + chat_name + '</h3><span class="chatbox-change-mess" data-mess="0">0</span>'
 						}).appendTo("#chatbox-list"); // Thêm vào khu vực tab
+
+						var clas,
+							$user = $("#chatbox-members").find('a[onclick="return copy_user_name(\'' + chat_name + '\');"]');
+						if ($user.length) {
+
+							if ($user.closest("ul").prev("h4").attr("class") == "member-title online") {
+								clas = "online";
+							} else {
+								clas = "away";
+							}
+							$tabPrivate.addClass(clas);
+						}
 
 						$("#chatbox-title > h2").text(chat_name);
 					}
@@ -181,8 +193,16 @@ var getDone = function (chatsource) { // Xử lý khi tải xong dữ liệu tin
 				sid = dataMenu[9];
 
 			$(".chatbox-change > h3").each(function () {
-				if ($(this).text() == user_name) {
+				var $h3 = $(this),
+					clas;
+				if ($h3.text() == user_name) {
 					$this.parent().hide();
+					if ($this.closest("ul").prev("h4").attr("class") == "member-title online") {
+						clas = "online";
+					} else {
+						clas = "away";
+					}
+					$h3.parent().removeClass("online away").addClass(clas);
 					return false;
 				}
 			});

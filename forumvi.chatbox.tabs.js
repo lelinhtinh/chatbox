@@ -51,6 +51,14 @@ $("#chatbox-members").on("click", ".chatbox-action", function () {
 				"style": "display: none;"
 			}).appendTo($wrap); // Tạo mục chat riêng mới
 
+			var clas;
+			if ($this.parents("ul").prev("h4").attr("class") == "member-title online") {
+				clas = "online";
+			} else {
+				clas = "away";
+			}
+			$newTab.addClass(clas);
+			
 			$newTab.click(); // Kích hoạt tab chat riêng
 			$this.parents("li").hide(); // Ẩn nickname trong danh sách
 		}

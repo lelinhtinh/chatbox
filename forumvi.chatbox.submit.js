@@ -12,7 +12,6 @@ $form.submit(function (event) { // Gửi tin nhắn
 	}
 
 	var $send = $("#chatbox-submit");
-	$messenger.add($send).attr("disabled", true);
 	$messenger.val("");
 
 	$.post("/chatbox/chatbox_actions.forum?archives=1", {
@@ -28,7 +27,6 @@ $form.submit(function (event) { // Gửi tin nhắn
 		// Cập nhật tin nhắn
 		$.get("/chatbox/chatbox_actions.forum?archives=1&mode=refresh").done(function (data) {
 			getDone(data);
-			$messenger.add($send).attr("disabled", false);
 			$messenger.focus();
 		});
 
