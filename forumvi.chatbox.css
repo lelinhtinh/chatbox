@@ -54,9 +54,9 @@ a {
 	width: 250px;
 	padding-right: 10px;
 	border-right: 1px solid #DFDFDF;
+	position: relative;
 }
 #chatbox-hidetab {
-	float: right;
 	background: url(http://i.imgur.com/QnKeV3q.png) no-repeat center center transparent;
 	width: 30px;
 	height: 30px;
@@ -68,7 +68,8 @@ a {
 	background-color: #f2f2f2;
 	cursor: pointer;
 }
-#chatbox-tabs, #chatbox-main {
+#chatbox-tabs,
+#chatbox-main {
 	-webkit-transition: left .7s;
 	transition: left .7s;
 }
@@ -106,20 +107,25 @@ a {
 .chatbox-change:hover,
 #chatbox-members > ul > li:hover {
 	background-color: #f9ffdd;
+	cursor: pointer;
 }
 .chatbox-change.active {
 	background-color: #0DA96C!important;
 	color: #FFF;
 }
-.chatbox-change.active[data-id="publish"] {
+.chatbox-change[data-id="publish"] {
 	padding-left: 30px;
-	background: url(http://i.imgur.com/BvBPWqY.gif) no-repeat 10px center transparent;
+	background: url(http://i.imgur.com/BvBPWqY.gif) no-repeat 10px center #FFF;
 }
+#chatbox-hidetab,
 .chatbox-change-mess {
-	float: right;
+	position: absolute;
+	right: 10px;
+	top: 0;
 }
 .chatbox-change-mess[data-mess="0"],
 #chatbox-members > h4,
+#chatbox-members > br,
 #chatbox-members .chatbox-setting {
 	display: none;
 }
@@ -171,9 +177,6 @@ ul.chatbox-dropdown > li:hover {
 	color: #FFF;
 	cursor: pointer;
 }
-#chatbox-members ul.chatbox-dropdown {
-	width: 150px;
-}
 #chatbox-copyright {
 	position: absolute;
 	bottom: 0;
@@ -206,6 +209,26 @@ ul.chatbox-dropdown > li:hover {
 }
 .chatbox-content > p:nth-child(odd) {
 	background-color: #fafafa;
+}
+.chatbox-content > p.chatbox-date {
+	text-align: center;
+	background: #FFF;
+	position: relative;
+}
+.chatbox-content > p.chatbox-date:before,
+.chatbox-content > p.chatbox-date:after {
+	content: " ";
+	display: block;
+	position: absolute;
+	left: 10px;
+	right: 60%;
+	top: 13px;
+	height: 1px;
+	background: #777;
+}
+.chatbox-content > p.chatbox-date:after {
+	left: 60%;
+	right: 10px;
 }
 #chatbox-messenger-form {
 	position: absolute;

@@ -7,18 +7,10 @@
  * my_setcookie
  */
 
-var dataID; // id riêng cho từng tab chat
 var $messenger = $("#chatbox-messenger-input"); // input nhập liệu
 var $form = $("#chatbox-form"); // form gửi tin
-var uId, uName; // user id, user name của thành viên đang truy cập chatbox
+var uId, uName; // user id, user name của thành viên đang truy cập chatbox(mình)
 
-// Chạy các lệnh cmd
-function action_user(cmd, user_name) {
-	if (user_name == null) user_name = '';
-	$messenger.val("/" + cmd + " " + user_name);
-	$form.submit();
-	return false;
-}
 // Copy nickname vào khung soạn thảo
 function copy_user_name(user_name) {
 	$messenger[0].value += user_name;
