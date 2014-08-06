@@ -4,7 +4,7 @@
  */
 
 var getDone = function (chatsource) { // Xử lý khi tải xong dữ liệu tin nhắn
-
+	
 	if (chatsource.indexOf("<!DOCTYPE html PUBLIC") === 0) { // Lỗi do logout hoặc bị ban
 		if (chatsource.indexOf("You have been banned from the ChatBox") !== -1) {
 			alert("Bạn đã bị cấm truy cập chatbox!");
@@ -104,9 +104,7 @@ var getDone = function (chatsource) { // Xử lý khi tải xong dữ liệu tin
 			}
 
 		});
-
-		filterMess(chatsource); // Lọc và xử lý các tin nhắn trong chatbox_messages
-
+		
 		// Đặt icon online và away dựa vào class ở tiêu đề
 		$(".chatbox-change > h3").each(function () { // Duyệt qua từng tab riêng			
 			var $this = $(this),
@@ -119,15 +117,18 @@ var getDone = function (chatsource) { // Xử lý khi tải xong dữ liệu tin
 			}
 			$this.parent().removeClass("online away").addClass(clas);
 		});
-	}
+		
+		filterMess(chatsource); // Lọc và xử lý các tin nhắn trong chatbox_messages
+	}	
 };
 
-var update = function (url) {
+var update = function () {
+	var url = "/chatbox/chatbox_actions.forum?archives=1";
 	$.get(url).done(function (data) { // Tải dữ liệu chatbox
 		getDone(data);
 	}).fail(function (data) {
 		if (data.responseText.indexOf("document.getElementById('refresh_auto')") === 0) { // Nếu disconnect
-			$.post("/chatbox/chatbox_actions.forum?archives=1", { // Gửi tin nhắn rỗng để connect
+			$.post(url, { // Gửi tin nhắn rỗng để connect
 				mode: "send",
 				sent: ""
 			}).done(function () {
@@ -140,13 +141,14 @@ var update = function (url) {
 			clearInterval(autoRefresh); // Dừng tự cập nhật
 		}
 	});
+
 };
 
 var autoUpdate = function () {
 	autoRefresh = setInterval(function () {
-		update("/chatbox/chatbox_actions.forum?archives=1&mode=refresh");
+		update();
 	}, 5000);
 };
 
-update("/chatbox/chatbox_actions.forum?archives=1");
+update();
 autoUpdate();

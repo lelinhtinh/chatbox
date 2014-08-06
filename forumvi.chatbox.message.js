@@ -5,23 +5,10 @@
 var regexpPM = /^(<span style="color: (#[0-9A-Fa-f]{6}|rgb\(\d{2}, \d{2}, \d{2}\));?">(<(strike|i|u|strong)>)*)(\d{13,}_\d+)({.*})(\["[^"]+"(\,"[^"]+")+\])(.*)$/; // Mã kiểm tra định dạng tin nhắn riêng
 var lastMess; // Lấy html của tin cuối cùng
 
-var filterMess = function (chatsource) {
+var newMessage = function (Messages) {
+	if (Messages) {
 
-	/**
-	 * Tải dữ liệu chatbox
-	 * chatbox_messages     Tin nhắn chatbox
-	 * chatbox_memberlist   Thành viên đang truy cập
-	 * chatbox_last_update  Thời điểm cập nhật cuối
-	 */
-	eval(chatsource); // Chuyển đổi để các biến chạy được
-	if (!chatbox_messages) { // Không có tin nhắn
-		lastMess = false;
-	}
-	if (lastMess) { // Có tin nhắn cuối
-		chatbox_messages = chatbox_messages.split(lastMess)[1]; // Cắt bỏ tin nhắn cũ, lấy tin mới
-	}
-	if (chatbox_messages) { // Có tin nhắn mới
-		var arr = $.parseHTML(chatbox_messages); // Chuyển htmlString tin nhắn thành HTML
+		var arr = $.parseHTML(Messages); // Chuyển htmlString tin nhắn thành HTML
 
 		$.each(arr, function (i, val) { // Duyệt qua từng tin
 
@@ -100,12 +87,13 @@ var filterMess = function (chatsource) {
 
 			if ($this.find(".msg").text() == "/buzz") { // Nếu có ký hiệu buzz
 				$this.find(".msg").html('<img src="http://i.imgur.com/9GvQ6Gd.gif" width="62" height="16" />'); // Thay bằng ảnh buzz
-				if (lastMess) { // Không chạy hiệu ứng buzz trong lần truy cập đầu tiên
+				if (!firstTime) { // Không chạy hiệu ứng buzz trong lần truy cập đầu tiên
 					$(".chatbox-change[data-id='" + $this.closest(".chatbox-content").attr("data-id") + "']").click();
 					$("#chatbox-forumvi").addClass("chatbox-buzz");
 					$("#chatbox-buzz-audio")[0].play();
 					setTimeout(function () {
 						$("#chatbox-forumvi").removeClass("chatbox-buzz");
+						$messenger.focus();
 					}, 1000);
 				}
 			}
@@ -121,8 +109,6 @@ var filterMess = function (chatsource) {
 			}
 
 		});
-
-		lastMess = chatbox_messages.match(/<p class="chatbox_row_(1|2) clearfix">(?:.(?!<p class="chatbox_row_(1|2) clearfix">))*<\/p>$/)[0]; // Cập nhật tin nhắn cuối
 
 		var cookieActive = my_getcookie("chatbox_active"),
 			$tabActive = $('.chatbox-change[data-id="' + cookieActive + '"]');;
@@ -167,8 +153,44 @@ var filterMess = function (chatsource) {
 			$title.text(tit);
 		}
 
-		$("#chatbox-forumvi:hidden").fadeIn();
-
-		$wrap.scrollTop(99999); // Cuộn xuống dòng cuối cùng	
+		$wrap.scrollTop(99999); // Cuộn xuống dòng cuối cùng
 	}
+}
+
+// Xử lý các tin nhắn sau khi tải về
+var filterMess = function (chatsource) {
+
+	/**
+	 * Tải dữ liệu chatbox
+	 * 
+	 * chatbox_messages     Tin nhắn chatbox
+	 * chatbox_memberlist   Thành viên đang truy cập
+	 * chatbox_last_update  Thời điểm cập nhật cuối
+	 */
+	eval(chatsource); // Chuyển đổi để các biến chạy được
+
+	var newChatboxMessages, thisLastMess;
+	if (chatbox_messages) { // Nếu có tin nhắn
+		thisLastMess = chatbox_messages.match(/<p class="chatbox_row_(1|2) clearfix">(?:.(?!<p class="chatbox_row_(1|2) clearfix">))*<\/p>$/)[0]; // Lấy tin nhắn cuối trong lần này
+		if (lastMess === undefined) { // Nếu trước đó ko có tin cuối => lần truy cập chatbox đầu tiên hoặc chatbox mới clear
+			newChatboxMessages = chatbox_messages;
+			lastMess = thisLastMess; // Cập nhật tin nhắn cuối
+			console.log(0);
+			newMessage(newChatboxMessages); // Xử lý tin nhắn và đưa vào chatbox
+		} else {
+			if (lastMess === thisLastMess) { // Không có tin mới
+				console.log(1);
+			} else {
+				newChatboxMessages = chatbox_messages.split(lastMess)[1]; // Cắt bỏ tin nhắn cũ, lấy tin mới
+				lastMess = thisLastMess; // Cập nhật tin nhắn cuối
+				console.log(2);
+				newMessage(newChatboxMessages); // Xử lý tin nhắn và đưa vào chatbox
+			}
+		}
+	} else { // Nếu không có tin nhắn (có thể là do clear chatbox)
+		lastMess = undefined; // Xóa giá trị tin nhắn cuối
+	}
+
+	$("#chatbox-forumvi:hidden").fadeIn();
+	firstTime = false;
 };

@@ -7,12 +7,16 @@
  * my_setcookie
  */
 
+var firstTime = true; // Lần truy cập đầu tiên
+
 var $wrap = $("#chatbox-wrap"); // Khối bao quanh tin nhắn
 var $messenger = $("#chatbox-messenger-input"); // input nhập liệu
 var $form = $("#chatbox-form"); // form gửi tin
 var uId, uName; // user id, user name của thành viên đang truy cập chatbox(mình)
 var autoRefresh; // Cập nhật tin nhắn mỗi 5 giây
 var $title = $("title"); // Tiêu đề của trang
+
+var chatbox_old_update = chatbox_last_update = 0;
 
 // Copy nickname vào khung soạn thảo
 function copy_user_name(user_name) {

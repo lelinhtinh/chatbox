@@ -2,13 +2,7 @@
  * Gửi tin nhắn và xử lý các lệnh cmd
  */
 
-var undisable = function () {
-	$messenger.add("#chatbox-submit").attr("disabled", false);
-	$messenger.focus();
-};
-
 var sendMessage = function (val) {
-
 	$.post("/chatbox/chatbox_actions.forum?archives=1", {
 		mode: "send",
 		sent: val,
@@ -20,11 +14,8 @@ var sendMessage = function (val) {
 	}).done(function () {
 
 		// Cập nhật tin nhắn
-		$.get("/chatbox/chatbox_actions.forum?archives=1&mode=refresh").done(function (data) {
-			getDone(data);
-			undisable();
-		});
-
+		update();
+		$messenger.focus();
 	}).fail(function () {
 		alert("Lỗi! Tin nhắn chưa được gửi.");
 		// Xử lý cho lỗi mất kết nối internet (có thể xảy ra do refresh trang trong lúc đang tải)
@@ -36,8 +27,6 @@ $form.submit(function (event) { // Gửi tin nhắn
 
 	var messVal = $messenger.val();
 	if ($.trim(messVal) !== "") {
-		$messenger.blur();
-		$messenger.add("#chatbox-submit").attr("disabled", true);
 
 		var regexpCmd = /^\/(chat|gift|kick|ban|unban|mod|unmod|cls|clear|me)(\s(.+))?$/;
 
@@ -63,7 +52,7 @@ $form.submit(function (event) { // Gửi tin nhắn
 								"data-id": dataId,
 								"data-name": "{}",
 								"data-users": '["' + uName + '","' + nickname + '"]',
-								html: '<h3>' + nickname + '</h3><span class="chatbox-change-mess" data-mess="0">0</span>'
+								html: '<h3>' + nickname + '</h3><span class="chatbox-change-mess" data-mess="0"></span>'
 							}).appendTo("#chatbox-list"); // Tạo tab chat riêng mới
 
 							$("<div>", {
@@ -82,25 +71,27 @@ $form.submit(function (event) { // Gửi tin nhắn
 						} else if ($status.hasClass("online")) {
 							clas = "away";
 						}
-						$newTab.addClass(clas).click(); // Thêm trạng thái truy cập
+						$newTab.addClass(clas); // Thêm trạng thái truy cập
 
 					} else { // Nếu không có nickname trong danh sách
 						if ($newTab.length) { // Nếu có tab chat riêng
-							$newTab.removeClass("online away").click(); // Xóa trang thái online, away về trạng thái offline
+							$newTab.removeClass("online away"); // Xóa trang thái online, away về trạng thái offline
 						} else {
 							alert("Thành viên " + nickname + " hiện không truy cập!");
 						}
 					}
+					setTimeout(function () {
+						$newTab.click();
+					}, 30);
 				}
-				undisable();
 			} else { // Những lệnh sẽ được gửi đi
 				sendMessage(messVal);
 			}
 		} else { // Nếu là tin nhắn thường
 			var messWithKey = $form.attr("data-key") + messVal; // tin nhắn có key (tin riêng)
-			
+
 			if (messVal == "/buzz") { // BUZZ
-				
+
 				var $buzz = $("#chatbox-option-buzz");
 				if ($buzz.html() === "BUZZ") { // BUZZ chưa disable
 					var timeBuzz = 29, // 30s
@@ -121,8 +112,6 @@ $form.submit(function (event) { // Gửi tin nhắn
 							$buzz.html("BUZZ");
 						}
 					}, 1000);
-				} else {
-					undisable();
 				}
 			} else {
 				sendMessage(messWithKey);
