@@ -9,12 +9,13 @@ $messenger.on("focus click keydown", function () {
 	var newMess = parseInt($countMess.text(), 10);
 
 	if (newMess) {
+		var $content = $(".chatbox-content[data-id='" + dataID + "']");
 		var obj = JSON.parse(sessionStorage.getItem("messCounter")) || {};
 		obj[dataID] = $(".chatbox_row_1, .chatbox_row_2", $(".chatbox-content[data-id='" + dataID + "']")).length;
 		sessionStorage.setItem("messCounter", JSON.stringify(obj)); // Lưu vào sessionStorage
 
-		var noSeen = $("p", $(".chatbox-content[data-id='" + dataID + "']")).length - newMess - 1;
-		var $noSeen = $("p:gt(" + noSeen + ")", $(".chatbox-content[data-id='" + dataID + "']"));
+		var noSeen = $("p", $content).length - newMess - 1;
+		var $noSeen = $("p:gt(" + noSeen + ")", $content);
 
 		// Hiệu ứng cho tin nhắn mới
 		$noSeen.addClass("chatbox-newmess");
@@ -49,10 +50,10 @@ $("#chatbox-list").on("click", ".chatbox-change", function () {
 
 });
 
-// Chạy cách chức năng từ menu
+// Chạy các chức năng từ menu
 $("#chatbox-members").on("click", ".chatbox-action", function () {
 	$messenger.val($(this).attr("data-action"));
-	$("#chatbox-submit").click();
+	$form.submit();
 });
 
 // Ẩn/hiện tab

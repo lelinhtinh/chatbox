@@ -322,6 +322,7 @@ ul.chatbox-dropdown > li:hover {
 #chatbox-option > div:hover {
 	cursor: pointer;
 	border: 1px inset;
+	background: #F5FF7E;
 }
 #chatbox-option-bold {
 	font-weight: bold;
@@ -350,6 +351,7 @@ ul.chatbox-dropdown > li:hover {
 #chatbox-option > div#chatbox-option-buzz.disable {
 	text-indent: 0;
 	background: none;
+	color: #f03829;
 }
 #chatbox-option > div#chatbox-option-submit {
 	float: right;

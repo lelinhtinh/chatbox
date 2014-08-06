@@ -14,8 +14,10 @@ var sendMessage = function (val) {
 	}).done(function () {
 
 		// Cập nhật tin nhắn
-		update();
-		$messenger.focus();
+		$.get("/chatbox/chatbox_actions.forum?archives=1&mode=refresh").done(function (data) {
+			getDone(data);
+			$messenger.focus();
+		});
 	}).fail(function () {
 		alert("Lỗi! Tin nhắn chưa được gửi.");
 		// Xử lý cho lỗi mất kết nối internet (có thể xảy ra do refresh trang trong lúc đang tải)
@@ -28,33 +30,44 @@ $form.submit(function (event) { // Gửi tin nhắn
 	var messVal = $messenger.val();
 	if ($.trim(messVal) !== "") {
 
-		var regexpCmd = /^\/(chat|gift|kick|ban|unban|mod|unmod|cls|clear|me)(\s(.+))?$/;
+		var regexpCmd = /^\/(chat|gift|toggle|kick|ban|unban|mod|unmod|cls|clear|me)(\s(.+))?$/;
 
 		if (regexpCmd.test(messVal)) { // Nếu là các lệnh cmd
 			var cmd = messVal.match(regexpCmd);
 
 			var action = cmd[1],
-				nickname = cmd[3];
+				nickname = encodeURIComponent(cmd[3]);
 
-			if (action === "chat" || action === "gift") { // Những lệnh không gửi đi
+			if (/^(chat|gift|toggle)$/.test(action)) { // Những lệnh không gửi đi
 				if (action === "chat") {
-
+					var nickdecode = decodeURIComponent(nickname);
 					var $newTab = $(".chatbox-change[data-users*='\"" + nickname + "\"']"); // Đặt biến cho tab chat riêng
-					var $user = $("#chatbox-members").find('a[onclick="return copy_user_name(\'' + nickname + '\');"]').parent();
+					var $user = $("#chatbox-members").find('a[onclick="return copy_user_name(\'' + nickdecode + '\');"]');
 
 					if ($user.length) { // Nếu có nickname trong danh sách
-						$user.hide(); // Ẩn nickname trong danh sách
+						$user.parent().hide(); // Ẩn nickname trong danh sách
 
 						if (!$newTab.length) { // Nếu chưa có tab chat
 							var dataId = new Date().getTime() + "_" + uId; // Tạo data-id
+
+							// Đặt icon online và away dựa vào class ở tiêu đề
+							var clas,
+								$status = $user.parent().parent().prev("h4");
+							if ($status.hasClass("online")) {
+								clas = " online";
+							} else if ($status.hasClass("online")) {
+								clas = " away";
+							} else {
+								clas = "";
+							}
 							$newTab = $("<div>", {
-								"class": "chatbox-change",
+								"class": "chatbox-change" + clas,
 								"data-id": dataId,
 								"data-name": "{}",
-								"data-users": '["' + uName + '","' + nickname + '"]',
-								html: '<h3>' + nickname + '</h3><span class="chatbox-change-mess" data-mess="0"></span>'
-							}).appendTo("#chatbox-list"); // Tạo tab chat riêng mới
-
+								"data-users": '["' + encodeURIComponent(uName) + '","' + nickname + '"]',
+								html: '<h3 style="color:' + $user.css('color') + '">' + nickdecode + '</h3><span class="chatbox-change-mess"></span>'
+							}).appendTo("#chatbox-list"); // Tạo tab chat riêng mới 
+							$newTab.click();
 							$("<div>", {
 								"class": "chatbox-content",
 								"data-id": dataId,
@@ -62,27 +75,15 @@ $form.submit(function (event) { // Gửi tin nhắn
 							}).appendTo($wrap); // Tạo mục chat riêng mới
 						}
 
-						// Đặt icon online và away dựa vào class ở tiêu đề
-						var clas,
-							$user = $("#chatbox-members").find('a[onclick="return copy_user_name(\'' + nickname + '\');"]').parent(),
-							$status = $user.parent().prev("h4");
-						if ($status.hasClass("online")) {
-							clas = "online";
-						} else if ($status.hasClass("online")) {
-							clas = "away";
-						}
-						$newTab.addClass(clas); // Thêm trạng thái truy cập
-
 					} else { // Nếu không có nickname trong danh sách
 						if ($newTab.length) { // Nếu có tab chat riêng
-							$newTab.removeClass("online away"); // Xóa trang thái online, away về trạng thái offline
+							$newTab.removeClass("online away").click(); // Xóa trang thái online, away về trạng thái offline
 						} else {
-							alert("Thành viên " + nickname + " hiện không truy cập!");
+							alert("Thành viên " + nickdecode + " hiện không truy cập!");
 						}
 					}
-					setTimeout(function () {
-						$newTab.click();
-					}, 30);
+				} else if (action === "toggle") {
+					$("#chatbox-hidetab").click();
 				}
 			} else { // Những lệnh sẽ được gửi đi
 				sendMessage(messVal);

@@ -4,7 +4,7 @@
  */
 
 var getDone = function (chatsource) { // Xử lý khi tải xong dữ liệu tin nhắn
-	
+
 	if (chatsource.indexOf("<!DOCTYPE html PUBLIC") === 0) { // Lỗi do logout hoặc bị ban
 		if (chatsource.indexOf("You have been banned from the ChatBox") !== -1) {
 			alert("Bạn đã bị cấm truy cập chatbox!");
@@ -40,8 +40,8 @@ var getDone = function (chatsource) { // Xử lý khi tải xong dữ liệu tin
 			 * 5  my_user_level
 			 * 6  user_chat_level
 			 * 7  user_level
-			 * 8  event
-			 * 9  sid
+			 * 8  event (không quan trọng)
+			 * 9  sid (không quan trọng)
 			 * 10 ";" (không quan trọng)
 			 */
 			var dataMenu = $this.attr("oncontextmenu").split(/\(|,|\)/);
@@ -92,7 +92,7 @@ var getDone = function (chatsource) { // Xử lý khi tải xong dữ liệu tin
 				if (my_chat_level == 2) { // Mình có quyền quản lý				
 					if (user_chat_level != 2) { // Nick này cấp bậc thấp hơn mình
 
-						quickAction("kick", "Mời ra khỏi chatbox");
+						// quickAction("kick", "Mời ra khỏi chatbox");
 						quickAction("ban", "Cấm người này truy cập");
 					}
 					if (my_user_level == 1 && user_chat_level == 2 && user_level != 1) { // Nick này có quyền quản lý nhưng cấp thấp hơn mình
@@ -101,10 +101,11 @@ var getDone = function (chatsource) { // Xử lý khi tải xong dữ liệu tin
 						quickAction("mod", "Thăng cấp quản lý");
 					}
 				}
+				
 			}
 
 		});
-		
+
 		// Đặt icon online và away dựa vào class ở tiêu đề
 		$(".chatbox-change > h3").each(function () { // Duyệt qua từng tab riêng			
 			var $this = $(this),
@@ -117,18 +118,18 @@ var getDone = function (chatsource) { // Xử lý khi tải xong dữ liệu tin
 			}
 			$this.parent().removeClass("online away").addClass(clas);
 		});
-		
+
 		filterMess(chatsource); // Lọc và xử lý các tin nhắn trong chatbox_messages
-	}	
+	}
 };
 
-var update = function () {
-	var url = "/chatbox/chatbox_actions.forum?archives=1";
+var update = function (url) {
+
 	$.get(url).done(function (data) { // Tải dữ liệu chatbox
 		getDone(data);
 	}).fail(function (data) {
 		if (data.responseText.indexOf("document.getElementById('refresh_auto')") === 0) { // Nếu disconnect
-			$.post(url, { // Gửi tin nhắn rỗng để connect
+			$.post("/chatbox/chatbox_actions.forum?archives=1", { // Gửi tin nhắn rỗng để connect
 				mode: "send",
 				sent: ""
 			}).done(function () {
@@ -144,11 +145,11 @@ var update = function () {
 
 };
 
-var autoUpdate = function () {
+var autoUpdate = function () { // Tự cập nhật mỗi 5s
 	autoRefresh = setInterval(function () {
-		update();
+		update("/chatbox/chatbox_actions.forum?archives=1&mode=refresh");
 	}, 5000);
 };
 
-update();
+update("/chatbox/chatbox_actions.forum?archives=1");
 autoUpdate();

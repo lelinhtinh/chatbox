@@ -16,7 +16,7 @@ var uId, uName; // user id, user name của thành viên đang truy cập chatbo
 var autoRefresh; // Cập nhật tin nhắn mỗi 5 giây
 var $title = $("title"); // Tiêu đề của trang
 
-var chatbox_old_update = chatbox_last_update = 0;
+var chatbox_old_update = 0;
 
 // Copy nickname vào khung soạn thảo
 function copy_user_name(user_name) {
