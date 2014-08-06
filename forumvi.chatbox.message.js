@@ -129,15 +129,15 @@ var newMessage = function (Messages) {
 			}
 
 			mLength = messLength - oldMessLength; // trừ lấy số tin mới
-console.log(messLength);
-console.log(oldMessLength);
+
 			if (mLength <= 0) { // Nếu không có tin mới
 				mLength = ""; // Xóa bộ đếm
-			} else {
+			} else {				
 				allNewMess += mLength; // Lấy tổng số tin mới
+				mLength = "<strong>" + mLength + "</strong>";
 			}
 
-			$count.text(mLength);
+			$count.html(mLength);
 
 		});
 

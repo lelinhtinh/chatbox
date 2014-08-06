@@ -161,6 +161,18 @@ a {
 	right: 10px;
 	top: 0;
 }
+.chatbox-change-mess > strong {
+	display: block;
+	height: 16px;
+	background: #f00;
+	line-height: 16px;
+	padding: 0 5px;
+	font-size: 12px;
+	border-radius: 8px;
+	color: #FFF;
+	font-family: monospace;
+	margin: 12px 0;
+}
 #chatbox-members > h4,
 #chatbox-members > br,
 #chatbox-members .chatbox-setting {
