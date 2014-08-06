@@ -2,6 +2,11 @@
  * Gửi tin nhắn và xử lý các lệnh cmd
  */
 
+var undisable = function () {
+	$messenger.add("#chatbox-submit").attr("disabled", false);
+	$messenger.focus();
+};
+
 var sendMessage = function (val) {
 
 	$.post("/chatbox/chatbox_actions.forum?archives=1", {
@@ -17,8 +22,7 @@ var sendMessage = function (val) {
 		// Cập nhật tin nhắn
 		$.get("/chatbox/chatbox_actions.forum?archives=1&mode=refresh").done(function (data) {
 			getDone(data);
-			$messenger.add("#chatbox-submit").attr("disabled", false);
-			$messenger.focus();
+			undisable();
 		});
 
 	}).fail(function () {
@@ -35,7 +39,7 @@ $form.submit(function (event) { // Gửi tin nhắn
 		$messenger.blur();
 		$messenger.add("#chatbox-submit").attr("disabled", true);
 
-		var regexpCmd = /^\/(chat|buzz|gift|kick|ban|unban|mod|unmod|cls|clear|me)(\s(.+))?$/;
+		var regexpCmd = /^\/(chat|gift|kick|ban|unban|mod|unmod|cls|clear|me)(\s(.+))?$/;
 
 		if (regexpCmd.test(messVal)) { // Nếu là các lệnh cmd
 			var cmd = messVal.match(regexpCmd);
@@ -88,41 +92,41 @@ $form.submit(function (event) { // Gửi tin nhắn
 						}
 					}
 				}
-				$messenger.add("#chatbox-submit").attr("disabled", false);
-				$messenger.focus();
+				undisable();
 			} else { // Những lệnh sẽ được gửi đi
-				var $buzz = $("#chatbox-option-buzz");
-
-				if (action === "buzz") {
-					if ($buzz.html() === "BUZZ") {
-						var timeBuzz = 29,
-							timeBuzzCount;
-
-						sendMessage("/buzz");
-
-						$buzz.addClass("disable");
-						$buzz.html(30);
-						timeBuzzCount = setInterval(function () {
-							var zero = timeBuzz--;
-							$buzz.html(zero);
-							if (zero <= 0 && $messenger.attr("disabled") !== "disabled") {
-								clearInterval(timeBuzzCount);
-								$buzz.removeClass("disable");
-								timeBuzz = 29;
-								timeBuzzCount = undefined;
-								$buzz.html("BUZZ");
-							}
-						}, 1000);
-					} else {
-						$messenger.add("#chatbox-submit").attr("disabled", false);
-						$messenger.focus();
-					}
-				} else {
-					sendMessage(messVal);
-				}
+				sendMessage(messVal);
 			}
 		} else { // Nếu là tin nhắn thường
-			sendMessage($form.attr("data-key") + messVal);
+			var messWithKey = $form.attr("data-key") + messVal; // tin nhắn có key (tin riêng)
+			
+			if (messVal == "/buzz") { // BUZZ
+				
+				var $buzz = $("#chatbox-option-buzz");
+				if ($buzz.html() === "BUZZ") { // BUZZ chưa disable
+					var timeBuzz = 29, // 30s
+						timeBuzzCount;
+
+					sendMessage(messWithKey);
+
+					$buzz.addClass("disable"); // Thêm class để hiện số đếm lùi
+					$buzz.html(30);
+					timeBuzzCount = setInterval(function () {
+						var zero = timeBuzz--;
+						$buzz.html(zero);
+						if (zero <= 0) { // Cho phép BUZZ
+							clearInterval(timeBuzzCount);
+							$buzz.removeClass("disable");
+							timeBuzz = 29;
+							timeBuzzCount = undefined;
+							$buzz.html("BUZZ");
+						}
+					}, 1000);
+				} else {
+					undisable();
+				}
+			} else {
+				sendMessage(messWithKey);
+			}
 		}
 
 		$messenger.val("");
