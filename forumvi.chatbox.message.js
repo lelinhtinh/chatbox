@@ -15,7 +15,7 @@ var newMessage = function (Messages) {
 			var $this = $(this); // Đặt biến cho tin nhắn đang xét
 
 			var messText = $(".msg", $this).html(); // Lấy HTML phần nội dung tin nhắn
-			
+
 			if (regexpPM.test(messText)) { // Nếu đúng định dạng tin riêng
 
 				/**
@@ -121,7 +121,7 @@ var newMessage = function (Messages) {
 				dataID = $this.attr("data-id");
 			var messLength = $(".chatbox_row_1, .chatbox_row_2", $this).length; // Số tin nhắn
 			var $count = $(".chatbox-change[data-id='" + dataID + "']").find(".chatbox-change-mess"); // tab tương ứng
-						var mLength = messLength; // đặt biến trung gian
+			var mLength = messLength; // đặt biến trung gian
 
 			var oldMessLength = 0;
 			if (messCounterObj && messCounterObj[dataID]) {
@@ -132,7 +132,7 @@ var newMessage = function (Messages) {
 
 			if (mLength <= 0) { // Nếu không có tin mới
 				mLength = ""; // Xóa bộ đếm
-			} else {				
+			} else {
 				allNewMess += mLength; // Lấy tổng số tin mới
 				mLength = "<strong>" + mLength + "</strong>";
 			}
@@ -151,8 +151,10 @@ var newMessage = function (Messages) {
 			}
 			$title.text(tit);
 		}
-
-		$wrap.scrollTop(99999); // Cuộn xuống dòng cuối cùng
+		
+		setTimeout(function () {
+			$wrap.scrollTop(99999); // Cuộn xuống dòng cuối cùng
+		}, 300);
 	}
 }
 
@@ -167,7 +169,7 @@ var filterMess = function (chatsource) {
 	 * chatbox_last_update  Thời điểm cập nhật cuối
 	 */
 	eval(chatsource); // Chuyển đổi để các biến chạy được
-	
+
 	// if (chatbox_old_update !== chatbox_last_update) { // Nếu như chatbox được cập nhật
 	// chatbox_old_update = chatbox_last_update;
 	var newChatboxMessages, thisLastMess;
