@@ -14,15 +14,12 @@ var filterMess = function (chatsource) {
 	 * chatbox_last_update  Thời điểm cập nhật cuối
 	 */
 	eval(chatsource); // Chuyển đổi để các biến chạy được
-
 	if (!chatbox_messages) { // Không có tin nhắn
 		lastMess = false;
 	}
-
 	if (lastMess) { // Có tin nhắn cuối
 		chatbox_messages = chatbox_messages.split(lastMess)[1]; // Cắt bỏ tin nhắn cũ, lấy tin mới
 	}
-
 	if (chatbox_messages) { // Có tin nhắn mới
 		var arr = $.parseHTML(chatbox_messages); // Chuyển htmlString tin nhắn thành HTML
 

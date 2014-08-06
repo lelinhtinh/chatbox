@@ -347,6 +347,10 @@ ul.chatbox-dropdown > li:hover {
 	background: url(http://i.imgur.com/9GvQ6Gd.gif) no-repeat center center transparent;
 	text-indent: -9999px;
 }
+#chatbox-option > div#chatbox-option-buzz.disable {
+	text-indent: 0;
+	background: none;
+}
 #chatbox-option > div#chatbox-option-submit {
 	float: right;
 	margin-right: 0;

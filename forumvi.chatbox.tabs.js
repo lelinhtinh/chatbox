@@ -52,7 +52,7 @@ $("#chatbox-list").on("click", ".chatbox-change", function () {
 // Chạy cách chức năng từ menu
 $("#chatbox-members").on("click", ".chatbox-action", function () {
 	$messenger.val($(this).attr("data-action"));
-	$form.submit();
+	$("#chatbox-submit").click();
 });
 
 // Ẩn/hiện tab
@@ -79,7 +79,9 @@ if (my_getcookie("chatbox_tabs") === "hide") {
 }
 
 // Buzz
-$("#chatbox-option-buzz").click(function(){
-	$messenger.val("/buzz");
-	$form.submit();
+$("#chatbox-option-buzz").click(function () {
+	if ($(this).html() === "BUZZ") {
+		$messenger.val("/buzz");
+		$form.submit();
+	}
 });
