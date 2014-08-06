@@ -298,6 +298,7 @@ ul.chatbox-dropdown > li:hover {
 	line-height: 32px;
 	border: 1px solid #B6B6B6;
 	padding: 0 15px;
+	color: inherit;
 }
 #chatbox-option {
 	position: absolute;
@@ -335,27 +336,11 @@ ul.chatbox-dropdown > li:hover {
 	text-decoration: line-through;
 }
 #chatbox-option-color {
-	position: relative;
-}
-#chatbox-option-color > ul {
-	width: 100px;
-	height: 75px;
-	position: absolute;
-	bottom: 30px;
-	left: -35px;
-	background-color: #FFF;
-	border: 1px solid #DDD;
-	list-style: none;
-	display: none;
-}
-#chatbox-option-color:hover > ul {
-	display: block;
-}
-#chatbox-option-color > ul > li {
-	width: 25px;
-	height: 25px;
-	float: left;
 	text-indent: -9999px;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
 #chatbox-option > div#chatbox-option-buzz {
 	width: 75px;

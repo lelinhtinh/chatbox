@@ -2,7 +2,7 @@
  * Xử lý các tin nhắn
  */
 
-var regexpPM = /^(<span style="color: (#[0-9A-F]{6}|rgb\(\d{2}, \d{2}, \d{2}\));?">(<(strike|i|u|strong)>)*)(\d{13,}_\d+)({.*})(\["[^"]+"(\,"[^"]+")+\])(.*)$/; // Mã kiểm tra định dạng tin nhắn riêng
+var regexpPM = /^(<span style="color: (#[0-9A-Fa-f]{6}|rgb\(\d{2}, \d{2}, \d{2}\));?">(<(strike|i|u|strong)>)*)(\d{13,}_\d+)({.*})(\["[^"]+"(\,"[^"]+")+\])(.*)$/; // Mã kiểm tra định dạng tin nhắn riêng
 var lastMess; // Lấy html của tin cuối cùng
 
 var filterMess = function (chatsource) {
