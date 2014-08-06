@@ -88,6 +88,8 @@ $form.submit(function (event) { // Gửi tin nhắn
 						}
 					}
 				}
+				$messenger.add("#chatbox-submit").attr("disabled", false);
+				$messenger.focus();
 			} else { // Những lệnh sẽ được gửi đi
 				var $buzz = $("#chatbox-option-buzz");
 
