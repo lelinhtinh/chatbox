@@ -48,7 +48,8 @@ var newMessage = function (Messages) {
 					if (!$tabPrivate.length) { // Nếu chưa có mục chat riêng thì tạo mới
 						$private = $("<div>", {
 							"class": "chatbox-content",
-							"data-id": dataId
+							"data-id": dataId,
+							style: "display: none;"
 						}).appendTo("#chatbox-wrap"); // Thêm vào khu vực chatbox
 
 						var chat_name = arrMess[6].slice(1, -1); // Đặt biến cho tên tab là phần ký tự trong dấu {}
@@ -81,7 +82,7 @@ var newMessage = function (Messages) {
 					}
 
 					$msg.html(arrMess[1] + arrMess[9]); // Xóa phần đánh dấu tin nhắn
-					$this.appendTo($private.hide()); // Thêm tin nhắn vào mục chat riêng theo data-id
+					$this.appendTo($private); // Thêm tin nhắn vào mục chat riêng theo data-id
 
 				}
 
