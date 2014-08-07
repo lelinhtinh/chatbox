@@ -5,9 +5,14 @@
 
 // Tạo nhanh menu action
 var quickAction = function (ele, cmd, user_name, txt) {
+	if (user_name) {
+		user_name = " " + user_name;
+	} else {
+		user_name = "";
+	}
 	$("<li>", {
 		"class": "chatbox-action",
-		"data-action": "/" + cmd + " " + user_name,
+		"data-action": "/" + cmd + user_name,
 		text: txt
 	}).appendTo(ele);
 };
@@ -81,9 +86,9 @@ var getDone = function (chatsource) { // Xử lý khi tải xong dữ liệu tin
 				uName = user_name; // Lấy ra nickname của mình
 				$("#chatbox-me > h2").html('<a href="/u' + user_id + '" target="_blank" style="color:' + $this.find('span').css('color') + '">' + uName + '</a>');
 				$this.parent().remove();
-				
+
 				if (menuActionOne) {
-					quickAction("#chatbox-title ul", "out", uName, "Rời khỏi phòng");
+					quickAction("#chatbox-title ul", "out", false, "Rời khỏi phòng");
 					menuActionOne = false;
 				}
 			} else {

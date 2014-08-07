@@ -75,7 +75,7 @@ var newMessage = function (Messages) {
 							html: '<h3 style="color:' + $tabname.css('color') + '">' + chat_name + '</h3><span class="chatbox-change-mess"></span>'
 						}).appendTo("#chatbox-list"); // Thêm vào khu vực tab
 
-					} else if ($tabPrivate.is(":hidden") && $msg.text().indexOf("]/out ") === -1) {
+					} else if ($tabPrivate.is(":hidden") && $msg.text().indexOf("]/out") === -1) {
 						$tabPrivate.show();
 						userOnline($tabPrivate.find("h3").text()).parent().hide();
 					}
@@ -103,8 +103,8 @@ var newMessage = function (Messages) {
 						$messenger.focus();
 					}, 1000);
 				}
-			} else if (messText.indexOf("/out") === 0 && msgId !== "publish" && messText.slice(5) === $this.find(".user > a").text()) {
-				if (messText.slice(5) === uName) {
+			} else if (messText.indexOf("/out") === 0 && msgId !== "publish") {
+				if ($this.find(".user > a").text() === uName) {
 					$msgTab.add(".chatbox-content[data-id='" + msgId + "']").hide();
 					var otherUser = decodeURIComponent($.grep($msgTab.data("users"), function (n, i) {
 						return (n !== encodeURIComponent(uName));
