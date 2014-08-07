@@ -36,50 +36,62 @@ $form.submit(function (event) { // Gửi tin nhắn
 			var cmd = messVal.match(regexpCmd);
 
 			var action = cmd[1],
-				nickname = encodeURIComponent(cmd[3]);
+				nickname = cmd[3],
+				nicknameencode = encodeURIComponent(nickname),
+				uNameencode = encodeURIComponent(uName);
 
 			if (/^(chat|gift|toggle)$/.test(action)) { // Những lệnh không gửi đi
 				if (action === "chat") {
 					var nickdecode = decodeURIComponent(nickname);
-					var $newTab = $(".chatbox-change[data-users*='\"" + nickname + "\"']"); // Đặt biến cho tab chat riêng
-					var $user = $("#chatbox-members").find('a[onclick="return copy_user_name(\'' + nickdecode + '\');"]');
 
-					if ($user.length) { // Nếu có nickname trong danh sách
-						$user.parent().hide(); // Ẩn nickname trong danh sách
+					// Đặt biến cho tab chat riêng
+					var $newTab = $('.chatbox-change[data-users="[\\"' + uNameencode + '\\",\\"' + nicknameencode + '\\"]"]');
+					if (!$newTab.length) {
+						$newTab = $('.chatbox-change[data-users="[\\"' + nicknameencode + '\\",\\"' + uNameencode + '\\"]"]');
+					}
+					
+					var $user = userOnline(nickname);
 
-						if (!$newTab.length) { // Nếu chưa có tab chat
-							var dataId = new Date().getTime() + "_" + uId; // Tạo data-id
+					if ($newTab.length) { // Nếu đã có tab chat riêng
+						$newTab.show().click();
+					} else {
+						if ($user.length) { // Nếu có nickname trong danh sách
+							$user.parent().hide(); // Ẩn nickname trong danh sách
 
-							// Đặt icon online và away dựa vào class ở tiêu đề
-							var clas,
-								$status = $user.parent().parent().prev("h4");
-							if ($status.hasClass("online")) {
-								clas = " online";
-							} else if ($status.hasClass("online")) {
-								clas = " away";
-							} else {
-								clas = "";
+							if (!$newTab.length) { // Nếu chưa có tab chat
+								var dataId = new Date().getTime() + "_" + uId; // Tạo data-id
+
+								// Đặt icon online và away dựa vào class ở tiêu đề
+								var clas,
+									$status = $user.parent().parent().prev("h4");
+								if ($status.hasClass("online")) {
+									clas = " online";
+								} else if ($status.hasClass("online")) {
+									clas = " away";
+								} else {
+									clas = "";
+								}
+								$newTab = $("<div>", {
+									"class": "chatbox-change" + clas,
+									"data-id": dataId,
+									"data-name": "{}",
+									"data-users": '["' + uNameencode + '","' + nicknameencode + '"]',
+									html: '<h3 style="color:' + $user.css('color') + '">' + nickname + '</h3><span class="chatbox-change-mess"></span>'
+								}).appendTo("#chatbox-list"); // Tạo tab chat riêng mới 
+								$newTab.click();
+								$("<div>", {
+									"class": "chatbox-content",
+									"data-id": dataId,
+									"style": "display: none;"
+								}).appendTo($wrap); // Tạo mục chat riêng mới
 							}
-							$newTab = $("<div>", {
-								"class": "chatbox-change" + clas,
-								"data-id": dataId,
-								"data-name": "{}",
-								"data-users": '["' + encodeURIComponent(uName) + '","' + nickname + '"]',
-								html: '<h3 style="color:' + $user.css('color') + '">' + nickdecode + '</h3><span class="chatbox-change-mess"></span>'
-							}).appendTo("#chatbox-list"); // Tạo tab chat riêng mới 
-							$newTab.click();
-							$("<div>", {
-								"class": "chatbox-content",
-								"data-id": dataId,
-								"style": "display: none;"
-							}).appendTo($wrap); // Tạo mục chat riêng mới
-						}
 
-					} else { // Nếu không có nickname trong danh sách
-						if ($newTab.length) { // Nếu có tab chat riêng
-							$newTab.removeClass("online away").click(); // Xóa trang thái online, away về trạng thái offline
-						} else {
-							alert("Thành viên " + nickdecode + " hiện không truy cập!");
+						} else { // Nếu không có nickname trong danh sách
+							if ($newTab.length) { // Nếu có tab chat riêng
+								$newTab.removeClass("online away").click(); // Xóa trang thái online, away về trạng thái offline
+							} else {
+								alert("Thành viên " + nickname + " hiện không truy cập!");
+							}
 						}
 					}
 				} else if (action === "toggle") {
@@ -90,7 +102,7 @@ $form.submit(function (event) { // Gửi tin nhắn
 			}
 		} else { // Nếu là tin nhắn thường
 			var messWithKey = $form.attr("data-key") + messVal; // tin nhắn có key (tin riêng)
-
+			var messId = $messenger.attr("data-id");
 			if (messVal == "/buzz") { // BUZZ
 
 				var $buzz = $("#chatbox-option-buzz");
@@ -114,6 +126,8 @@ $form.submit(function (event) { // Gửi tin nhắn
 						}
 					}, 1000);
 				}
+			} else if (messVal == "/out" && messId !== "publish") {
+				sendMessage(messWithKey);
 			} else {
 				sendMessage(messWithKey);
 			}

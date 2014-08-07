@@ -3,6 +3,17 @@
  * Cập nhật dữ liệu
  */
 
+// Tạo nhanh menu action
+var quickAction = function (ele, cmd, user_name, txt) {
+	$("<li>", {
+		"class": "chatbox-action",
+		"data-action": "/" + cmd + " " + user_name,
+		text: txt
+	}).appendTo(ele);
+};
+
+var menuActionOne = true;
+
 var getDone = function (chatsource) { // Xử lý khi tải xong dữ liệu tin nhắn
 
 	if (chatsource.indexOf("<!DOCTYPE html PUBLIC") === 0) { // Lỗi do logout hoặc bị ban
@@ -59,7 +70,7 @@ var getDone = function (chatsource) { // Xử lý khi tải xong dữ liệu tin
 
 			$(".chatbox-change > h3").each(function () {
 				var $h3 = $(this);
-				if ($h3.text() == user_name) {
+				if ($h3.text() == user_name && $h3.parent().is(":visible")) {
 					$this.parent().hide(); // Ẩn nick trong danh sách
 					return false;
 				}
@@ -70,7 +81,11 @@ var getDone = function (chatsource) { // Xử lý khi tải xong dữ liệu tin
 				uName = user_name; // Lấy ra nickname của mình
 				$("#chatbox-me > h2").html('<a href="/u' + user_id + '" target="_blank" style="color:' + $this.find('span').css('color') + '">' + uName + '</a>');
 				$this.parent().remove();
-
+				
+				if (menuActionOne) {
+					quickAction("#chatbox-title ul", "out", uName, "Rời khỏi phòng");
+					menuActionOne = false;
+				}
 			} else {
 
 				var $setting = $("<div>").addClass("chatbox-setting");
@@ -78,30 +93,22 @@ var getDone = function (chatsource) { // Xử lý khi tải xong dữ liệu tin
 				var $list = $("<ul>").addClass("chatbox-dropdown");
 				$list.appendTo($setting);
 
-				var quickAction = function (cmd, txt) { // Tạo nhanh menu action
-					$("<li>", {
-						"class": "chatbox-action",
-						"data-action": "/" + cmd + " " + user_name,
-						text: txt
-					}).appendTo($list);
-				};
-
-				quickAction("chat", "Trò chuyện riêng");
-				// quickAction("gift", "Tặng video, nhạc");
+				quickAction($list, "chat", user_name, "Trò chuyện riêng");
+				// quickAction($list, "gift", user_name, "Tặng video, nhạc");
 
 				if (my_chat_level == 2) { // Mình có quyền quản lý				
 					if (user_chat_level != 2) { // Nick này cấp bậc thấp hơn mình
 
-						// quickAction("kick", "Mời ra khỏi chatbox");
-						quickAction("ban", "Cấm người này truy cập");
+						// quickAction($list, "kick", user_name, "Mời ra khỏi chatbox");
+						quickAction($list, "ban", user_name, "Cấm truy cập chat");
 					}
 					if (my_user_level == 1 && user_chat_level == 2 && user_level != 1) { // Nick này có quyền quản lý nhưng cấp thấp hơn mình
-						quickAction("unmod", "Xóa quyền quản lý");
+						quickAction($list, "unmod", user_name, "Xóa quyền quản lý");
 					} else if (my_user_level == 1 && user_chat_level != 2) { // Nick này chưa có quền quản lý và cấp thấp hơn mình
-						quickAction("mod", "Thăng cấp quản lý");
+						quickAction($list, "mod", user_name, "Thăng cấp quản lý");
 					}
 				}
-				
+
 			}
 
 		});

@@ -37,8 +37,12 @@ $("#chatbox-list").on("click", ".chatbox-change", function () {
 	$(".chatbox-content").hide();
 	$('.chatbox-content[data-id="' + dataID + '"]').show();
 	var key = "";
+	var $titSetting = $("#chatbox-title >.chatbox-setting");
 	if (dataID !== "publish") {
 		key = dataID + $this.attr("data-name") + $this.attr("data-users");
+		$titSetting.show();
+	} else {
+		$titSetting.hide();
 	}
 	$form.attr("data-key", key);
 	$messenger.attr("data-id", dataID);
@@ -51,7 +55,7 @@ $("#chatbox-list").on("click", ".chatbox-change", function () {
 });
 
 // Chạy các chức năng từ menu
-$("#chatbox-members").on("click", ".chatbox-action", function () {
+$("#chatbox-members, #chatbox-title").on("click", ".chatbox-action", function () {
 	$messenger.val($(this).attr("data-action"));
 	$form.submit();
 });

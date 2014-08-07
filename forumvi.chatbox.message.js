@@ -1,10 +1,8 @@
 /**
- * Xử lý các tin nhắn
+ * Xử lý dữ liệu tin nhắn để chuyển đến dạng tab riêng mình cần
+ *
+ * @param {htmlString} Dữ liệu tin nhắn
  */
-
-var regexpPM = /^(<span style="color: (#[0-9A-Fa-f]{6}|rgb\(\d{2,3}, \d{2,3}, \d{2,3}\));?">(<(strike|i|u|strong)>)*)(\d{13,}_\d+)({.*})(\["[^"]+"(\,"[^"]+")+\])(.*)$/; // Mã kiểm tra định dạng tin nhắn riêng
-var lastMess; // Lấy html của tin cuối cùng
-
 var newMessage = function (Messages) {
 	if (Messages) {
 
@@ -14,7 +12,9 @@ var newMessage = function (Messages) {
 
 			var $this = $(this); // Đặt biến cho tin nhắn đang xét
 
-			var messText = $(".msg", $this).html(); // Lấy HTML phần nội dung tin nhắn
+			var $msg = $(".msg", $this);
+
+			var messText = $msg.html(); // Lấy HTML phần nội dung tin nhắn			
 
 			if (regexpPM.test(messText)) { // Nếu đúng định dạng tin riêng
 
@@ -60,7 +60,7 @@ var newMessage = function (Messages) {
 
 							if (chat_name.length === 1) {
 								chat_name = decodeURIComponent(chat_name[0]);
-								var $tabname = $("#chatbox-members").find('a[onclick="return copy_user_name(\'' + chat_name + '\');"]');
+								var $tabname = userOnline(chat_name);
 								$tabname.parent().hide();
 							} else {
 								chat_name = decodeURIComponent(chat_name.join(", ")); // Đặt tên tab là các nickname đang chat với mình
@@ -75,9 +75,12 @@ var newMessage = function (Messages) {
 							html: '<h3 style="color:' + $tabname.css('color') + '">' + chat_name + '</h3><span class="chatbox-change-mess"></span>'
 						}).appendTo("#chatbox-list"); // Thêm vào khu vực tab
 
+					} else if ($tabPrivate.is(":hidden") && $msg.text().indexOf("]/out ") === -1) {
+						$tabPrivate.show();
+						userOnline($tabPrivate.find("h3").text()).parent().hide();
 					}
 
-					$(".msg", $this).html(arrMess[1] + arrMess[9]); // Xóa phần đánh dấu tin nhắn
+					$msg.html(arrMess[1] + arrMess[9]); // Xóa phần đánh dấu tin nhắn
 					$this.appendTo($private.hide()); // Thêm tin nhắn vào mục chat riêng theo data-id
 
 				}
@@ -86,16 +89,34 @@ var newMessage = function (Messages) {
 				$this.appendTo('.chatbox-content[data-id="publish"]'); // Thêm tin nhắn thường vào mục chat chung
 			}
 
-			if ($this.find(".msg").text() == "/buzz") { // Nếu có ký hiệu buzz
-				$this.find(".msg").html('<img src="http://i.imgur.com/9GvQ6Gd.gif" width="62" height="16" />'); // Thay bằng ảnh buzz
+			var msgId = $this.closest(".chatbox-content").attr("data-id");
+			var $msgTab = $(".chatbox-change[data-id='" + msgId + "']");
+			messText = $msg.text();
+			if (messText === "/buzz") { // Nếu có ký hiệu buzz
+				$msg.html('<img src="http://i.imgur.com/9GvQ6Gd.gif" width="62" height="16" />'); // Thay bằng ảnh buzz
 				if (!firstTime && $("#chatbox-main").css("left") !== "0px") { // Không chạy hiệu ứng buzz trong lần truy cập đầu tiên
-					$(".chatbox-change[data-id='" + $this.closest(".chatbox-content").attr("data-id") + "']").click();
+					$msgTab.click();
 					$("#chatbox-forumvi").addClass("chatbox-buzz");
 					$("#chatbox-buzz-audio")[0].play();
 					setTimeout(function () {
 						$("#chatbox-forumvi").removeClass("chatbox-buzz");
 						$messenger.focus();
 					}, 1000);
+				}
+			} else if (messText.indexOf("/out") === 0 && msgId !== "publish" && messText.slice(5) === $this.find(".user > a").text()) {
+				if (messText.slice(5) === uName) {
+					$msgTab.add(".chatbox-content[data-id='" + msgId + "']").hide();
+					var otherUser = decodeURIComponent($.grep($msgTab.data("users"), function (n, i) {
+						return (n !== encodeURIComponent(uName));
+					})[0]);
+					userOnline(otherUser).parent().show();
+					if (my_getcookie('chatbox_active') === msgId) {
+						$(".chatbox-change[data-id='publish']").click();
+						my_setcookie('chatbox_active', msgId);
+					}
+					$this.replaceWith('<p class="chatbox-userout me clearfix">Bạn đã rời khỏi phòng.</p>');
+				} else {
+					$this.replaceWith('<p class="chatbox-userout clearfix"><strong>' + $this.find('.user > a').text() + '</strong> đã rời khỏi phòng.</p>');
 				}
 			}
 
@@ -111,8 +132,13 @@ var newMessage = function (Messages) {
 
 		});
 
-		$('.chatbox-change[data-id="' + my_getcookie('chatbox_active') + '"]').click(); // Active tab khi có cookie
-
+		setTimeout(function () {
+			var $tabCookie = $('.chatbox-change[data-id="' + my_getcookie('chatbox_active') + '"]');
+			if ($tabCookie.length && $tabCookie.is(":visible")) {
+				$('.chatbox-change[data-id="' + my_getcookie('chatbox_active') + '"]').click(); // Active tab khi có cookie
+			}
+		}, 200);
+		
 		var messCounterObj = JSON.parse(sessionStorage.getItem("messCounter"));
 		var allNewMess = 0; // Đếm số tin nhắn mới
 
@@ -151,7 +177,7 @@ var newMessage = function (Messages) {
 			}
 			$title.text(tit);
 		}
-		
+
 		setTimeout(function () {
 			$wrap.scrollTop(99999); // Cuộn xuống dòng cuối cùng
 		}, 300);
