@@ -1,6 +1,6 @@
 /*!
  * Chatbox forumvi version 0.1
- * 
+ *
  * Author: Zzbaivong (lelinhtinh@gmail.com}
  * Homepage: http://devs.forumvi.com
  */
@@ -22,7 +22,7 @@ var lastMess; // Lấy html của tin cuối cùng
 
 /**
  * Lấy Link của người dùng trong danh sách bằng nickname
- * 
+ *
  * @param {String} nickname của người cần lấy
  * return {Object}
  */
@@ -36,7 +36,7 @@ var oldMessage; // Nội dung các tin nhắn vừa được gửi trước đó
 
 /**
  * Copy nickname vào khung soạn thảo
- * 
+ *
  * @param {String} nickname người dùng
  */
 function copy_user_name(user_name) {
@@ -47,7 +47,7 @@ function copy_user_name(user_name) {
 
 /**
  * Lấy cookie
- * 
+ *
  * @param {String} Tên cookie
  */
 function my_getcookie(name) {
@@ -66,7 +66,7 @@ function my_getcookie(name) {
 
 /**
  * Đặt cookie
- * 
+ *
  * @param1 {String} tên cookie
  * @param2 {String} Giá tri cookie
  * @param3 {Boolean} Thời gian lưu trữ theo session hoặc vĩnh viễn
@@ -225,7 +225,7 @@ var newMessage = function (Messages) {
 				$('.chatbox-change[data-id="' + my_getcookie('chatbox_active') + '"]').click(); // Active tab khi có cookie
 			}
 		}, 200);
-		
+
 		var messCounterObj = JSON.parse(sessionStorage.getItem("messCounter"));
 		var allNewMess = 0; // Đếm số tin nhắn mới
 
@@ -273,7 +273,7 @@ var newMessage = function (Messages) {
 
 /**
  * Xử lý các tin nhắn sau khi tải về
- * 
+ *
  * @param {htmlString} Dữ liệu tin nhắn
  */
 var filterMess = function (chatsource) {
@@ -316,7 +316,7 @@ var filterMess = function (chatsource) {
 
 /**
  * Tạo nhanh thẻ li trong menu action
- * 
+ *
  * @param1 {Object} Thẻ ul mà nó gắn vào
  * @param2 {String} Mã lệnh cmd
  * @param3 {String} nickname dùng trong mã lệnh
@@ -339,7 +339,7 @@ var menuActionOne = true; // Chỉ chạy 1 lần
 
 /**
  * Xử lý khi tải xong dữ liệu tin nhắn
- * 
+ *
  * $param {htmlString} Dữ liệu tin nhắn
  */
 var getDone = function (chatsource) {
@@ -460,7 +460,7 @@ var getDone = function (chatsource) {
 
 /**
  * Tải dữ liệu và cập nhật nội dung chatbox
- * 
+ *
  * @param {URL} Đường dẫn tải dữ liệu
  */
 var update = function (url) {
@@ -589,7 +589,7 @@ $("#chatbox-option-buzz").click(function () {
 
 /**
  * Gửi tin nhắn
- * 
+ *
  * @param {String} Nội dung tin nhắn
  */
 var sendMessage = function (val) {
@@ -732,3 +732,71 @@ $form.submit(function (event) { // Gửi tin nhắn
 		$messenger.val("");
 	}
 });
+
+/**
+ * Các công cụ soạn thảo tin nhắn
+ *
+ * Chữ in đậm, in nghiêng, gạch dưới, gạch bỏ
+ * Chọn màu
+ * Chọn biểu tượng cảm xúc
+ */
+var chooseColor = function (colo) { // Đổi màu chữ
+	$("#chatbox-option-color").css("background", "#" + colo).text("#" + colo);
+	$("#chatbox-input-color").val(colo);
+	$("#chatbox-messenger").css("color", "#" + colo);
+};
+$("#chatbox-option-color").click(function () {
+	var randomColor = Math.floor(Math.random() * 16777215).toString(16); // Tạo màu ngẫu nhiên
+	chooseColor(randomColor);
+	my_setcookie("optionColor", randomColor, false);
+});
+var cookieColor = my_getcookie("optionColor");
+if (cookieColor) {
+	chooseColor(cookieColor);
+}
+
+$("#chatbox-option-bold, #chatbox-option-italic, #chatbox-option-underline, #chatbox-option-strike").click(function () {
+	var $this = $(this);
+
+	$this.toggleClass(function () {
+		var val = "1";
+		if ($this.hasClass("active")) {
+			val = "0";
+		}
+		$("#" + this.id.replace("option", "input")).val(val);
+		return "active";
+	});
+	var arrCookie = [],
+		style = "";
+	$("#chatbox-form > input:not(#chatbox-input-color)").each(function (i, val) {
+		var thisVal = this.value;
+		arrCookie.push(thisVal);
+		if (thisVal !== "0") {
+			switch (i) {
+			case 0:
+				style += "font-weight: bold;";
+				break;
+			case 1:
+				style += "font-style: italic;";
+				break;
+			case 2:
+				style += "text-decoration: underline;";
+				break;
+			case 3:
+				style += "text-decoration: line-through;";
+				break;
+			}
+		}
+	});
+	$messenger.attr("style", style);
+	my_setcookie("optionCookie", arrCookie.join("|"), true);
+});
+
+var getArrCookie = my_getcookie("optionCookie");
+if (getArrCookie) {
+	$.each(getArrCookie.split("|"), function (i, val) {
+		if (val === "1") {
+			$("#chatbox-option > div").eq(i).click();
+		}
+	});
+}
