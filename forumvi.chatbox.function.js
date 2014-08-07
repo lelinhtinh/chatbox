@@ -1,7 +1,7 @@
 /**
  * Các function mặc định và các biến chung
  * 
- * action_user
+ * userOnline
  * copy_user_name
  * my_getcookie
  * my_setcookie
@@ -23,21 +23,32 @@ var lastMess; // Lấy html của tin cuối cùng
  * Lấy Link của người dùng trong danh sách bằng nickname
  * 
  * @param {String} nickname của người cần lấy
+ * return {Object}
  */
-var userOnline = function (n) {
-	return $("#chatbox-members").find('a[onclick="return copy_user_name(\'' + n + '\');"]');
+var userOnline = function (user_name) {
+	return $("#chatbox-members").find('a[onclick="return copy_user_name(\'' + user_name + '\');"]');
 };
 
 var chatbox_old_update = 0;
 
-// Copy nickname vào khung soạn thảo
+var oldMessage; // Nội dung các tin nhắn vừa được gửi trước đó
+
+/**
+ * Copy nickname vào khung soạn thảo
+ * 
+ * @param {String} nickname người dùng
+ */
 function copy_user_name(user_name) {
 	$messenger[0].value += user_name;
 	$messenger.focus();
 	return false;
 }
 
-// Lấy cookie
+/**
+ * Lấy cookie
+ * 
+ * @param {String} Tên cookie
+ */
 function my_getcookie(name) {
 	cname = name + '=';
 	cpos = document.cookie.indexOf(cname);
@@ -52,7 +63,14 @@ function my_getcookie(name) {
 	return null;
 }
 
-// Đặt cookie
+/**
+ * Đặt cookie
+ * 
+ * @param1 {String} tên cookie
+ * @param2 {String} Giá tri cookie
+ * @param3 {Boolean} Thời gian lưu trữ theo session hoặc vĩnh viễn
+ * @param4 {URL} Đường dẫn trang lưu trữ
+ */
 function my_setcookie(name, value, sticky, path) {
 	expires = "";
 	domain = "";

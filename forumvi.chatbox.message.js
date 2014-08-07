@@ -1,7 +1,7 @@
 /**
  * Xử lý dữ liệu tin nhắn để chuyển đến dạng tab riêng mình cần
  *
- * @param {htmlString} Dữ liệu tin nhắn
+ * @param {htmlString} Dữ liệu tin nhắn mới
  */
 var newMessage = function (Messages) {
 	if (Messages) {
@@ -185,7 +185,11 @@ var newMessage = function (Messages) {
 	}
 }
 
-// Xử lý các tin nhắn sau khi tải về
+/**
+ * Xử lý các tin nhắn sau khi tải về
+ * 
+ * @param {htmlString} Dữ liệu tin nhắn
+ */
 var filterMess = function (chatsource) {
 
 	/**
@@ -215,6 +219,6 @@ var filterMess = function (chatsource) {
 		lastMess = undefined; // Xóa giá trị tin nhắn cuối
 	}
 	//}
-	$("#chatbox-forumvi:hidden").fadeIn();
+	$("#chatbox-forumvi:hidden").fadeIn(300); // Hiển thị chatbox
 	firstTime = false;
 };

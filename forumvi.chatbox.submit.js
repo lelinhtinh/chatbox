@@ -1,8 +1,10 @@
 /**
- * Gửi tin nhắn và xử lý các lệnh cmd
+ * Gửi tin nhắn
+ * 
+ * @param {String} Nội dung tin nhắn
  */
-
 var sendMessage = function (val) {
+	oldMessage = $messenger.val();
 	$.post("/chatbox/chatbox_actions.forum?archives=1", {
 		mode: "send",
 		sent: val,
@@ -20,6 +22,7 @@ var sendMessage = function (val) {
 		});
 	}).fail(function () {
 		alert("Lỗi! Tin nhắn chưa được gửi.");
+		$messenger.val(oldMessage);
 		// Xử lý cho lỗi mất kết nối internet (có thể xảy ra do refresh trang trong lúc đang tải)
 	});
 };
@@ -49,7 +52,7 @@ $form.submit(function (event) { // Gửi tin nhắn
 					if (!$newTab.length) {
 						$newTab = $('.chatbox-change[data-users="[\\"' + nicknameencode + '\\",\\"' + uNameencode + '\\"]"]');
 					}
-					
+
 					var $user = userOnline(nickname);
 
 					if ($newTab.length) { // Nếu đã có tab chat riêng
@@ -90,7 +93,11 @@ $form.submit(function (event) { // Gửi tin nhắn
 							if ($newTab.length) { // Nếu có tab chat riêng
 								$newTab.removeClass("online away").click(); // Xóa trang thái online, away về trạng thái offline
 							} else {
-								alert("Thành viên " + nickname + " hiện không truy cập!");
+								if (nickname === uName) {
+									alert("Phát hiện nghi vấn Tự kỷ ^^~");
+								} else {
+									alert("Thành viên " + nickname + " hiện không truy cập!");
+								}
 							}
 						}
 					}
@@ -107,20 +114,20 @@ $form.submit(function (event) { // Gửi tin nhắn
 
 				var $buzz = $("#chatbox-option-buzz");
 				if ($buzz.html() === "BUZZ") { // BUZZ chưa disable
-					var timeBuzz = 29, // 30s
+					var timeBuzz = 59, // 30s
 						timeBuzzCount;
 
 					sendMessage(messWithKey);
 
 					$buzz.addClass("disable"); // Thêm class để hiện số đếm lùi
-					$buzz.html(30);
+					$buzz.html(60);
 					timeBuzzCount = setInterval(function () {
 						var zero = timeBuzz--;
 						$buzz.html(zero);
 						if (zero <= 0) { // Cho phép BUZZ
 							clearInterval(timeBuzzCount);
 							$buzz.removeClass("disable");
-							timeBuzz = 29;
+							timeBuzz = 59;
 							timeBuzzCount = undefined;
 							$buzz.html("BUZZ");
 						}

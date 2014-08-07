@@ -3,7 +3,14 @@
  * Cập nhật dữ liệu
  */
 
-// Tạo nhanh menu action
+/**
+ * Tạo nhanh thẻ li trong menu action
+ * 
+ * @param1 {Object} Thẻ ul mà nó gắn vào
+ * @param2 {String} Mã lệnh cmd
+ * @param3 {String} nickname dùng trong mã lệnh
+ * @param4 {String} Nội dung thẻ li
+ */
 var quickAction = function (ele, cmd, user_name, txt) {
 	if (user_name) {
 		user_name = " " + user_name;
@@ -17,9 +24,14 @@ var quickAction = function (ele, cmd, user_name, txt) {
 	}).appendTo(ele);
 };
 
-var menuActionOne = true;
+var menuActionOne = true; // Chỉ chạy 1 lần
 
-var getDone = function (chatsource) { // Xử lý khi tải xong dữ liệu tin nhắn
+/**
+ * Xử lý khi tải xong dữ liệu tin nhắn
+ * 
+ * $param {htmlString} Dữ liệu tin nhắn
+ */
+var getDone = function (chatsource) {
 
 	if (chatsource.indexOf("<!DOCTYPE html PUBLIC") === 0) { // Lỗi do logout hoặc bị ban
 		if (chatsource.indexOf("You have been banned from the ChatBox") !== -1) {
@@ -135,9 +147,14 @@ var getDone = function (chatsource) { // Xử lý khi tải xong dữ liệu tin
 	}
 };
 
+/**
+ * Tải dữ liệu và cập nhật nội dung chatbox
+ * 
+ * @param {URL} Đường dẫn tải dữ liệu
+ */
 var update = function (url) {
 
-	$.get(url).done(function (data) { // Tải dữ liệu chatbox
+	$.get(url).done(function (data) {
 		getDone(data);
 	}).fail(function (data) {
 		if (data.responseText.indexOf("document.getElementById('refresh_auto')") === 0) { // Nếu disconnect
