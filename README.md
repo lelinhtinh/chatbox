@@ -1,4 +1,6 @@
-chatbox
-=======
+zzChat
+===
+###Chatbox forumvi
+Tạo trang HTML mới, và sử dụng mã nguồn trong trang dưới đây:
 
-Chatbox forumotion
+    view-source:http://baivong.github.io/cdn/zzchat/0.1/chatbox.forumvi.html
