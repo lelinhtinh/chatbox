@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Các công cụ soạn thảo tin nhắn
  *
  * Chữ in đậm, in nghiêng, gạch dưới, gạch bỏ
