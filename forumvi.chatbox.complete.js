@@ -39,7 +39,7 @@ var getDone = function (chatsource) {
 		} else {
 			alert("Mất kết nối đến máy chủ. Vui lòng đăng nhập lại!");
 		}
-		clearInterval(autoRefresh);
+		clearInterval(refreshFunction);
 		return false;
 	} else { // Đã login
 
@@ -96,7 +96,7 @@ var getDone = function (chatsource) {
 			if (user_id === my_user_id) { // Nếu user_id trùng với my_user_id
 				uId = my_user_id; // Lấy ra id của mình
 				uName = user_name; // Lấy ra nickname của mình
-				$("#chatbox-me > h2").html('<a href="/u' + user_id + '" target="_blank" style="color:' + $this.find('span').css('color') + '">' + uName + '</a>');
+				$("#chatbox-me > h2").html('<a href="/u' + user_id + '" target="_blank" style="color:' + $('span', $this).css('color') + '">' + uName + '</a>');
 				$this.parent().remove();
 
 				if (menuActionOne) {
@@ -168,17 +168,26 @@ var update = function (url) {
 			});
 		} else {
 			// Xử lý cho các lỗi khác không phải do disconnect như mất kết nối internet (có thể xảy ra do refresh trang trong lúc đang tải)
-			clearInterval(autoRefresh); // Dừng tự cập nhật
+			clearInterval(refreshFunction); // Dừng tự cập nhật
 		}
 	});
 
 };
 
 var autoUpdate = function () { // Tự cập nhật mỗi 5s
-	autoRefresh = setInterval(function () {
+	refreshFunction = setInterval(function () {
 		update("/chatbox/chatbox_actions.forum?archives=1&mode=refresh");
 	}, 5000);
 };
 
 update("/chatbox/chatbox_actions.forum?archives=1");
 autoUpdate();
+
+// Bật tắt tự động cập nhật
+$("#chatbox-input-autorefesh").change(function(){
+	if($(this).prop("checked")){ // Đã check
+		autoUpdate();
+	} else {
+		clearInterval(refreshFunction);
+	}	
+});

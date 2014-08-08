@@ -6,7 +6,7 @@
  * Kiểm duyệt BBcode
  */
 var chooseColor = function (colo) { // Đổi màu chữ
-	$("#chatbox-option-color").css("background", "#" + colo).text("#" + colo);
+	$("#chatbox-option-color").css("background", "#" + colo);
 	$("#chatbox-input-color").val(colo);
 	$("#chatbox-messenger").css("color", "#" + colo);
 };

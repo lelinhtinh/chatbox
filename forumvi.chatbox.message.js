@@ -1,3 +1,5 @@
+var regexpPM = /^(<span style="color: (#[0-9A-Fa-f]{6}|rgb\(\d{2,3}, \d{2,3}, \d{2,3}\));?">(<(strike|i|u|strong)>)*)(\d{13,}_\d+)({.*})(\["[^"]+"(\,"[^"]+")+\])(.*)$/; // Mã kiểm tra định dạng tin nhắn riêng
+
 /**
  * Xử lý dữ liệu tin nhắn để chuyển đến dạng tab riêng mình cần
  *
@@ -53,7 +55,7 @@ var newMessage = function (Messages) {
 						}).appendTo("#chatbox-wrap"); // Thêm vào khu vực chatbox
 
 						var chat_name = arrMess[6].slice(1, -1); // Đặt biến cho tên tab là phần ký tự trong dấu {}
-
+						var $tabname;
 						if (chat_name === '') {
 							chat_name = $.grep(arrUsers, function (n, i) {
 								return (n !== encodeURIComponent(uName));
@@ -61,7 +63,7 @@ var newMessage = function (Messages) {
 
 							if (chat_name.length === 1) {
 								chat_name = decodeURIComponent(chat_name[0]);
-								var $tabname = userOnline(chat_name);
+								$tabname = userOnline(chat_name);
 								$tabname.parent().hide();
 							} else {
 								chat_name = decodeURIComponent(chat_name.join(", ")); // Đặt tên tab là các nickname đang chat với mình
@@ -73,7 +75,7 @@ var newMessage = function (Messages) {
 							"data-id": dataId,
 							"data-name": arrMess[6],
 							"data-users": arrMess[7],
-							html: '<h3 style="color:' + $tabname.css('color') + '">' + chat_name + '</h3><span class="chatbox-change-mess"></span>'
+							html: '<h3 style="color:' + $("span", $tabname).css('color') + '">' + chat_name + '</h3><span class="chatbox-change-mess"></span>'
 						}).appendTo("#chatbox-list"); // Thêm vào khu vực tab
 
 					} else if ($tabPrivate.is(":hidden") && $msg.text().indexOf("]/out") === -1) {
@@ -185,6 +187,8 @@ var newMessage = function (Messages) {
 		}, 300);
 	}
 }
+
+var lastMess; // Lấy html của tin cuối cùng
 
 /**
  * Xử lý các tin nhắn sau khi tải về

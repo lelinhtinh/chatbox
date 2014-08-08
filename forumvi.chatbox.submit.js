@@ -79,7 +79,7 @@ $form.submit(function (event) { // Gửi tin nhắn
 									"data-id": dataId,
 									"data-name": "{}",
 									"data-users": '["' + uNameencode + '","' + nicknameencode + '"]',
-									html: '<h3 style="color:' + $user.css('color') + '">' + nickname + '</h3><span class="chatbox-change-mess"></span>'
+									html: '<h3 style="color:' + $('span', $user).css('color') + '">' + nickname + '</h3><span class="chatbox-change-mess"></span>'
 								}).appendTo("#chatbox-list"); // Tạo tab chat riêng mới 
 								$newTab.click();
 								$("<div>", {

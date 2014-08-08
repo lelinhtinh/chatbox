@@ -35,7 +35,7 @@ a {
 	top: 0;
 	right: 0;
 	bottom: 0;
-	display: none;	
+	display: none;
 }
 #chatbox-header {
 	height: 30px;
@@ -51,12 +51,24 @@ a {
 }
 #chatbox-header h2 {
 	font-weight: 300;
+	float: left;
 }
 #chatbox-me {
 	width: 250px;
 	padding-right: 10px;
 	border-right: 1px solid #DFDFDF;
 	position: relative;
+}
+#chatbox-me > h2 {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 220px;
+	-webkit-transition: left .5s;
+	transition: left .5s;
+}
+#chatbox-me:hover > h2 {
+	left: -230px;
 }
 #chatbox-hidetab {
 	background: url(http://i.imgur.com/QnKeV3q.png) no-repeat center center transparent;
@@ -66,7 +78,65 @@ a {
 #chatbox-hidetab.show {
 	background-image: url(http://i.imgur.com/PQmqEvd.png);
 }
-#chatbox-hidetab:hover {
+.chatbox-action-group {
+	width: 30px;
+	height: 30px;
+	float: left;
+	background: url(http://i.imgur.com/lS3U8H6.png) no-repeat center center transparent;
+	margin-left: 10px;
+	-webkit-transform: scale(.7);
+	transform: scale(.7);
+	-webkit-transition: -webkit-transform .5s;
+	transition: transform .5s;
+}
+.chatbox-action-group:hover {
+	-webkit-transform: scale(1);
+	transform: scale(1);
+}
+.chatbox-action-group.edit {
+	background-image: url(http://i.imgur.com/z5F87ZH.png);
+}
+.chatbox-action-group.close {
+	background-image: url(http://i.imgur.com/iKD0UHH.png);
+}
+.chatbox-action-checkbox {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+}
+.chatbox-action-checkbox.autologin {
+	top: -50px;
+	left: 0;
+	right: auto;
+	-webkit-transition: top .5s;
+	transition: top .5s;
+}
+#chatbox-me:hover .autologin {
+	top: 0;
+}
+#chatbox-action-logout {
+	position: absolute;
+	top: 0;
+	right: -40px;
+	background: url(http://i.imgur.com/iilg4Vq.png) no-repeat center center transparent;
+	height: 30px;
+	width: 30px;
+}
+.chatbox-action-checkbox > input + label {
+	background: url(http://i.imgur.com/ZkXXl4j.png) no-repeat 5px center transparent;
+	padding: 0 7px 0 32px;
+	height: 30px;
+	line-height: 30px;
+	display: block;
+	background-size: auto 20px;
+}
+.chatbox-action-checkbox > input:checked + label {
+	background-image: url(http://i.imgur.com/Ky5lL2O.png);
+}
+.chatbox-action-group:hover,
+#chatbox-hidetab:hover,
+.chatbox-action-checkbox > input + label:hover,
+#chatbox-action-logout:hover {
 	background-color: #f2f2f2;
 	cursor: pointer;
 }
@@ -143,14 +213,14 @@ a {
 }
 .chatbox-change.active {
 	background-color: #0DA96C!important;
-	text-shadow: 0px 0px 1px #FFF, 0px 0px 1px #FFF, 0px 0px 1px #FFF, 0px 0px 1px #FFF, 0px 0px 1px #FFF, 0px 0px 1px #FFF, 0px 0px 1px #FFF, 0px 0px 1px #FFF, 0px 0px 1px #FFF, 0px 0px 1px #FFF, 0px 0px 1px #FFF, 0px 0px 1px #FFF, 0px 0px 1px #FFF, 0px 0px 1px #FFF, 0px 0px 1px #FFF;
+	text-shadow: 0px 0px 1px #FFF, 0px 0px 1px #FFF, 0px 0px 1px #FFF, 0px 0px 1px #FFF, 0px 0px 1px #FFF, 0px 0px 1px #FFF, 0px 0px 1px #FFF, 0px 0px 1px #FFF, 0px 0px 1px #FFF;
 }
 .chatbox-change[data-id="publish"] {
 	background-image: url(http://i.imgur.com/BvBPWqY.gif);
 }
 .chatbox-change.online,
 #chatbox-members .member-title.online + ul > li {
-	background-image: url(http://i.imgur.com/nDL4BUm.png);
+	background-image: url(http://i.imgur.com/uiVunEa.png);
 }
 .chatbox-change.away,
 #chatbox-members .member-title.away + ul > li {
@@ -175,10 +245,12 @@ a {
 	margin: 12px 0;
 	text-shadow: 0 0 0;
 }
+.chatbox-action-checkbox > input,
 #chatbox-members > h4,
 #chatbox-members > br,
 #chatbox-members .chatbox-setting,
-#chatbox-title >.chatbox-setting {
+.chatbox-action-group.edit,
+#chatbox-title.groupchat .add {
 	display: none;
 }
 #chatbox-main {
@@ -197,15 +269,15 @@ a {
 	right: 10px;
 	top: 50%;
 	margin-top: -10px;
-	background: url(http://i.imgur.com/EgIPX1U.jpg) no-repeat center center transparent;
+	background: url(http://i.imgur.com/UHwi3hE.png) no-repeat center center transparent;
 	z-index: 10;
 }
 ul.chatbox-dropdown {
 	display: none;
 	position: absolute;
 	width: 150px;
-	right: 20px;
-	top: 0;
+	right: -10px;
+	top: 18px;
 	background-color: #FFF;
 	border: 1px solid #DDD;
 	line-height: 24px;
@@ -213,6 +285,7 @@ ul.chatbox-dropdown {
 	padding: 3px;
 	z-index: 20;
 }
+#chatbox-title.groupchat .edit,
 #chatbox-members li:hover .chatbox-setting,
 .chatbox-setting:hover ul.chatbox-dropdown {
 	display: block;
@@ -221,6 +294,8 @@ ul.chatbox-dropdown > li {
 	list-style: none;
 	padding: 0 10px;
 	height: 24px;
+	-webkit-transition: background-color .3s, color .3s;
+	transition: background-color .3s, color .3s;
 }
 ul.chatbox-dropdown > li:hover {
 	background-color: #444;
@@ -382,6 +457,7 @@ div#chatbox-option-buzz {
 	width: 100px;
 	border: 0 none;
 	background-color: transparent;
+	text-indent: 0;
 }
 #chatbox-submit {
 	width: 100%;
