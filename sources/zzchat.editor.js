@@ -3,7 +3,7 @@
  *
  * Chữ in đậm, in nghiêng, gạch dưới, gạch bỏ
  * Chọn màu
- * Kiểm duyệt BBcode
+ * Chọn biểu tượng cảm xúc
  */
 var chooseColor = function (colo) { // Đổi màu chữ
 	$("#chatbox-option-color").css("background", "#" + colo);
@@ -65,8 +65,3 @@ if (getArrCookie) {
 		}
 	});
 }
-
-$messenger.on("input", function(){
-	var val = this.value;
-	this.value = val.replace(/\[\/(b|i|u|strike|left|center|right|justify|size|color|font|list|quote|code|spoiler|hide|table|tr|td|flash|youtube|dailymotion|sub|sup|scroll|updown|flipv|fliph|fade|blur|wow|rand)\]|\[(\*|hr)\]/gi, "***");
-});

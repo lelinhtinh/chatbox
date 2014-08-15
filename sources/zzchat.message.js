@@ -83,8 +83,7 @@ var newMessage = function (Messages) {
 						userOnline($tabPrivate.find("h3").text()).parent().hide();
 					}
 
-					$msg.html(zzEmoFb.checkEmo(arrMess[1] + arrMess[9])); // Xóa phần đánh dấu tin nhắn
-					
+					$msg.html(arrMess[1] + arrMess[9]); // Xóa phần đánh dấu tin nhắn
 					$this.appendTo($private); // Thêm tin nhắn vào mục chat riêng theo data-id
 
 				}
@@ -206,7 +205,6 @@ var filterMess = function (chatsource) {
 	 */
 	eval(chatsource); // Chuyển đổi để các biến chạy được
 
-	// chatbox_old_update = chatbox_last_update;
 	var newChatboxMessages, thisLastMess;
 	if (chatbox_messages) { // Nếu có tin nhắn
 		thisLastMess = chatbox_messages.match(/<p class="chatbox_row_(1|2) clearfix">(?:.(?!<p class="chatbox_row_(1|2) clearfix">))*<\/p>$/)[0]; // Lấy tin nhắn cuối trong lần này
@@ -221,14 +219,9 @@ var filterMess = function (chatsource) {
 		}
 	} else { // Nếu không có tin nhắn (có thể là do clear chatbox)
 		lastMess = undefined; // Xóa giá trị tin nhắn cuối
-		var obj = {};
-		$(".chatbox-content").each(function(){
-			var $this = $(this);
-			obj[$this.attr("data-id")] = $this.children("p").length;
-		});
-		sessionStorage.setItem("messCounter", JSON.stringify(obj)); // Lưu vào sessionStorage
 	}
 
 	$("#chatbox-forumvi:hidden").fadeIn(200); // Hiển thị chatbox
+
 	firstTime = false;
 };

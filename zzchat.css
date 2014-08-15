@@ -29,7 +29,6 @@ a {
 	z-index: 50;
 }
 #chatbox-forumvi {
-	background: #FFF;
 	position: fixed;
 	left: 0;
 	top: 0;
@@ -160,7 +159,7 @@ a {
 	overflow: auto;
 }
 #chatbox-members {
-	margin-bottom: 50px;
+	margin-bottom: 80px;
 }
 #chatbox-list {
 	position: relative;
@@ -243,7 +242,6 @@ a {
 	color: #FFF;
 	font-family: monospace;
 	margin: 12px 0;
-	text-shadow: 0 0 0;
 }
 .chatbox-action-checkbox > input,
 #chatbox-members > h4,
@@ -411,34 +409,33 @@ ul.chatbox-dropdown > li:hover {
 	text-align: center;
 	float: left;
 	margin-right: 7px;
-	background: none no-repeat center center #FFF;
+	background-color: #FFF;
 	border: 1px outset;
 	font-size: 1.3em;
-	position: relative;
+}
+#chatbox-option-bold {
+	font-weight: bold;
+}
+#chatbox-option-italic {
+	font-style: italic;
+}
+#chatbox-option-underline {
+	text-decoration: underline;
+}
+#chatbox-option-strike {
+	text-decoration: line-through;
+}
+#chatbox-option-color {
 	text-indent: -9999px;
 	-webkit-user-select: none;
 	-moz-user-select: none;
 	-ms-user-select: none;
 	user-select: none;
 }
-div#chatbox-option-bold {
-	background-image: url(http://i.imgur.com/xsMoNwB.png);
-}
-div#chatbox-option-italic {
-	background-image: url(http://i.imgur.com/nQuf6to.png);
-}
-div#chatbox-option-underline {
-	background-image: url(http://i.imgur.com/V3hX16X.png);
-}
-div#chatbox-option-strike {
-	background-image: url(http://i.imgur.com/mM47jcd.png);
-}
-div#chatbox-option-smiley {
-	background-image: url(http://i.imgur.com/hAmLWAU.png);
-}
 div#chatbox-option-buzz {
 	width: 75px;
-	background-image: url(http://i.imgur.com/9GvQ6Gd.gif);
+	background: url(http://i.imgur.com/9GvQ6Gd.gif) no-repeat center center transparent;
+	text-indent: -9999px;
 }
 #chatbox-option > div#chatbox-option-buzz.disable {
 	text-indent: 0;
@@ -548,42 +545,4 @@ div#chatbox-option-buzz {
 	animation-duration: 1s;
 	-webkit-animation-fill-mode: both;
 	animation-fill-mode: both;
-}
-#smiley_FB_frame {
-	width: 224px;
-	text-align: center;
-	text-indent: 0;
-	color: #999;
-	position: absolute;
-	bottom: 30px;
-	right: -1px;
-	background: #FFF;
-	z-index: 100;
-	line-height: 20px;
-	padding: 5px;
-	border: 1px solid #DDD;
-	display: none;
-}
-#chatbox-option-smiley.active > #smiley_FB_frame {
-	display: block;
-}
-#smiley_FB_frame > p {
-	font-size: .7em;
-}
-.smiley_FB {
-	background: url(http://i.imgur.com/9LHQNIC.png) no-repeat left top transparent;
-	height: 16px;
-	width: 16px;
-}
-.smiley_FB:hover {
-	-webkit-transform: scale(1.1);
-	transform: scale(1.1);
-}
-.smiley_FB:active {
-	-webkit-transform: scale(3);
-	transform: scale(3);
-}
-#smiley_FB_frame img,
-#smiley_FB_frame p {
-	cursor: pointer;
 }
