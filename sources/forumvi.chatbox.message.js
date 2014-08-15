@@ -206,7 +206,6 @@ var filterMess = function (chatsource) {
 	 */
 	eval(chatsource); // Chuyển đổi để các biến chạy được
 
-	// if (chatbox_old_update !== chatbox_last_update) { // Nếu như chatbox được cập nhật
 	// chatbox_old_update = chatbox_last_update;
 	var newChatboxMessages, thisLastMess;
 	if (chatbox_messages) { // Nếu có tin nhắn
@@ -229,7 +228,7 @@ var filterMess = function (chatsource) {
 		});
 		sessionStorage.setItem("messCounter", JSON.stringify(obj)); // Lưu vào sessionStorage
 	}
-	//}
+
 	$("#chatbox-forumvi:hidden").fadeIn(200); // Hiển thị chatbox
 	firstTime = false;
 };

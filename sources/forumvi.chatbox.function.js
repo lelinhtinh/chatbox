@@ -1,3 +1,4 @@
+
 /**
  * Các function mặc định và các biến chung
  *
