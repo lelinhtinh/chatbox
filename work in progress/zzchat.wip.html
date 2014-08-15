@@ -2,31 +2,39 @@
 <html>
 <head>
 <meta charset="utf-8"/>
-<title>Chatbox forumvi</title>
-<link rel="stylesheet" type="text/css" href="work in progress/WIP.css"/>
+<title>Chatbox forumvi </title>
+<link rel="stylesheet" type="text/css" href="https://rawgit.com/baivong/chatbox/master/work%20in%20progress/WIP.css"/>
 </head>
 <body>
 <div id="chatbox-forumvi">
-	<!--<div id="chatbox-alert">Thông báo logout/disconnect hoặc tặng quà</div>-->
+	<!--
+<div id="chatbox-alert">
+Thông báo logout/disconnect hoặc tặng quà
+</div>
+-->
 	<div id="chatbox-header">
 		<div id="chatbox-me">
-			<h2>...</h2>
+			<h2>
+			... </h2>
 			<div class="chatbox-action-checkbox autologin">
-				<input type="checkbox" id="chatbox-input-autologin" name="autologin" checked/>
-				<label for="chatbox-input-autorefesh">Tự đăng nhập</label>
+				<input id="chatbox-input-autologin" name="autologin" checked="" type="checkbox"/>
+				<label for="chatbox-input-autorefesh">
+				Tự đăng nhập </label>
 			</div>
 			<div id="chatbox-hidetab" class="show">
 			</div>
 		</div>
 		<div id="chatbox-title">
-			<h2>Kênh chung</h2>
+			<h2>
+			Kênh chung </h2>
 			<div class="chatbox-action-group edit">
 			</div>
 			<div class="chatbox-action-group add">
 			</div>
 			<div class="chatbox-action-checkbox refresh">
-				<input type="checkbox" id="chatbox-input-autorefesh" name="autorefesh" checked/>
-				<label for="chatbox-input-autorefesh">Tự cập nhật</label>
+				<input id="chatbox-input-autorefesh" name="autorefesh" checked="" type="checkbox"/>
+				<label for="chatbox-input-autorefesh">
+				Tự cập nhật </label>
 			</div>
 			<div id="chatbox-action-logout">
 			</div>
@@ -35,14 +43,16 @@
 	<div id="chatbox-tabs">
 		<div id="chatbox-list">
 			<div class="chatbox-change active" data-id="publish">
-				<h3>Kênh chung</h3>
-				<span class="chatbox-change-mess" data-mess="0"></span>
+				<h3>
+				Kênh chung </h3>
+				<span class="chatbox-change-mess" data-mess="0">
+				</span>
 			</div>
 		</div>
 		<div id="chatbox-members">
 		</div>
 		<div id="chatbox-copyright">
-			© 2014 - devs forumvi
+			 ©2014-devs forumvi
 		</div>
 	</div>
 	<div id="chatbox-main">
@@ -52,36 +62,36 @@
 		</div>
 		<div id="chatbox-messenger-form">
 			<form id="chatbox-form" data-key="">
-				<input type="hidden" name="sbold" id="chatbox-input-bold" value="0"/>
-				<input type="hidden" name="sitalic" id="chatbox-input-italic" value="0"/>
-				<input type="hidden" name="sunderline" id="chatbox-input-underline" value="0"/>
-				<input type="hidden" name="sstrike" id="chatbox-input-strike" value="0"/>
-				<input type="hidden" name="scolor" id="chatbox-input-color" value="333333"/>
+				<input name="sbold" id="chatbox-input-bold" value="0" type="hidden"/>
+				<input name="sitalic" id="chatbox-input-italic" value="0" type="hidden"/>
+				<input name="sunderline" id="chatbox-input-underline" value="0" type="hidden"/>
+				<input name="sstrike" id="chatbox-input-strike" value="0" type="hidden"/>
+				<input name="scolor" id="chatbox-input-color" value="333333" type="hidden"/>
 				<div id="chatbox-messenger">
-					<input type="text" name="message" id="chatbox-messenger-input" data-id="publish" maxlength="1024" autocomplete="off"/>
+					<input name="message" id="chatbox-messenger-input" data-id="publish" maxlength="1024" autocomplete="off" type="text"/>
 				</div>
 				<div id="chatbox-option">
 					<div id="chatbox-option-bold">
-						B
+						 B
 					</div>
 					<div id="chatbox-option-italic">
-						I
+						 I
 					</div>
 					<div id="chatbox-option-underline">
-						U
+						 U
 					</div>
 					<div id="chatbox-option-strike">
-						S
+						 S
 					</div>
 					<div id="chatbox-option-color" style="background: #333333;">
 					</div>
 					<div id="chatbox-option-smiley">
 					</div>
 					<div id="chatbox-option-buzz">
-						BUZZ
+						 BUZZ
 					</div>
 					<div id="chatbox-option-submit">
-						<input type="submit" value="Submit" id="chatbox-submit"/>
+						<input value="Submit" id="chatbox-submit" type="submit"/>
 					</div>
 				</div>
 			</form>
@@ -122,17 +132,18 @@
 	</div>
 </div>
 <!--
-		<div class="chatbox-action sound">
-			<input type="checkbox" id="chatbox-input-sound" name="sound" checked />
-			<label for="chatbox-input-sound">Âm thanh</label>
-		</div>
--->
+<div class="chatbox-action sound">
+<input type="checkbox"id="chatbox-input-sound"name="sound"checked/>
+<label for="chatbox-input-sound">
+Âm thanh
+</label>
 </div>
+-->
 <audio id="chatbox-buzz-audio">
-<source src="sound/buzz.ogg" type="audio/ogg"/>
-<source src="sound/buzz.mp3" type="audio/mpeg"/>
+	<source src="sound/buzz.ogg" type="audio/ogg"/>
+	<source src="sound/buzz.mp3" type="audio/mpeg"/>
 </audio>
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
-<script type="text/javascript" src="work in progress/WIP.js"></script>
+<script type="text/javascript" src="https://rawgit.com/baivong/chatbox/master/work%20in%20progress/WIP.js"></script>
 </body>
 </html>
