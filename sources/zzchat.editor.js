@@ -64,4 +64,8 @@ if (getArrCookie) {
 			$("#chatbox-option > div").eq(i).click();
 		}
 	});
+<<<<<<< HEAD:sources/zzchat.editor.js
 }
+=======
+}
+>>>>>>> parent of 31b4945... add smiley:forumvi.chatbox.editor.js
