@@ -1,13 +1,20 @@
+<<<<<<< HEAD:zzchat.js
 /*!
  * Chatbox forumvi version 0.1
  *
  * Author: Zzbaivong (lelinhtinh@gmail.com}
  * Homepage: http://devs.forumvi.com
+=======
+/**
+ * Các function mặc định và các biến chung
+ * 
+ * action_user
+ * copy_user_name
+ * my_getcookie
+ * my_setcookie
+>>>>>>> parent of d188d63... Demo for forumotion:forumvi.chatbox.js
  */
 
-/**
- * Các biến chính, sử dụng nhiều
- */
 var firstTime = true; // Lần truy cập đầu tiên
 
 var $wrap = $("#chatbox-wrap"); // Khối bao quanh tin nhắn
@@ -17,6 +24,7 @@ var uId, uName; // user id, user name của thành viên đang truy cập chatbo
 var autoRefresh; // Cập nhật tin nhắn mỗi 5 giây
 var $title = $("title"); // Tiêu đề của trang
 
+<<<<<<< HEAD:zzchat.js
 var regexpPM = /^(<span style="color: (#[0-9A-Fa-f]{6}|rgb\(\d{2,3}, \d{2,3}, \d{2,3}\));?">(<(strike|i|u|strong)>)*)(\d{13,}_\d+)({.*})(\["[^"]+"(\,"[^"]+")+\])(.*)$/; // Mã kiểm tra định dạng tin nhắn riêng
 var lastMess; // Lấy html của tin cuối cùng
 
@@ -39,17 +47,26 @@ var oldMessage; // Nội dung các tin nhắn vừa được gửi trước đó
  *
  * @param {String} nickname người dùng
  */
+=======
+var chatbox_old_update = 0;
+
+// Copy nickname vào khung soạn thảo
+>>>>>>> parent of d188d63... Demo for forumotion:forumvi.chatbox.js
 function copy_user_name(user_name) {
 	$messenger[0].value += user_name;
 	$messenger.focus();
 	return false;
 }
 
+<<<<<<< HEAD:zzchat.js
 /**
  * Lấy cookie
  *
  * @param {String} Tên cookie
  */
+=======
+// Lấy cookie
+>>>>>>> parent of d188d63... Demo for forumotion:forumvi.chatbox.js
 function my_getcookie(name) {
 	cname = name + '=';
 	cpos = document.cookie.indexOf(cname);
@@ -64,6 +81,7 @@ function my_getcookie(name) {
 	return null;
 }
 
+<<<<<<< HEAD:zzchat.js
 /**
  * Đặt cookie
  *
@@ -72,6 +90,9 @@ function my_getcookie(name) {
  * @param3 {Boolean} Thời gian lưu trữ theo session hoặc vĩnh viễn
  * @param4 {URL} Đường dẫn trang lưu trữ
  */
+=======
+// Đặt cookie
+>>>>>>> parent of d188d63... Demo for forumotion:forumvi.chatbox.js
 function my_setcookie(name, value, sticky, path) {
 	expires = "";
 	domain = "";
@@ -85,10 +106,12 @@ function my_setcookie(name, value, sticky, path) {
 }
 
 /**
- * Xử lý dữ liệu tin nhắn để chuyển đến dạng tab riêng mình cần
- *
- * @param {htmlString} Dữ liệu tin nhắn mới
+ * Xử lý các tin nhắn
  */
+
+var regexpPM = /^(<span style="color: (#[0-9A-Fa-f]{6}|rgb\(\d{2,3}, \d{2,3}, \d{2,3}\));?">(<(strike|i|u|strong)>)*)(\d{13,}_\d+)({.*})(\["[^"]+"(\,"[^"]+")+\])(.*)$/; // Mã kiểm tra định dạng tin nhắn riêng
+var lastMess; // Lấy html của tin cuối cùng
+
 var newMessage = function (Messages) {
 	if (Messages) {
 
@@ -98,9 +121,7 @@ var newMessage = function (Messages) {
 
 			var $this = $(this); // Đặt biến cho tin nhắn đang xét
 
-			var $msg = $(".msg", $this);
-
-			var messText = $msg.html(); // Lấy HTML phần nội dung tin nhắn			
+			var messText = $(".msg", $this).html(); // Lấy HTML phần nội dung tin nhắn
 
 			if (regexpPM.test(messText)) { // Nếu đúng định dạng tin riêng
 
@@ -134,8 +155,7 @@ var newMessage = function (Messages) {
 					if (!$tabPrivate.length) { // Nếu chưa có mục chat riêng thì tạo mới
 						$private = $("<div>", {
 							"class": "chatbox-content",
-							"data-id": dataId,
-							style: "display: none;"
+							"data-id": dataId
 						}).appendTo("#chatbox-wrap"); // Thêm vào khu vực chatbox
 
 						var chat_name = arrMess[6].slice(1, -1); // Đặt biến cho tên tab là phần ký tự trong dấu {}
@@ -147,7 +167,7 @@ var newMessage = function (Messages) {
 
 							if (chat_name.length === 1) {
 								chat_name = decodeURIComponent(chat_name[0]);
-								var $tabname = userOnline(chat_name);
+								var $tabname = $("#chatbox-members").find('a[onclick="return copy_user_name(\'' + chat_name + '\');"]');
 								$tabname.parent().hide();
 							} else {
 								chat_name = decodeURIComponent(chat_name.join(", ")); // Đặt tên tab là các nickname đang chat với mình
@@ -162,13 +182,10 @@ var newMessage = function (Messages) {
 							html: '<h3 style="color:' + $tabname.css('color') + '">' + chat_name + '</h3><span class="chatbox-change-mess"></span>'
 						}).appendTo("#chatbox-list"); // Thêm vào khu vực tab
 
-					} else if ($tabPrivate.is(":hidden") && $msg.text().indexOf("]/out") === -1) {
-						$tabPrivate.show();
-						userOnline($tabPrivate.find("h3").text()).parent().hide();
 					}
 
-					$msg.html(arrMess[1] + arrMess[9]); // Xóa phần đánh dấu tin nhắn
-					$this.appendTo($private); // Thêm tin nhắn vào mục chat riêng theo data-id
+					$(".msg", $this).html(arrMess[1] + arrMess[9]); // Xóa phần đánh dấu tin nhắn
+					$this.appendTo($private.hide()); // Thêm tin nhắn vào mục chat riêng theo data-id
 
 				}
 
@@ -176,34 +193,16 @@ var newMessage = function (Messages) {
 				$this.appendTo('.chatbox-content[data-id="publish"]'); // Thêm tin nhắn thường vào mục chat chung
 			}
 
-			var msgId = $this.closest(".chatbox-content").attr("data-id");
-			var $msgTab = $(".chatbox-change[data-id='" + msgId + "']");
-			messText = $msg.text();
-			if (messText === "/buzz") { // Nếu có ký hiệu buzz
-				$msg.html('<img src="http://i.imgur.com/9GvQ6Gd.gif" width="62" height="16" />'); // Thay bằng ảnh buzz
+			if ($this.find(".msg").text() == "/buzz") { // Nếu có ký hiệu buzz
+				$this.find(".msg").html('<img src="http://i.imgur.com/9GvQ6Gd.gif" width="62" height="16" />'); // Thay bằng ảnh buzz
 				if (!firstTime && $("#chatbox-main").css("left") !== "0px") { // Không chạy hiệu ứng buzz trong lần truy cập đầu tiên
-					$msgTab.click();
+					$(".chatbox-change[data-id='" + $this.closest(".chatbox-content").attr("data-id") + "']").click();
 					$("#chatbox-forumvi").addClass("chatbox-buzz");
 					$("#chatbox-buzz-audio")[0].play();
 					setTimeout(function () {
 						$("#chatbox-forumvi").removeClass("chatbox-buzz");
 						$messenger.focus();
 					}, 1000);
-				}
-			} else if (messText.indexOf("/out") === 0 && msgId !== "publish") {
-				if ($this.find(".user > a").text() === uName) {
-					$msgTab.add(".chatbox-content[data-id='" + msgId + "']").hide();
-					var otherUser = decodeURIComponent($.grep($msgTab.data("users"), function (n, i) {
-						return (n !== encodeURIComponent(uName));
-					})[0]);
-					userOnline(otherUser).parent().show();
-					if (my_getcookie('chatbox_active') === msgId) {
-						$(".chatbox-change[data-id='publish']").click();
-						my_setcookie('chatbox_active', msgId);
-					}
-					$this.replaceWith('<p class="chatbox-userout me clearfix">Bạn đã rời khỏi phòng.</p>');
-				} else {
-					$this.replaceWith('<p class="chatbox-userout clearfix"><strong>' + $this.find('.user > a').text() + '</strong> đã rời khỏi phòng.</p>');
 				}
 			}
 
@@ -219,12 +218,16 @@ var newMessage = function (Messages) {
 
 		});
 
+<<<<<<< HEAD:zzchat.js
 		setTimeout(function () {
 			var $tabCookie = $('.chatbox-change[data-id="' + my_getcookie('chatbox_active') + '"]');
 			if ($tabCookie.length && $tabCookie.is(":visible")) {
 				$('.chatbox-change[data-id="' + my_getcookie('chatbox_active') + '"]').click(); // Active tab khi có cookie
 			}
 		}, 200);
+=======
+		$('.chatbox-change[data-id="' + my_getcookie('chatbox_active') + '"]').click(); // Active tab khi có cookie
+>>>>>>> parent of d188d63... Demo for forumotion:forumvi.chatbox.js
 
 		var messCounterObj = JSON.parse(sessionStorage.getItem("messCounter"));
 		var allNewMess = 0; // Đếm số tin nhắn mới
@@ -264,18 +267,22 @@ var newMessage = function (Messages) {
 			}
 			$title.text(tit);
 		}
-
+		
 		setTimeout(function () {
 			$wrap.scrollTop(99999); // Cuộn xuống dòng cuối cùng
 		}, 300);
 	}
 }
 
+<<<<<<< HEAD:zzchat.js
 /**
  * Xử lý các tin nhắn sau khi tải về
  *
  * @param {htmlString} Dữ liệu tin nhắn
  */
+=======
+// Xử lý các tin nhắn sau khi tải về
+>>>>>>> parent of d188d63... Demo for forumotion:forumvi.chatbox.js
 var filterMess = function (chatsource) {
 
 	/**
@@ -305,7 +312,7 @@ var filterMess = function (chatsource) {
 		lastMess = undefined; // Xóa giá trị tin nhắn cuối
 	}
 	//}
-	$("#chatbox-forumvi:hidden").fadeIn(300); // Hiển thị chatbox
+	$("#chatbox-forumvi:hidden").fadeIn();
 	firstTime = false;
 };
 
@@ -314,6 +321,7 @@ var filterMess = function (chatsource) {
  * Cập nhật dữ liệu
  */
 
+<<<<<<< HEAD:zzchat.js
 /**
  * Tạo nhanh thẻ li trong menu action
  *
@@ -343,6 +351,9 @@ var menuActionOne = true; // Chỉ chạy 1 lần
  * $param {htmlString} Dữ liệu tin nhắn
  */
 var getDone = function (chatsource) {
+=======
+var getDone = function (chatsource) { // Xử lý khi tải xong dữ liệu tin nhắn
+>>>>>>> parent of d188d63... Demo for forumotion:forumvi.chatbox.js
 
 	if (chatsource.indexOf("<!DOCTYPE html PUBLIC") === 0) { // Lỗi do logout hoặc bị ban
 		if (chatsource.indexOf("You have been banned from the ChatBox") !== -1) {
@@ -398,7 +409,7 @@ var getDone = function (chatsource) {
 
 			$(".chatbox-change > h3").each(function () {
 				var $h3 = $(this);
-				if ($h3.text() == user_name && $h3.parent().is(":visible")) {
+				if ($h3.text() == user_name) {
 					$this.parent().hide(); // Ẩn nick trong danh sách
 					return false;
 				}
@@ -410,10 +421,6 @@ var getDone = function (chatsource) {
 				$("#chatbox-me > h2").html('<a href="/u' + user_id + '" target="_blank" style="color:' + $this.find('span').css('color') + '">' + uName + '</a>');
 				$this.parent().remove();
 
-				if (menuActionOne) {
-					quickAction("#chatbox-title ul", "out", false, "Rời khỏi phòng");
-					menuActionOne = false;
-				}
 			} else {
 
 				var $setting = $("<div>").addClass("chatbox-setting");
@@ -421,22 +428,30 @@ var getDone = function (chatsource) {
 				var $list = $("<ul>").addClass("chatbox-dropdown");
 				$list.appendTo($setting);
 
-				quickAction($list, "chat", user_name, "Trò chuyện riêng");
-				// quickAction($list, "gift", user_name, "Tặng video, nhạc");
+				var quickAction = function (cmd, txt) { // Tạo nhanh menu action
+					$("<li>", {
+						"class": "chatbox-action",
+						"data-action": "/" + cmd + " " + user_name,
+						text: txt
+					}).appendTo($list);
+				};
+
+				quickAction("chat", "Trò chuyện riêng");
+				// quickAction("gift", "Tặng video, nhạc");
 
 				if (my_chat_level == 2) { // Mình có quyền quản lý				
 					if (user_chat_level != 2) { // Nick này cấp bậc thấp hơn mình
 
-						// quickAction($list, "kick", user_name, "Mời ra khỏi chatbox");
-						quickAction($list, "ban", user_name, "Cấm truy cập chat");
+						// quickAction("kick", "Mời ra khỏi chatbox");
+						quickAction("ban", "Cấm người này truy cập");
 					}
 					if (my_user_level == 1 && user_chat_level == 2 && user_level != 1) { // Nick này có quyền quản lý nhưng cấp thấp hơn mình
-						quickAction($list, "unmod", user_name, "Xóa quyền quản lý");
+						quickAction("unmod", "Xóa quyền quản lý");
 					} else if (my_user_level == 1 && user_chat_level != 2) { // Nick này chưa có quền quản lý và cấp thấp hơn mình
-						quickAction($list, "mod", user_name, "Thăng cấp quản lý");
+						quickAction("mod", "Thăng cấp quản lý");
 					}
 				}
-
+				
 			}
 
 		});
@@ -458,14 +473,17 @@ var getDone = function (chatsource) {
 	}
 };
 
+<<<<<<< HEAD:zzchat.js
 /**
  * Tải dữ liệu và cập nhật nội dung chatbox
  *
  * @param {URL} Đường dẫn tải dữ liệu
  */
+=======
+>>>>>>> parent of d188d63... Demo for forumotion:forumvi.chatbox.js
 var update = function (url) {
 
-	$.get(url).done(function (data) {
+	$.get(url).done(function (data) { // Tải dữ liệu chatbox
 		getDone(data);
 	}).fail(function (data) {
 		if (data.responseText.indexOf("document.getElementById('refresh_auto')") === 0) { // Nếu disconnect
@@ -533,12 +551,8 @@ $("#chatbox-list").on("click", ".chatbox-change", function () {
 	$(".chatbox-content").hide();
 	$('.chatbox-content[data-id="' + dataID + '"]').show();
 	var key = "";
-	var $titSetting = $("#chatbox-title >.chatbox-setting");
 	if (dataID !== "publish") {
 		key = dataID + $this.attr("data-name") + $this.attr("data-users");
-		$titSetting.show();
-	} else {
-		$titSetting.hide();
 	}
 	$form.attr("data-key", key);
 	$messenger.attr("data-id", dataID);
@@ -551,7 +565,7 @@ $("#chatbox-list").on("click", ".chatbox-change", function () {
 });
 
 // Chạy các chức năng từ menu
-$("#chatbox-members, #chatbox-title").on("click", ".chatbox-action", function () {
+$("#chatbox-members").on("click", ".chatbox-action", function () {
 	$messenger.val($(this).attr("data-action"));
 	$form.submit();
 });
@@ -588,12 +602,16 @@ $("#chatbox-option-buzz").click(function () {
 });
 
 /**
+<<<<<<< HEAD:zzchat.js
  * Gửi tin nhắn
  *
  * @param {String} Nội dung tin nhắn
+=======
+ * Gửi tin nhắn và xử lý các lệnh cmd
+>>>>>>> parent of d188d63... Demo for forumotion:forumvi.chatbox.js
  */
+
 var sendMessage = function (val) {
-	oldMessage = $messenger.val();
 	$.post("/chatbox/chatbox_actions.forum?archives=1", {
 		mode: "send",
 		sent: val,
@@ -611,7 +629,6 @@ var sendMessage = function (val) {
 		});
 	}).fail(function () {
 		alert("Lỗi! Tin nhắn chưa được gửi.");
-		$messenger.val(oldMessage);
 		// Xử lý cho lỗi mất kết nối internet (có thể xảy ra do refresh trang trong lúc đang tải)
 	});
 };
@@ -628,66 +645,50 @@ $form.submit(function (event) { // Gửi tin nhắn
 			var cmd = messVal.match(regexpCmd);
 
 			var action = cmd[1],
-				nickname = cmd[3],
-				nicknameencode = encodeURIComponent(nickname),
-				uNameencode = encodeURIComponent(uName);
+				nickname = encodeURIComponent(cmd[3]);
 
 			if (/^(chat|gift|toggle)$/.test(action)) { // Những lệnh không gửi đi
 				if (action === "chat") {
 					var nickdecode = decodeURIComponent(nickname);
+					var $newTab = $(".chatbox-change[data-users*='\"" + nickname + "\"']"); // Đặt biến cho tab chat riêng
+					var $user = $("#chatbox-members").find('a[onclick="return copy_user_name(\'' + nickdecode + '\');"]');
 
-					// Đặt biến cho tab chat riêng
-					var $newTab = $('.chatbox-change[data-users="[\\"' + uNameencode + '\\",\\"' + nicknameencode + '\\"]"]');
-					if (!$newTab.length) {
-						$newTab = $('.chatbox-change[data-users="[\\"' + nicknameencode + '\\",\\"' + uNameencode + '\\"]"]');
-					}
+					if ($user.length) { // Nếu có nickname trong danh sách
+						$user.parent().hide(); // Ẩn nickname trong danh sách
 
-					var $user = userOnline(nickname);
+						if (!$newTab.length) { // Nếu chưa có tab chat
+							var dataId = new Date().getTime() + "_" + uId; // Tạo data-id
 
-					if ($newTab.length) { // Nếu đã có tab chat riêng
-						$newTab.show().click();
-					} else {
-						if ($user.length) { // Nếu có nickname trong danh sách
-							$user.parent().hide(); // Ẩn nickname trong danh sách
-
-							if (!$newTab.length) { // Nếu chưa có tab chat
-								var dataId = new Date().getTime() + "_" + uId; // Tạo data-id
-
-								// Đặt icon online và away dựa vào class ở tiêu đề
-								var clas,
-									$status = $user.parent().parent().prev("h4");
-								if ($status.hasClass("online")) {
-									clas = " online";
-								} else if ($status.hasClass("online")) {
-									clas = " away";
-								} else {
-									clas = "";
-								}
-								$newTab = $("<div>", {
-									"class": "chatbox-change" + clas,
-									"data-id": dataId,
-									"data-name": "{}",
-									"data-users": '["' + uNameencode + '","' + nicknameencode + '"]',
-									html: '<h3 style="color:' + $user.css('color') + '">' + nickname + '</h3><span class="chatbox-change-mess"></span>'
-								}).appendTo("#chatbox-list"); // Tạo tab chat riêng mới 
-								$newTab.click();
-								$("<div>", {
-									"class": "chatbox-content",
-									"data-id": dataId,
-									"style": "display: none;"
-								}).appendTo($wrap); // Tạo mục chat riêng mới
-							}
-
-						} else { // Nếu không có nickname trong danh sách
-							if ($newTab.length) { // Nếu có tab chat riêng
-								$newTab.removeClass("online away").click(); // Xóa trang thái online, away về trạng thái offline
+							// Đặt icon online và away dựa vào class ở tiêu đề
+							var clas,
+								$status = $user.parent().parent().prev("h4");
+							if ($status.hasClass("online")) {
+								clas = " online";
+							} else if ($status.hasClass("online")) {
+								clas = " away";
 							} else {
-								if (nickname === uName) {
-									alert("Phát hiện nghi vấn Tự kỷ ^^~");
-								} else {
-									alert("Thành viên " + nickname + " hiện không truy cập!");
-								}
+								clas = "";
 							}
+							$newTab = $("<div>", {
+								"class": "chatbox-change" + clas,
+								"data-id": dataId,
+								"data-name": "{}",
+								"data-users": '["' + encodeURIComponent(uName) + '","' + nickname + '"]',
+								html: '<h3 style="color:' + $user.css('color') + '">' + nickdecode + '</h3><span class="chatbox-change-mess"></span>'
+							}).appendTo("#chatbox-list"); // Tạo tab chat riêng mới 
+							$newTab.click();
+							$("<div>", {
+								"class": "chatbox-content",
+								"data-id": dataId,
+								"style": "display: none;"
+							}).appendTo($wrap); // Tạo mục chat riêng mới
+						}
+
+					} else { // Nếu không có nickname trong danh sách
+						if ($newTab.length) { // Nếu có tab chat riêng
+							$newTab.removeClass("online away").click(); // Xóa trang thái online, away về trạng thái offline
+						} else {
+							alert("Thành viên " + nickdecode + " hiện không truy cập!");
 						}
 					}
 				} else if (action === "toggle") {
@@ -698,32 +699,30 @@ $form.submit(function (event) { // Gửi tin nhắn
 			}
 		} else { // Nếu là tin nhắn thường
 			var messWithKey = $form.attr("data-key") + messVal; // tin nhắn có key (tin riêng)
-			var messId = $messenger.attr("data-id");
+
 			if (messVal == "/buzz") { // BUZZ
 
 				var $buzz = $("#chatbox-option-buzz");
 				if ($buzz.html() === "BUZZ") { // BUZZ chưa disable
-					var timeBuzz = 59, // 30s
+					var timeBuzz = 29, // 30s
 						timeBuzzCount;
 
 					sendMessage(messWithKey);
 
 					$buzz.addClass("disable"); // Thêm class để hiện số đếm lùi
-					$buzz.html(60);
+					$buzz.html(30);
 					timeBuzzCount = setInterval(function () {
 						var zero = timeBuzz--;
 						$buzz.html(zero);
 						if (zero <= 0) { // Cho phép BUZZ
 							clearInterval(timeBuzzCount);
 							$buzz.removeClass("disable");
-							timeBuzz = 59;
+							timeBuzz = 29;
 							timeBuzzCount = undefined;
 							$buzz.html("BUZZ");
 						}
 					}, 1000);
 				}
-			} else if (messVal == "/out" && messId !== "publish") {
-				sendMessage(messWithKey);
 			} else {
 				sendMessage(messWithKey);
 			}
