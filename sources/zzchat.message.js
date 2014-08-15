@@ -220,13 +220,8 @@ var filterMess = function (chatsource) {
 	} else { // Nếu không có tin nhắn (có thể là do clear chatbox)
 		lastMess = undefined; // Xóa giá trị tin nhắn cuối
 	}
-<<<<<<< HEAD:sources/zzchat.message.js
 
 	$("#chatbox-forumvi:hidden").fadeIn(200); // Hiển thị chatbox
 
-=======
-	//}
-	$("#chatbox-forumvi:hidden").fadeIn(300); // Hiển thị chatbox
->>>>>>> parent of 31b4945... add smiley:forumvi.chatbox.message.js
 	firstTime = false;
 };
