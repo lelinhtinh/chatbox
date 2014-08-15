@@ -3,7 +3,7 @@ var regexpPM = /^(<span style="color: (#[0-9A-Fa-f]{6}|rgb\(\d{2,3}, \d{2,3}, \d
 /**
  * Xử lý dữ liệu tin nhắn để chuyển đến dạng tab riêng mình cần
  *
- * @param {htmlString} Dữ liệu tin nhắn mới
+ * @param {htmlString} Dữ liệu tin nhắn
  */
 var newMessage = function (Messages) {
 	if (Messages) {
