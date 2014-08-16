@@ -18,6 +18,7 @@ var firstTime = true; // Lần truy cập đầu tiên
 var $wrap = $("#chatbox-wrap"); // Khối bao quanh tin nhắn
 var $messenger = $("#chatbox-messenger-input"); // input nhập liệu
 var $form = $("#chatbox-form"); // form gửi tin
+var $wform = $("#chatbox-messenger-form");
 var uId, uName; // user id, user name của thành viên đang truy cập chatbox(mình)
 var autoRefresh; // Cập nhật tin nhắn mỗi 5 giây
 var $title = $("title"); // Tiêu đề của trang
@@ -620,7 +621,7 @@ var getDone = function(chatsource) {
 };
 
 var disconnect = function() {
-    clearInterval(refreshFunction); // Dừng tự cập nhật
+    clearInterval(refreshFunction); // Dừng tự cập nhật    
     $("#chatbox-action-logout").addClass("isOut");
     $(".chatbox-action-checkbox").prop("checked", false).hide();
     $messenger.val("/away");
