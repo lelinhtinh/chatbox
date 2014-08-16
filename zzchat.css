@@ -568,6 +568,6 @@ div#chatbox-option-buzz {
 }
 /* test */
 
-#chatbox-title[data-action="publish"] .chatbox-action-group, .chatbox-action-group.add {
+#chatbox-title[data-id="publish"] .chatbox-action-group, .chatbox-action-group.add {
     display: none;
 }
