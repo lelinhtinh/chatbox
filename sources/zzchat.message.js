@@ -99,7 +99,7 @@ var newMessage = function (Messages) {
             messText = $msg.text();
             if (messText === "/buzz") { // Nếu có ký hiệu buzz
                 $msg.html('<img src="http://i.imgur.com/9GvQ6Gd.gif" width="62" height="16" />'); // Thay bằng ảnh buzz
-                if (!firstTime && $("#chatbox-main").css("left") !== "0px") { // Không chạy hiệu ứng buzz trong lần truy cập đầu tiên
+                if (!firstTime && $("#chatbox-main").css("left") !== "-1px") { // Không chạy hiệu ứng buzz trong lần truy cập đầu tiên
                     $msgTab.click();
                     $("#chatbox-forumvi").addClass("chatbox-buzz");
                     $("#chatbox-buzz-audio")[0].play();

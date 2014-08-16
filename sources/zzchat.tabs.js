@@ -66,8 +66,8 @@ $("#chatbox-hidetab").click(function () {
 		tabs, main, status;
 	$this.toggleClass(function () {
 		if ($this.hasClass("show")) { // ẩn tab
-			tabs = -270;
-			main = 0;
+			tabs = -271;
+			main = -1;
 			status = "hide";
 		} else { // hiện tab
 			tabs = 0;

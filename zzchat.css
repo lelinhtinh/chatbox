@@ -144,8 +144,8 @@ a {
     cursor: pointer;
 }
 #chatbox-tabs, #chatbox-main {
-    -webkit-transition: left .7s;
-    transition: left .7s;
+    -webkit-transition: all .7s;
+    transition: all .7s;
 }
 #chatbox-title {
     padding-left: 20px;
@@ -160,8 +160,6 @@ a {
     border-right: 1px dashed #DDD;
     padding: 2px 7px;
     overflow: auto;
-    -webkit-transition: opacity .5s;
-    transition: opacity .5s;
 }
 #chatbox-members {
     margin-bottom: 50px;
