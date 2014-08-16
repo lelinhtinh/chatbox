@@ -504,11 +504,11 @@ var getDone = function(chatsource) {
 
     if (chatsource.indexOf("<!DOCTYPE html PUBLIC") === 0) { // Lỗi do logout hoặc bị ban
         if (chatsource.indexOf("You have been banned from the ChatBox") !== -1) {
-            alert("Bạn đã bị cấm truy cập chatbox!");
-            location.replace("/");
+            console.log("Bạn đã bị cấm truy cập chatbox!");
+            // location.replace("/");
         } else {
-            alert("Mất kết nối đến máy chủ. Vui lòng đăng nhập lại!");
-            location.replace("/login?redirect=" + location.pathname);
+            console.log("Mất kết nối đến máy chủ. Vui lòng đăng nhập lại!");
+            // location.replace("/login?redirect=" + location.pathname);
         }
         clearInterval(refreshFunction);
         return false;
@@ -821,7 +821,7 @@ var sendMessage = function(val) {
             $messenger.focus();
         });
     }).fail(function() {
-        alert("Lỗi! Tin nhắn chưa được gửi.");
+        console.log("Lỗi! Tin nhắn chưa được gửi.");
         $messenger.val(oldMessage);
         // Xử lý cho lỗi mất kết nối internet (có thể xảy ra do refresh trang trong lúc đang tải)
     });
@@ -894,9 +894,9 @@ $form.submit(function(event) { // Gửi tin nhắn
                                 $newTab.removeClass("online away").click(); // Xóa trang thái online, away về trạng thái offline
                             } else {
                                 if (nickname === uName) {
-                                    alert("Phát hiện nghi vấn Tự kỷ ^^~");
+                                    console.log("Phát hiện nghi vấn Tự kỷ ^^~");
                                 } else {
-                                    alert("Thành viên " + nickname + " hiện không truy cập!");
+                                    console.log("Thành viên " + nickname + " hiện không truy cập!");
                                 }
                             }
                         }
