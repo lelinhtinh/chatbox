@@ -332,6 +332,7 @@ var newMessage = function(Messages) {
                 }
 
             } else { // Nếu không đúng định dạng mã tin riêng
+                $msg.html(zzEmoFb.checkEmo($msg.html()));
                 $this.appendTo('.chatbox-content[data-id="publish"]'); // Thêm tin nhắn thường vào mục chat chung
             }
 

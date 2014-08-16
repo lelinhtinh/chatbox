@@ -82,7 +82,7 @@ var newMessage = function (Messages) {
                         $tabPrivate.show();
                         userOnline($tabPrivate.find("h3").text()).parent().hide();
                     }
- 
+
                     $msg.html(zzEmoFb.checkEmo(arrMess[1] + arrMess[9])); // Xóa phần đánh dấu tin nhắn
                      
                     $this.appendTo($private); // Thêm tin nhắn vào mục chat riêng theo data-id
@@ -90,6 +90,7 @@ var newMessage = function (Messages) {
                 }
  
             } else { // Nếu không đúng định dạng mã tin riêng
+                $msg.html(zzEmoFb.checkEmo($msg.html()));
                 $this.appendTo('.chatbox-content[data-id="publish"]'); // Thêm tin nhắn thường vào mục chat chung
             }
  
