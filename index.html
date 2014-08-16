@@ -14,10 +14,10 @@
         <div id="chatbox-header">
             <div id="chatbox-me">
                 <h2>...</h2>
+                <div id="chatbox-action-logout"></div>
                 <div class="chatbox-action-checkbox autologin">
                     <input type="checkbox" id="chatbox-input-autologin" name="autologin" checked />
-                    <label for="chatbox-input-autologin">Tự đăng nhập</label>
-                    <div id="chatbox-action-logout"></div>
+                    <label for="chatbox-input-autologin">Tự đăng nhập</label>                    
                 </div>
                 <div id="chatbox-hidetab" class="show"></div>
             </div>
@@ -25,7 +25,7 @@
                 <h2>Kênh chung</h2>
                 <div class="chatbox-action-group edit"></div>
                 <div class="chatbox-action-group add"></div>
-                <div class="chatbox-action-group close"></div>
+                <div class="chatbox-action-group close chatbox-action" data-action="/out"></div>
                 <div class="chatbox-action-checkbox refresh">
                     <input type="checkbox" id="chatbox-input-autorefesh" name="autorefesh" checked />
                     <label for="chatbox-input-autorefesh">Tự cập nhật</label>

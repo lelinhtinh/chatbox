@@ -33,7 +33,7 @@ $form.submit(function (event) { // Gửi tin nhắn
     var messVal = $messenger.val();
     if ($.trim(messVal) !== "") {
  
-        var regexpCmd = /^\/(chat|gift|toggle|kick|ban|unban|mod|unmod|cls|clear|me)(\s(.+))?$/;
+        var regexpCmd = /^\/(chat|gift|toggle|kick|away|ban|unban|mod|unmod|cls|clear|me)(\s(.+))?$/;
  
         if (regexpCmd.test(messVal)) { // Nếu là các lệnh cmd
             var cmd = messVal.match(regexpCmd);

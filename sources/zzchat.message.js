@@ -195,18 +195,8 @@ var lastMess; // Lấy html của tin cuối cùng
  * 
  * @param {htmlString} Dữ liệu tin nhắn
  */
-var filterMess = function (chatsource) {
- 
-    /**
-     * Tải dữ liệu chatbox
-     *
-     * chatbox_messages     Tin nhắn chatbox
-     * chatbox_memberlist   Thành viên đang truy cập
-     * chatbox_last_update  Thời điểm cập nhật cuối
-     */
-    eval(chatsource); // Chuyển đổi để các biến chạy được
- 
-    // chatbox_old_update = chatbox_last_update;
+var filterMess = function (chatbox_messages) { 
+
     var newChatboxMessages, thisLastMess;
     if (chatbox_messages) { // Nếu có tin nhắn
         thisLastMess = chatbox_messages.match(/<p class="chatbox_row_(1|2) clearfix">(?:.(?!<p class="chatbox_row_(1|2) clearfix">))*<\/p>$/)[0]; // Lấy tin nhắn cuối trong lần này
