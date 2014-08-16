@@ -9,7 +9,7 @@
 (function($) {
 	var zzchat = {
 		data: {
-			me: "", // uid của người đang chat (mình)
+			me: [], // uid của người đang chat (mình)
 
 			user: { // Thông số mỗi user
 				// id: { // User id
@@ -190,6 +190,14 @@
 				},
 
 			},
+			focus: function() {
+				document.getElementById('chatbox-messenger-input').focus();
+			}
+			color: {
+				create: function(name) {
+
+				}
+			}
 		},
 	}
 
