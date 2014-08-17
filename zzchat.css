@@ -76,6 +76,7 @@ a {
     left: 0;
     position: absolute;
     top: 0;
+    -webkit-transition: left 0.5s ease 0s;
     transition: left 0.5s ease 0s;
     width: 220px;
 }
@@ -115,6 +116,7 @@ a {
     left: 35px;
     right: auto;
     top: -50px;
+    -webkit-transition: top 0.5s ease 0s;
     transition: top 0.5s ease 0s;
 }
 #chatbox-action-logout {
@@ -123,6 +125,7 @@ a {
     left: 0;
     position: absolute;
     top: -50px;
+    -webkit-transition: top 0.5s ease 0s;
     transition: top 0.5s ease 0s;
     width: 30px;
 }
@@ -147,6 +150,7 @@ a {
     cursor: pointer;
 }
 #chatbox-tabs, #chatbox-main {
+    -webkit-transition: all 0.7s ease 0s;
     transition: all 0.7s ease 0s;
 }
 #chatbox-title {
@@ -286,6 +290,7 @@ ul.chatbox-dropdown > li {
     height: 24px;
     list-style: none outside none;
     padding: 0 10px;
+    -webkit-transition: background-color 0.3s ease 0s, color 0.3s ease 0s;
     transition: background-color 0.3s ease 0s, color 0.3s ease 0s;
 }
 ul.chatbox-dropdown > li:hover {
@@ -313,6 +318,7 @@ ul.chatbox-dropdown > li:hover {
     position: absolute;
     right: 0;
     top: 0;
+    -webkit-transition: opacity 0.5s ease 0s, bottom 0.5s ease 0s;
     transition: opacity 0.5s ease 0s, bottom 0.5s ease 0s;
 }
 .chatbox-content {
@@ -367,6 +373,7 @@ ul.chatbox-dropdown > li:hover {
     padding: 5px;
     position: absolute;
     right: 0;
+    -webkit-transition: bottom 0.5s ease 0s;
     transition: bottom 0.5s ease 0s;
 }
 #chatbox-messenger {
@@ -391,7 +398,6 @@ ul.chatbox-dropdown > li:hover {
     top: 42px;
 }
 #chatbox-option > div {
-    -moz-user-select: none;
     background: none no-repeat scroll center center #fff;
     border: 1px outset;
     float: left;
@@ -454,6 +460,14 @@ div#chatbox-option-buzz {
     border: 1px inset;
     cursor: pointer;
 }
+@-webkit-keyframes chatbox_row {
+50% {
+    background-color: #fcffd5;
+}
+100% {
+    background-color: transparent;
+}
+}
 @keyframes chatbox_row {
 50% {
     background-color: #fcffd5;
@@ -463,19 +477,35 @@ div#chatbox-option-buzz {
 }
 }
 .chatbox-content > p.chatbox-newmess {
+    -webkit-animation: 3s ease 0s normal none 1 chatbox_row;
     animation: 3s ease 0s normal none 1 chatbox_row;
 }
-@keyframes shake {
+@-webkit-keyframes shake {
 10%, 30%, 50%, 70%, 90% {
+    -webkit-transform: translate3d(-10px, 0px, 0px);
     transform: translate3d(-10px, 0px, 0px);
 }
 20%, 40%, 60%, 80% {
+    -webkit-transform: translate3d(10px, 0px, 0px);
+    transform: translate3d(10px, 0px, 0px);
+}
+}
+@keyframes shake {
+10%, 30%, 50%, 70%, 90% {
+    -webkit-transform: translate3d(-10px, 0px, 0px);
+    transform: translate3d(-10px, 0px, 0px);
+}
+20%, 40%, 60%, 80% {
+    -webkit-transform: translate3d(10px, 0px, 0px);
     transform: translate3d(10px, 0px, 0px);
 }
 }
 .chatbox-buzz {
+    -webkit-animation-duration: 1s;
     animation-duration: 1s;
+    -webkit-animation-fill-mode: both;
     animation-fill-mode: both;
+    -webkit-animation-name: shake;
     animation-name: shake;
 }
 #smiley_FB_frame {
@@ -505,9 +535,11 @@ div#chatbox-option-buzz {
     width: 16px;
 }
 .smiley_FB:hover {
+    -webkit-transform: scale(1.1);
     transform: scale(1.1);
 }
 .smiley_FB:active {
+    -webkit-transform: scale(3);
     transform: scale(3);
 }
 #smiley_FB_frame img, #smiley_FB_frame p {
@@ -516,6 +548,7 @@ div#chatbox-option-buzz {
 #chatbox-forumvi > *:not(#chatbox-messenger, .chatbox-content) {
 	-moz-user-select: none;
 	-webkit-user-select: none;
+	-ms-user-select: none;
 }
 #chatbox-title[data-id="publish"] .chatbox-action-group, .chatbox-action-group.add {
     display: none;
