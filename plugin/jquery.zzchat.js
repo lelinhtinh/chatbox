@@ -9,9 +9,9 @@
 
 (function($) {
 
-    $.zzchat = {};
+    var Z = $.zzchat = {};
 
-    $.zzchat.data = {
+    Z.data = {
         
         me: "", // uid của người đang chat (mình)
 
@@ -56,12 +56,12 @@
         active_id: "publish" // Id của phòng chat đang sử dụng
     };
 
-    $.zzchat.firstTime = true; // Lần truy cập đầu tiên
-    $.zzchat.oldMessage = ""; // Nội dung tin nhắn vừa nhập vào để phục hồi khi lỗi
-    $.zzchat.autoRefresh = {}; // Hàm cập nhật tin nhắn
-    $.zzchat.stopRefresh = {}; // Dừng hàm tự cập nhật tin nhắn
+    Z.firstTime = true; // Lần truy cập đầu tiên
+    Z.oldMessage = ""; // Nội dung tin nhắn vừa nhập vào để phục hồi khi lỗi
+    Z.autoRefresh = {}; // Hàm cập nhật tin nhắn
+    Z.stopRefresh = {}; // Dừng hàm tự cập nhật tin nhắn
 
-    $.zzchat.create = {
+    Z.create = {
 
         block: function(Id, Type, Content) {
             return $("<div>", {
@@ -94,7 +94,7 @@
     };
 
     // Đặt và lấy giá trị cookie
-    $.zzchat.cookie = {
+    Z.cookie = {
 
         /**
          * Lấy cookie
@@ -143,7 +143,7 @@
      * @param  {String} time Giá trị thời gian
      * @return {String}      Giá trị thời gian đã chuyển đổi
      */
-    $.zzchat.date = function(type, time) {
+    Z.date = function(type, time) {
         var format;
         switch (type) {
 
@@ -176,11 +176,11 @@
     };
 
     // Các đối tượng jQuery thành phần Chatbox
-    $.zzchat.obj = {
-        header: $.zzchat.create.block("header", "block", ""),
-        meWrap: $.zzchat.create.block("meWrap", "block", ""),
-        me: $.zzchat.create.block("me", "title", ""),
-        titleWrap: $.zzchat.create.block("titleWrap", "block", "")
+    Z.obj = {
+        header: Z.create.block("header", "block", ""),
+        meWrap: Z.create.block("meWrap", "block", ""),
+        me: Z.create.block("me", "title", ""),
+        titleWrap: Z.create.block("titleWrap", "block", "")
     };
 
     /**
@@ -231,7 +231,7 @@
                 }
 
                 var mess_date = $(".date-and-time", $this).text(); // Lấy thông số thời gian gửi tin
-                var mess_dateUTC = $.zzchat.date('def', mess_date); // Thời gian gửi tin dạng UTC
+                var mess_dateUTC = Z.date('def', mess_date); // Thời gian gửi tin dạng UTC
 
                 var starter_id = ""; // Uid người tạo phòng chat
                 var room_id; // Id phòng chat
@@ -290,24 +290,24 @@
                     mess_content = arrMess[1] + arrMess[9];
                 }
 
-                if ($.zzchat.data.chatroom[room_id] === undefined) {
-                    $.zzchat.data.chatroom[room_id] = {};
+                if (Z.data.chatroom[room_id] === undefined) {
+                    Z.data.chatroom[room_id] = {};
                 }
-                var room_dateUTC = $.zzchat.data.chatroom[room_id].room_dateUTC;
+                var room_dateUTC = Z.data.chatroom[room_id].room_dateUTC;
                 if (room_dateUTC === undefined) {
                     room_dateUTC = mess_dateUTC;
                 }
-                var room_date = $.zzchat.data.chatroom[room_id].room_date;
+                var room_date = Z.data.chatroom[room_id].room_date;
                 if (room_date === undefined) {
                     room_date = mess_date;
                 }
-                if ($.zzchat.data.dateUTC_begin === "") {
-                    $.zzchat.data.dateUTC_begin = mess_dateUTC;
+                if (Z.data.dateUTC_begin === "") {
+                    Z.data.dateUTC_begin = mess_dateUTC;
                 }
-                if ($.zzchat.data.date_begin === "") {
-                    $.zzchat.data.date_begin = mess_date;
+                if (Z.data.date_begin === "") {
+                    Z.data.date_begin = mess_date;
                 }
-                var newMessData = $.zzchat.data.chatroom[room_id].message;
+                var newMessData = Z.data.chatroom[room_id].message;
                 if (newMessData === undefined) {
                     newMessData = [];
                 }
@@ -322,7 +322,7 @@
                     mess_content: mess_content // htmlString phần nội dung
                 };
                 newMessData.push(newMess);
-                $.zzchat.data.chatroom[room_id] = { // Thời điểm tạo phòng và user_id người tạo
+                Z.data.chatroom[room_id] = { // Thời điểm tạo phòng và user_id người tạo
                     room_dateUTC: mess_dateUTC, // Thời điểm nhắn tin, định dạng UTC, chuyển từ thông tin trong chatbox 
                     room_date: room_date, // Thời điểm nhắn tin, định dạng hh:mm:ss dd/mm/yy trong chatbox
                     starter_id: starter_id, // Id người tạo phòng
@@ -333,8 +333,8 @@
                     message: newMessData // Dữ liệu tin nhắn trong phòng chat
                 };
 
-                $.zzchat.data.all_mess_length += 1;
-                $.zzchat.data.new_mess = newMess;
+                Z.data.all_mess_length += 1;
+                Z.data.new_mess = newMess;
             });
         }
     };
@@ -429,11 +429,11 @@
 
                 if (user_id === my_user_id) { // Nếu user_id trùng với my_user_id
 
-                    $.zzchat.data.me = user_id;
+                    Z.data.me = user_id;
 
                 }
 
-                $.zzchat.data.user[user_id] = {
+                Z.data.user[user_id] = {
                     user_id: user_id,
                     user_name: user_name,
                     user_color: user_color,
@@ -532,7 +532,7 @@
 
     };
 
-    console.log($.zzchat.obj.me);
-    console.log($.zzchat.data);
+    console.log(Z.obj.me);
+    console.log(Z.data);
 
 })(jQuery);
