@@ -9,42 +9,61 @@
 
 (function($) {
 
-    var Z = $.zzchat = {};
+    var callback = {};
+
+    var Z = $.zzchat = function(options) {
+        // Thông số mặc định
+        callback = $.extend({
+            beforeLoad: function() {}, // Trước mỗi lần tải dữ liệu
+            afterLoad: function() {}, // Sau mỗi lần tải dữ liệu
+            disconnect: function() {}, // Khi bị disconnect
+            notLoaded: function() {}, // Khi gặp lỗi tải dữ liệu mà không phải bị disconnect
+            messageEach: function() {}, // Hoàn thành xử lý từng tin nhắn
+            messageAll: function() {}, // Hoàn thành xử lý tất cả tin nhắn
+            userEach: function() {}, // Hoàn thành xử lý từng thành viên
+            userAll: function() {}, // Hoàn thành xử lý tất cả thành viên
+            update: function() {}, // Cập nhật tin nhắn
+            autoUpdate: function() {}, // Tự cập nhật tin nhắn
+            stopUpdate: function() {} // Dừng cập nhật tin nhắn
+        }, options);
+
+        return this;
+    };
 
     Z.data = {
-        
+
         me: "", // uid của người đang chat (mình)
 
         user: { // Thông số mỗi user
             // id: { // User id
-            //     user_id: "", // user id
-            //     user_name: "", // nickname
-            //     user_color: "", // Màu nick (nếu có)
-            //     chat_status: "", // online/away/offline,
-            //     user_level: "", // cấp bậc trong diễn đàn
-            //     chat_level: "", // cấp bậc trong chatbox, chat level 2 sẽ có @
-            //     user_source: "" // htmlString của user
+            //     user_id     : "", // user id
+            //     user_name   : "", // nickname
+            //     user_color  : "", // Màu nick (nếu có)
+            //     chat_status : "", // online/away/offline,
+            //     user_level  : "", // cấp bậc trong diễn đàn
+            //     chat_level  : "", // cấp bậc trong chatbox, chat level 2 sẽ có @
+            //     user_source : "" // htmlString của user
             // }
         },
 
         chatroom: { // Thông số mỗi phòng chat
             // id: { // Thời điểm tạo phòng và user_id người tạo
-            //     room_dateUTC: "", // Thời điểm tạo phòng chat, định dạng UTC
-            //     room_date: "", // Thời điểm tạo phòng chat, định dạng hh:mm:ss dd/mm/yy
-            //     starter_id: "", // Id người tạo phòng
-            //     room_name: "", // Tên phòng
-            //     chatters: "", // Danh sách id người dùng
-            //     others: "", // Danh sách id người dùng không phải mình
-            //     mess_length: "", // Tổng số tin trong phòng chat
-            //     message: [{
-            //         room_id: "", // Id phòng chat
-            //         mess_dateUTC: "", // Thời điểm nhắn tin, định dạng UTC, chuyển từ thông tin trong chatbox 
-            //         mess_date: "", // Thời điểm nhắn tin, định dạng hh:mm:ss dd/mm/yy trong chatbox
-            //         poster_id: "", // Id người nhắn tin đó
-            //         cmd: "", // Mã lệnh bắt đầu bằng / không có khoảng trắng
-            //         cmd_plus: "", // Thông tin thêm cho lệnh cmd(nếu có)
-            //         mess_source: "", // htmlString của toàn bộ tin nhắn
-            //         mess_content: "" // htmlString phần nội dung
+            //     room_dateUTC : "", // Thời điểm tạo phòng chat, định dạng UTC
+            //     room_date    : "", // Thời điểm tạo phòng chat, định dạng hh:mm:ss dd/mm/yy
+            //     starter_id   : "", // Id người tạo phòng
+            //     room_name    : "", // Tên phòng
+            //     chatters     : "", // Danh sách id người dùng
+            //     others       : "", // Danh sách id người dùng không phải mình
+            //     mess_length  : "", // Tổng số tin trong phòng chat
+            //     message      : [{
+            //         room_id      : "", // Id phòng chat
+            //         mess_dateUTC : "", // Thời điểm nhắn tin, định dạng UTC, chuyển từ thông tin trong chatbox 
+            //         mess_date    : "", // Thời điểm nhắn tin, định dạng hh:mm:ss dd/mm/yy trong chatbox
+            //         poster_id    : "", // Id người nhắn tin đó
+            //         cmd          : "", // Mã lệnh bắt đầu bằng / không có khoảng trắng
+            //         cmd_plus     : "", // Thông tin thêm cho lệnh cmd(nếu có)
+            //         mess_source  : "", // htmlString của toàn bộ tin nhắn
+            //         mess_content : "" // htmlString phần nội dung
             //     }]
             // }
         },
@@ -52,14 +71,11 @@
         all_mess_length: 0, // Tổng số tin trong chatbox
         new_mess: "", // Nội dung của tin nhắn mới nhất
         dateUTC_begin: "", // Thời điểm bắt đầu vào chatbox
-        date_begin: "", // Thời điểm bắt đầu vào chatbox, định dạng hh:mm:ss dd/mm/yy
-        active_id: "publish" // Id của phòng chat đang sử dụng
+        date_begin: "" // Thời điểm bắt đầu vào chatbox, định dạng hh:mm:ss dd/mm/yy
+
     };
 
     Z.firstTime = true; // Lần truy cập đầu tiên
-    Z.oldMessage = ""; // Nội dung tin nhắn vừa nhập vào để phục hồi khi lỗi
-    Z.autoRefresh = {}; // Hàm cập nhật tin nhắn
-    Z.stopRefresh = {}; // Dừng hàm tự cập nhật tin nhắn
 
     Z.create = {
 
@@ -139,22 +155,22 @@
     /**
      * Chuyển đổi định dạng thời gian
      *
-     * @param  {String} type "def"(hh:mm:ss dd/mm/yy) hoặc "utc"(chuẩn thời gian UTC)
-     * @param  {String} time Giá trị thời gian
-     * @return {String}      Giá trị thời gian đã chuyển đổi
+     * @param  {String}        type "def"(hh:mm:ss dd/mm/yy) hoặc "utc"(chuẩn thời gian UTC)
+     * @param  {String/Number} time Giá trị thời gian
+     * @return {String}             Giá trị thời gian đã chuyển đổi
      */
     Z.date = function(type, time) {
         var format;
         switch (type) {
 
             // Chuyển thông số thời gian từ định dạng hh:mm:ss dd/mm/yy sang dạng chuẩn UTC
-            case "def":
-                time = time.split(/\[|\]|\s|\/|:/);
-                format = Date.UTC("20" + time[6], (time[5] - 1), time[4], (time[1] - 7), time[2], time[3], 0);
+            case "utc":
+                time = time.split(/\s|\/|:/);
+                format = Date.UTC("20" + time[5], (time[4] - 1), time[3], (time[0] - 7), time[1], time[2], 0);
                 break;
 
-                // Chuyển thông số thời gian từ định dạng UTC sang dạng hh:mm:ss dd/mm/yy
-            case "utc":
+            // Chuyển thông số thời gian từ định dạng UTC sang dạng hh:mm:ss dd/mm/yy
+            case "def":
                 var a = (new Date(time)).toString().split(/\s/);
                 format = a[4] + " " + a[2] + "/" + {
                     Jan: "01",
@@ -175,38 +191,10 @@
         return format;
     };
 
-    // Các đối tượng jQuery thành phần Chatbox
-    Z.obj = {
-        header: Z.create.block("header", "block", ""),
-        meWrap: Z.create.block("meWrap", "block", ""),
-        me: Z.create.block("me", "title", ""),
-        titleWrap: Z.create.block("titleWrap", "block", "")
-    };
-
-    /**
-     * Copy nickname vào khung soạn thảo
-     *
-     * @param {String} Nickname người dùng
-     */
-    var copy_user_name = function(user_name) {
-        $messenger[0].value += user_name;
-        $messenger.focus();
-        return false;
-    };
-
-
     /**
      * Mã định dạng tin nhắn riêng
      *
-     * @type {String}
-     *
-     * 1  begin
-     * 5  id
-     * 7  title
-     * 8  users
-     * 10 cmd
-     * 12 +cmd
-     * 13 end
+     * @key {String} postTime_posterID["roomName", "chatters"]/cmd cmdPlus:Content
      */
     var regexpPM = /^(<span style="color: (#[0-9A-Fa-f]{3,6}|rgb\(\d{2,3}, \d{2,3}, \d{2,3}\));?">(<(strike|i|u|strong)>)*)(\d{13,}_\d+)(\["(.*)"\,"([\d\|]*)"\])(\/(\w+)(\s([\w\d]+))?)?:?(.*)$/; // Mã kiểm tra định dạng tin nhắn riêng
 
@@ -224,27 +212,30 @@
 
                 var $this = $(this); // Đặt biến cho tin nhắn đang xét
 
-                var $user_id = $(".user > a", $this),
-                    poster_id = 0; // Lấy ra uid của người gửi tin
-                if ($user_id.length && $user_id.text() !== "") {
-                    poster_id = $user_id[0].href.match(/\d+/)[0];
-                }
+                var $poster = $(".user > a", $this); // Người gửi tin
+                var poster_id = 0; // Lấy ra uid của người gửi tin
 
-                var mess_date = $(".date-and-time", $this).text(); // Lấy thông số thời gian gửi tin
-                var mess_dateUTC = Z.date('def', mess_date); // Thời gian gửi tin dạng UTC
+                var mess_date = $(".date-and-time", $this).text().slice(1, -1); // Lấy thông số thời gian gửi tin
+                var mess_dateUTC = Z.date('utc', mess_date); // Thời gian gửi tin dạng UTC
 
                 var starter_id = ""; // Uid người tạo phòng chat
-                var room_id; // Id phòng chat
+                var room_id = ""; // Id phòng chat
                 var room_name = "Kênh chung"; // Tên phòng chat
 
-                var chatters = ""; // Array danh sách người trong phòng
-                var others = ""; // Array danh sách người trong phòng không phải mình
-                var mess_length = 0;
-                var cmd, cmd_plus;
-                var mess_source = $this[0].outerHTML;
-                var mess_content;
+                var chatters = []; // Array danh sách người trong phòng
+                var others = []; // Array danh sách người trong phòng không phải mình
+
+                var cmd = "";
+                var cmd_plus = "";
+
+                var mess_source = $this[0].outerHTML; // htmlString của tin nhắn
+                var mess_content = ""; // htmlString của phần nội dung tin nhắn
 
                 var messText = $(".msg", $this).html(); // Lấy HTML phần nội dung tin nhắn
+
+                if ($poster.length && $poster.text() !== "") {
+                    poster_id = $poster[0].href.match(/\d+/)[0];
+                }
 
                 if (regexpPM.test(messText)) { // Nếu đúng định dạng tin riêng
 
@@ -293,24 +284,30 @@
                 if (Z.data.chatroom[room_id] === undefined) {
                     Z.data.chatroom[room_id] = {};
                 }
+
                 var room_dateUTC = Z.data.chatroom[room_id].room_dateUTC;
                 if (room_dateUTC === undefined) {
                     room_dateUTC = mess_dateUTC;
                 }
+
                 var room_date = Z.data.chatroom[room_id].room_date;
                 if (room_date === undefined) {
                     room_date = mess_date;
                 }
+
                 if (Z.data.dateUTC_begin === "") {
                     Z.data.dateUTC_begin = mess_dateUTC;
                 }
+
                 if (Z.data.date_begin === "") {
                     Z.data.date_begin = mess_date;
                 }
+
                 var newMessData = Z.data.chatroom[room_id].message;
                 if (newMessData === undefined) {
                     newMessData = [];
                 }
+
                 var newMess = {
                     room_id: room_id, // Id phòng chat
                     mess_dateUTC: mess_dateUTC, // Thời điểm nhắn tin, định dạng UTC, chuyển từ thông tin trong chatbox 
@@ -322,6 +319,7 @@
                     mess_content: mess_content // htmlString phần nội dung
                 };
                 newMessData.push(newMess);
+
                 Z.data.chatroom[room_id] = { // Thời điểm tạo phòng và user_id người tạo
                     room_dateUTC: mess_dateUTC, // Thời điểm nhắn tin, định dạng UTC, chuyển từ thông tin trong chatbox 
                     room_date: room_date, // Thời điểm nhắn tin, định dạng hh:mm:ss dd/mm/yy trong chatbox
@@ -335,34 +333,17 @@
 
                 Z.data.all_mess_length += 1;
                 Z.data.new_mess = newMess;
+
+                callback.messageEach();
+
             });
+
+            callback.messageAll();
+
         }
     };
 
     var lastMess; // Lấy html của tin cuối cùng
-
-    /**
-     * Tạo nhanh thẻ li trong menu action
-     *
-     * @param {Object} ele       Thẻ ul mà nó gắn vào
-     * @param {String} cmd       Mã lệnh cmd
-     * @param {String} user_name Nickname dùng trong mã lệnh
-     * @param {String} txt       Nội dung thẻ li
-     */
-    var quickAction = function(ele, cmd, user_name, txt) {
-        if (user_name) {
-            user_name = " " + user_name;
-        } else {
-            user_name = "";
-        }
-        $("<li>", {
-            "class": "chatbox-action",
-            "data-action": "/" + cmd + user_name,
-            text: txt
-        }).appendTo(ele);
-    };
-
-    var refreshFunction;
 
     /**
      * Xử lý khi tải xong dữ liệu tin nhắn
@@ -415,22 +396,20 @@
                 var dataMenu = $this.attr("oncontextmenu").split(/\(|,|\)/);
                 $this.removeAttr("oncontextmenu"); // Xóa contextmenu để tạo menu mới
 
-                var user_id = dataMenu[1],
-                    user_name = dataMenu[2].slice(1, -1),
-                    my_user_id = dataMenu[3],
-                    my_chat_level = dataMenu[4],
-                    my_user_level = dataMenu[5],
-                    user_chat_level = dataMenu[6],
-                    user_level = dataMenu[7];
+                var user_id = dataMenu[1];
+                var user_name = dataMenu[2].slice(1, -1);
+                var my_user_id = dataMenu[3];
+                var my_chat_level = dataMenu[4];
+                var my_user_level = dataMenu[5];
+                var user_chat_level = dataMenu[6];
+                var user_level = dataMenu[7];
 
                 var user_color = $("span", $this).css('color');
                 var chat_status = $this.closest("ul").prev("h4").attr("class").split(" ")[1];
                 var user_source = $this[0].outerHTML;
 
                 if (user_id === my_user_id) { // Nếu user_id trùng với my_user_id
-
                     Z.data.me = user_id;
-
                 }
 
                 Z.data.user[user_id] = {
@@ -443,96 +422,79 @@
                     user_source: user_source
                 };
 
+                callback.userEach();
+
             });
+
+            callback.userAll();
 
             var newChatboxMessages, thisLastMess;
             if (chatbox_messages) { // Nếu có tin nhắn
                 thisLastMess = chatbox_messages.match(/<p class="chatbox_row_(1|2) clearfix">(?:.(?!<p class="chatbox_row_(1|2) clearfix">))*<\/p>$/)[0]; // Lấy tin nhắn cuối trong lần này
                 if (lastMess === undefined) { // Nếu trước đó ko có tin cuối => lần truy cập chatbox đầu tiên hoặc chatbox mới clear
+
                     newChatboxMessages = chatbox_messages;
                     lastMess = thisLastMess; // Cập nhật tin nhắn cuối
                     newMessage(newChatboxMessages); // Xử lý tin nhắn và đưa vào chatbox
+
                 } else if (lastMess !== thisLastMess) { // Không có tin mới
+
                     newChatboxMessages = chatbox_messages.split(lastMess)[1]; // Cắt bỏ tin nhắn cũ, lấy tin mới
                     lastMess = thisLastMess; // Cập nhật tin nhắn cuối
                     newMessage(newChatboxMessages); // Xử lý tin nhắn và đưa vào chatbox
+
                 }
             } else { // Nếu không có tin nhắn (có thể là do clear chatbox)
                 lastMess = undefined; // Xóa giá trị tin nhắn cuối
             }
 
-            firstTime = false;
+            Z.firstTime = false;
         }
     };
 
     /**
      * Tải dữ liệu và cập nhật nội dung chatbox
      *
-     * @param {URL} Đường dẫn tải dữ liệu
+     * @param {Boolearn} Nếu đặt true sẽ sử dụng chế độ refresh
      */
-    var update = function(url) {
-
-        $.get(url).done(function(data) {
+    Z.update = function(refresh) {
+        callback.update();
+        var url = "/chatbox/chatbox_actions.forum?archives=1";
+        var f5 = "";
+        if (refresh) {
+            f5 = "&mode=refresh";
+        }
+        callback.beforeLoad();
+        $.get(url + f5).done(function(data) {
             getDone(data);
+            callback.afterLoad();
         }).fail(function(data) {
-            if (data.responseText.indexOf("document.getElementById('refresh_auto')") === 0) { // Nếu disconnect
-                $.post("/chatbox/chatbox_actions.forum?archives=1", { // Gửi tin nhắn rỗng để connect
-                    mode: "send",
-                    sent: ""
-                }).done(function() {
-                    $.get(url).done(function(data) { // Tải dữ liệu chatbox
-                        getDone(data);
-                    });
-                });
+            if (data.responseText.indexOf("document.getElementById('refresh_auto')") === 0) {
+                // Xử lý khi bị disconnect
+                callback.disconnect();
             } else {
                 // Xử lý cho các lỗi khác không phải do disconnect như mất kết nối internet (có thể xảy ra do refresh trang trong lúc đang tải)
-                clearInterval(refreshFunction); // Dừng tự cập nhật
+                callback.notLoaded();
             }
         });
-
     };
 
-    var autoUpdate = function() { // Tự cập nhật mỗi 5s
-        refreshFunction = setInterval(function() {
-            update("/chatbox/chatbox_actions.forum?archives=1&mode=refresh");
-        }, 5000);
-    };
-
-    update("/chatbox/chatbox_actions.forum?archives=1");
-    autoUpdate();
-
-    // Bật tắt tự động cập nhật
-    $("#chatbox-input-autorefesh").change(function() {
-        if ($(this).prop("checked")) { // Đã check
-            autoUpdate();
-        } else {
+    /**
+     * Cập nhật tự động và dừng tự cập nhật
+     */
+    var refreshFunction;
+    Z.refresh = {
+        start: function() {
+            Z.update();
+            refreshFunction = setInterval(function() {
+                Z.update(true);
+            }, 5000);
+            callback.autoUpdate();
+        },
+        stop: function() {
             clearInterval(refreshFunction);
+            callback.stopUpdate();
         }
-    });
-
-    $.fn.zzchat = function(options) {
-
-        // Thông số mặc định
-        var default_settings = $.extend({
-            buzz_limit: 60, // Giới hạn thời gian giữa 2 lần buzz, nếu đặt 0 sẽ không sử dụng buzz
-            auto_login: true, // Tự động đăng nhập
-            auto_refresh: true, // Tự động cập nhật
-            hide_memberlist: false, // Ẩn cột danh sách thành viên
-            no_clear: true, // Không xóa tin nhắn khi clear chatbox, tự động lưu trữ
-            reverse_message: false, // Đảo ngược thứ tự tin nhắn (mới nhất lên trên)
-            remove_at: false, // Xóa @ trước tài khoản admin, mod
-            lang: {} // Mã ngôn ngữ các thông báo
-        }, options);
-
-
-        var $chatbox = $("<div>", {
-            "id": "chatbox-forumvi"
-        });
-        update("/chatbox/chatbox_actions.forum?archives=1");
-
     };
-
-    console.log(Z.obj.me);
-    console.log(Z.data);
 
 })(jQuery);
