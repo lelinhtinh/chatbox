@@ -12,11 +12,16 @@
     var Z = $.zzchat;
 
     // Các đối tượng jQuery thành phần Chatbox
-    var obj = {
+    var elements = {
         header    : Z.create.block("header", "block", ""),
         meWrap    : Z.create.block("meWrap", "block", ""),
         me        : Z.create.block("me", "title", ""),
-        titleWrap : Z.create.block("titleWrap", "block", "")
+        titleWrap : Z.create.block("titleWrap", "block", ""),
+        bold      : Z.create.input("bold", "button", "B"),
+        italic    : Z.create.input("italic", "button", "I"),
+        strike    : Z.create.input("strike", "button", "S"),
+        underline : Z.create.input("underline", "button", "U"),
+
     };
 
     var active_id  = "publish" // Id của phòng chat đang sử dụng
@@ -118,7 +123,7 @@
         // Để cập nhật liên tục, sử dụng:
         // Z.refresh.start();
 
-        return this.html("COMPLETE!")
+        return this.html(elements['strike'])
     };
 
 })(jQuery);

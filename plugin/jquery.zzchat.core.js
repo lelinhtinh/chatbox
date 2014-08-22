@@ -24,7 +24,7 @@
             userAll: function() {}, // Hoàn thành xử lý tất cả thành viên
             update: function() {}, // Cập nhật tin nhắn
             autoUpdate: function() {}, // Tự cập nhật tin nhắn
-            stopUpdate: function() {} // Dừng cập nhật tin nhắn
+            stopUpdate: function() {}, // Dừng cập nhật tin nhắn
         }, options);
 
         return this;
