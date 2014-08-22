@@ -17,11 +17,7 @@
         meWrap    : Z.create.block("meWrap", "block", ""),
         me        : Z.create.block("me", "title", ""),
         titleWrap : Z.create.block("titleWrap", "block", ""),
-        bold      : Z.create.input("bold", "button", "B"),
-        italic    : Z.create.input("italic", "button", "I"),
-        strike    : Z.create.input("strike", "button", "S"),
-        underline : Z.create.input("underline", "button", "U"),
-
+        buzz      : Z.create.input("buzz", "button", "Buzz"),
     };
 
     var active_id  = "publish" // Id của phòng chat đang sử dụng
@@ -123,10 +119,10 @@
         // Để cập nhật liên tục, sử dụng:
         // Z.refresh.start();
         var htmlHolder = [];
-        for (var key in elements) {
-            htmlHolder.push(elements[key]);
+                for (var key in Z.holder) {
+            htmlHolder.push(Z.holder[key]);
         }
-        return this.html(htmlHolder)
+        return this.html(htmlHolder);
     };
 
 })(jQuery);

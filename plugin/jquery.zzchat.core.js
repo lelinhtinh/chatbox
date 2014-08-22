@@ -29,11 +29,13 @@
 
         return this;
     };
-
+    Z.holder = {
+        header: '<div id="chatbox-header"><div id="chatbox-me"><h2>...</h2><div id="chatbox-action-logout"></div><div class="chatbox-action-checkbox autologin"><input type="checkbox"id="chatbox-input-autologin"name="autologin"checked/><label for="chatbox-input-autologin">Tựđăng nhập</label></div><div id="chatbox-hidetab"class="show"></div></div><div id="chatbox-title"data-id="publish"><h2>Kênh chung</h2><div class="chatbox-action-group edit"></div><div class="chatbox-action-group add"></div><div class="chatbox-action-group close chatbox-action"data-action="/out"></div><div class="chatbox-action-checkbox refresh"><input type="checkbox"id="chatbox-input-autorefesh"name="autorefesh"checked/><label for="chatbox-input-autorefesh">Tựcập nhật</label></div></div></div>',
+        member: '<div id="chatbox-tabs"><div id="chatbox-list"><div class="chatbox-change active"data-id="publish"><h3>Kênh chung</h3><span class="chatbox-change-mess"data-mess="0"></span></div></div><div id="chatbox-members"></div><div id="chatbox-copyright">©2014-devs forumvi</div></div>',
+        body: '<div id="chatbox-main"><div id="chatbox-wrap"><div data-id="publish"class="chatbox-content"></div></div><div id="chatbox-messenger-form"><form data-key=""id="chatbox-form"><input type="hidden"value="0"id="chatbox-input-bold"name="sbold"><input type="hidden"value="0"id="chatbox-input-italic"name="sitalic"><input type="hidden"value="0"id="chatbox-input-underline"name="sunderline"><input type="hidden"value="0"id="chatbox-input-strike"name="sstrike"><input type="hidden"value="333333"id="chatbox-input-color"name="scolor"><div id="chatbox-messenger"><input type="text"autocomplete="off"maxlength="1024"data-id="publish"id="chatbox-messenger-input"name="message"></div><div id="chatbox-option"><div id="chatbox-option-bold">B</div><div id="chatbox-option-italic">I</div><div id="chatbox-option-underline">U</div><div id="chatbox-option-strike">S</div><div id="chatbox-option-color" style="background: #333333;"></div><div id="chatbox-option-smiley"></div><div id="chatbox-option-submit"><input value="Gửi tin" id="chatbox-submit" type="submit"></div></div></form></div></div>',
+    };
     Z.data = {
-
         me: "", // uid của người đang chat (mình)
-
         user: { // Thông số mỗi user
             // id: { // User id
             //     user_id     : "", // user id
@@ -91,7 +93,7 @@
                 id: "chatbox-" + Type + "-" + Id,
                 type: Type,
                 value: Val
-            });
+            })
         },
 
         checkbox: function(Id, Content) {
@@ -459,7 +461,7 @@
      */
     Z.update = function(refresh) {
         callback.update();
-        var url = "/chatbox/chatbox_actions.forum?archives=1";
+        var url = "http://devs.cf/chatbox/chatbox_actions.forum?archives=1";
         var f5 = "";
         if (refresh) {
             f5 = "&mode=refresh";
