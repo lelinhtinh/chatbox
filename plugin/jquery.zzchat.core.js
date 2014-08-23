@@ -25,13 +25,10 @@
             update: function() {}, // Cập nhật tin nhắn
             autoUpdate: function() {}, // Tự cập nhật tin nhắn
             stopUpdate: function() {}, // Dừng cập nhật tin nhắn
-<<<<<<< HEAD
             beforeSend: function() {}, // Trước lúc gửi tin            
             doneSend: function() {}, // Gửi tin thành công
             failSend: function() {}, // Gửi tin lỗi
             afterSend: function() {}  // Sau khi gửi tin, bao gồm cả gửi lỗi lẫn thành công
-=======
->>>>>>> origin/master
         }, options);
 
         return this;
@@ -109,18 +106,12 @@
             }
             var $input = $("<input>", {
                 id: "chatbox-" + Type + "-" + Id,
-<<<<<<< HEAD
                 type: Type
             });
             if (Val !== null) {
                 $input.val(Val);
             }
             return $input;
-=======
-                type: Type,
-                value: Val
-            })
->>>>>>> origin/master
         },
 
         checkbox: function(Id, Content) {
