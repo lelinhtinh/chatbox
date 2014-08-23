@@ -12,11 +12,12 @@
     var Z = $.zzchat;
 
     // Các đối tượng jQuery thành phần Chatbox
-    var obj = {
-        header    : Z.create.block("header", "block", ""),
+    var elements = {
+        header    : Z.create.block("header", "block", "zzChat"),
         meWrap    : Z.create.block("meWrap", "block", ""),
         me        : Z.create.block("me", "title", ""),
-        titleWrap : Z.create.block("titleWrap", "block", "")
+        titleWrap : Z.create.block("titleWrap", "block", ""),
+        buzz      : Z.create.input("buzz", "button", "Buzz"),
     };
 
     var active_id  = "publish" // Id của phòng chat đang sử dụng
@@ -117,8 +118,11 @@
 
         // Để cập nhật liên tục, sử dụng:
         // Z.refresh.start();
-
-        return this.html("COMPLETE!")
+        var htmlHolder = [];
+                for (var key in Z.holder) {
+            htmlHolder.push(Z.holder[key]);
+        }
+        return this.html(htmlHolder);
     };
 
 })(jQuery);
