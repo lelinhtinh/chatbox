@@ -24,7 +24,11 @@
             userAll: function() {}, // Hoàn thành xử lý tất cả thành viên
             update: function() {}, // Cập nhật tin nhắn
             autoUpdate: function() {}, // Tự cập nhật tin nhắn
-            stopUpdate: function() {} // Dừng cập nhật tin nhắn
+            stopUpdate: function() {}, // Dừng cập nhật tin nhắn
+            beforeSend: function() {}, // Trước lúc gửi tin            
+            doneSend: function() {}, // Gửi tin thành công
+            failSend: function() {}, // Gửi tin lỗi
+            afterSend: function() {}  // Sau khi gửi tin, bao gồm cả gửi lỗi lẫn thành công
         }, options);
 
         return this;
@@ -39,7 +43,7 @@
             //     user_id     : "", // user id
             //     user_name   : "", // nickname
             //     user_color  : "", // Màu nick (nếu có)
-            //     chat_status : "", // online/away/offline,
+            //     chat_status : "", // online/away/offline
             //     user_level  : "", // cấp bậc trong diễn đàn
             //     chat_level  : "", // cấp bậc trong chatbox, chat level 2 sẽ có @
             //     user_source : "" // htmlString của user
@@ -80,18 +84,32 @@
     Z.create = {
 
         block: function(Id, Type, Content) {
-            return $("<div>", {
-                id: "chatbox-" + Type + "-" + Id,
-                html: Content
+            Id = "chatbox-block-" + Id;
+            if (Type !== null) {
+                Id = "chatbox-" + Type + "-" + Id;
+            }
+            var $div = $("<div>", {
+                id: "chatbox-" + Type + "-" + Id
             });
+            if (Content !== null) {
+                $div.html(Content);
+            }
+            return $div;
         },
 
         input: function(Id, Type, Val) {
-            return $("<input>", {
+            Id = "chatbox-button-" + Id;
+            if (Type !== null) {
+                Id = "chatbox-" + Type + "-" + Id;
+            }
+            var $input = $("<input>", {
                 id: "chatbox-" + Type + "-" + Id,
-                type: Type,
-                value: Val
+                type: Type
             });
+            if (Val !== null) {
+                $input.val(Val);
+            }
+            return $input;
         },
 
         checkbox: function(Id, Content) {
@@ -169,7 +187,7 @@
                 format = Date.UTC("20" + time[5], (time[4] - 1), time[3], (time[0] - 7), time[1], time[2], 0);
                 break;
 
-            // Chuyển thông số thời gian từ định dạng UTC sang dạng hh:mm:ss dd/mm/yy
+                // Chuyển thông số thời gian từ định dạng UTC sang dạng hh:mm:ss dd/mm/yy
             case "def":
                 var a = (new Date(time)).toString().split(/\s/);
                 format = a[4] + " " + a[2] + "/" + {
@@ -340,38 +358,6 @@
 
             callback.messageAll();
 
-        }
-    };
-
-    var lastMess; // Lấy html của tin cuối cùng
-
-    /**
-     * Xử lý khi tải xong dữ liệu tin nhắn
-     *
-     * $param {htmlString} Dữ liệu tin nhắn
-     */
-    var getDone = function(chatsource) {
-
-        if (chatsource.indexOf("<!DOCTYPE html PUBLIC") === 0) { // Lỗi do logout hoặc bị ban
-            if (chatsource.indexOf("You have been banned from the ChatBox") !== -1) {
-                alert("Bạn đã bị cấm truy cập chatbox!");
-            } else {
-                alert("Mất kết nối đến máy chủ. Vui lòng đăng nhập lại!");
-            }
-            clearInterval(refreshFunction);
-            return false;
-
-        } else { // Đã login
-
-            /**
-             * Tải dữ liệu chatbox
-             *
-             * chatbox_messages    Tin nhắn chatbox
-             * chatbox_memberlist  Thành viên đang truy cập
-             * chatbox_last_update Thời điểm cập nhật cuối
-             */
-            eval(chatsource); // Chuyển đổi để các biến chạy được
-
             var $arrMember = $($.parseHTML(chatbox_memberlist));
 
             $arrMember.find("a").each(function(index, val) {
@@ -428,24 +414,54 @@
 
             callback.userAll();
 
+        }
+    };
+
+    /**
+     * Xử lý khi tải xong dữ liệu tin nhắn
+     *
+     * $param {htmlString} Dữ liệu tin nhắn
+     */
+    var getDone = function(chatsource) {
+
+        if (chatsource.indexOf("<!DOCTYPE html PUBLIC") === 0) { // Lỗi do logout hoặc bị ban
+            if (chatsource.indexOf("You have been banned from the ChatBox") !== -1) {
+                alert("Bạn đã bị cấm truy cập chatbox!");
+            } else {
+                alert("Mất kết nối đến máy chủ. Vui lòng đăng nhập lại!");
+            }
+            clearInterval(refreshFunction);
+            return false;
+
+        } else { // Đã login
+
+            /**
+             * Tải dữ liệu chatbox
+             *
+             * chatbox_messages    Tin nhắn chatbox
+             * chatbox_memberlist  Thành viên đang truy cập
+             * chatbox_last_update Thời điểm cập nhật cuối
+             */
+            eval(chatsource); // Chuyển đổi để các biến chạy được    
+
             var newChatboxMessages, thisLastMess;
             if (chatbox_messages) { // Nếu có tin nhắn
                 thisLastMess = chatbox_messages.match(/<p class="chatbox_row_(1|2) clearfix">(?:.(?!<p class="chatbox_row_(1|2) clearfix">))*<\/p>$/)[0]; // Lấy tin nhắn cuối trong lần này
-                if (lastMess === undefined) { // Nếu trước đó ko có tin cuối => lần truy cập chatbox đầu tiên hoặc chatbox mới clear
+                if (Z.lastMess === undefined) { // Nếu trước đó ko có tin cuối => lần truy cập chatbox đầu tiên hoặc chatbox mới clear
 
                     newChatboxMessages = chatbox_messages;
-                    lastMess = thisLastMess; // Cập nhật tin nhắn cuối
+                    Z.lastMess = thisLastMess; // Cập nhật tin nhắn cuối
                     newMessage(newChatboxMessages); // Xử lý tin nhắn và đưa vào chatbox
 
-                } else if (lastMess !== thisLastMess) { // Không có tin mới
+                } else if (Z.lastMess !== thisLastMess) { // Không có tin mới
 
-                    newChatboxMessages = chatbox_messages.split(lastMess)[1]; // Cắt bỏ tin nhắn cũ, lấy tin mới
-                    lastMess = thisLastMess; // Cập nhật tin nhắn cuối
+                    newChatboxMessages = chatbox_messages.split(Z.lastMess)[1]; // Cắt bỏ tin nhắn cũ, lấy tin mới
+                    Z.lastMess = thisLastMess; // Cập nhật tin nhắn cuối
                     newMessage(newChatboxMessages); // Xử lý tin nhắn và đưa vào chatbox
 
                 }
             } else { // Nếu không có tin nhắn (có thể là do clear chatbox)
-                lastMess = undefined; // Xóa giá trị tin nhắn cuối
+                Z.lastMess = undefined; // Xóa giá trị tin nhắn cuối
             }
 
             Z.firstTime = false;
@@ -497,4 +513,35 @@
         }
     };
 
+    /**
+     * Gửi tin nhắn
+     * @param  {String} val       Nội dung tin nhắn do người dùng nhập
+     * @param  {Number} bold      0/1 Thuộc tính chữ đậm
+     * @param  {Number} italic    0/1 Thuộc tính chữ nghiêng
+     * @param  {Number} underline 0/1 Thuộc tính chữ gạch chân
+     * @param  {Number} strike    0/1 Thuộc tính chữ gạch bỏ
+     * @param  {Color}  color     Mã màu HEX(không có #) Thuộc tính màu chữ
+     */
+    Z.send = function(val,bold,italic,underline,strike,color) {
+        Z.lastTyped = val;
+        callback.beforeSend();
+        $.post("/chatbox/chatbox_actions.forum?archives=1", {
+            mode: "send",
+            sent: val,
+            sbold: bold,
+            sitalic: italic,
+            sunderline: underline,
+            sstrike: strike,
+            scolor: color
+        }).done(function() {
+            // Cập nhật tin nhắn
+            Z.update(true);
+            callback.doneSend();
+        }).fail(function() {
+            callback.failSend();
+            // Xử lý cho lỗi mất kết nối internet (có thể xảy ra do refresh trang trong lúc đang tải)
+        }).always(function() {
+            callback.afterSend();
+        });
+    }
 })(jQuery);
