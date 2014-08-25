@@ -9,37 +9,47 @@
 
 (function($) {
 
-    var callback = {};
+    var callback = {},
+        refreshFunction;
 
     var Z = $.zzchat = function(options) {
+
         // Thông số mặc định
         callback = $.extend({
+
             beforeLoad: function() {}, // Trước mỗi lần tải dữ liệu
             afterLoad: function() {}, // Sau mỗi lần tải dữ liệu
+
             disconnect: function() {}, // Khi bị disconnect
+            banned: function() {}, // Khi bị banned
+            logout: function() {}, // Khi bị logout
             notLoaded: function() {}, // Khi gặp lỗi tải dữ liệu mà không phải bị disconnect
+
             messageEach: function() {}, // Hoàn thành xử lý từng tin nhắn
             messageAll: function() {}, // Hoàn thành xử lý tất cả tin nhắn
+
             userEach: function() {}, // Hoàn thành xử lý từng thành viên
             userAll: function() {}, // Hoàn thành xử lý tất cả thành viên
+
             update: function() {}, // Cập nhật tin nhắn
             autoUpdate: function() {}, // Tự cập nhật tin nhắn
             stopUpdate: function() {}, // Dừng cập nhật tin nhắn
+
             beforeSend: function() {}, // Trước lúc gửi tin            
             doneSend: function() {}, // Gửi tin thành công
             failSend: function() {}, // Gửi tin lỗi
-            afterSend: function() {}  // Sau khi gửi tin, bao gồm cả gửi lỗi lẫn thành công
+            afterSend: function() {} // Sau khi gửi tin, bao gồm cả gửi lỗi lẫn thành công
+
         }, options);
 
         return this;
+
     };
-    Z.holder = {
-        header: '<div id="chatbox-header"><div id="chatbox-me"><h2>...</h2><div id="chatbox-action-logout"></div><div class="chatbox-action-checkbox autologin"><input type="checkbox"id="chatbox-input-autologin"name="autologin"checked/><label for="chatbox-input-autologin">Tựđăng nhập</label></div><div id="chatbox-hidetab"class="show"></div></div><div id="chatbox-title"data-id="publish"><h2>Kênh chung</h2><div class="chatbox-action-group edit"></div><div class="chatbox-action-group add"></div><div class="chatbox-action-group close chatbox-action"data-action="/out"></div><div class="chatbox-action-checkbox refresh"><input type="checkbox"id="chatbox-input-autorefesh"name="autorefesh"checked/><label for="chatbox-input-autorefesh">Tựcập nhật</label></div></div></div>',
-        member: '<div id="chatbox-tabs"><div id="chatbox-list"><div class="chatbox-change active"data-id="publish"><h3>Kênh chung</h3><span class="chatbox-change-mess"data-mess="0"></span></div></div><div id="chatbox-members"></div><div id="chatbox-copyright">©2014-devs forumvi</div></div>',
-        body: '<div id="chatbox-main"><div id="chatbox-wrap"><div data-id="publish"class="chatbox-content"></div></div><div id="chatbox-messenger-form"><form data-key=""id="chatbox-form"><input type="hidden"value="0"id="chatbox-input-bold"name="sbold"><input type="hidden"value="0"id="chatbox-input-italic"name="sitalic"><input type="hidden"value="0"id="chatbox-input-underline"name="sunderline"><input type="hidden"value="0"id="chatbox-input-strike"name="sstrike"><input type="hidden"value="333333"id="chatbox-input-color"name="scolor"><div id="chatbox-messenger"><input type="text"autocomplete="off"maxlength="1024"data-id="publish"id="chatbox-messenger-input"name="message"></div><div id="chatbox-option"><div id="chatbox-option-bold">B</div><div id="chatbox-option-italic">I</div><div id="chatbox-option-underline">U</div><div id="chatbox-option-strike">S</div><div id="chatbox-option-color" style="background: #333333;"></div><div id="chatbox-option-smiley"></div><div id="chatbox-option-submit"><input value="Gửi tin" id="chatbox-submit" type="submit"></div></div></form></div></div>',
-    };
+
     Z.data = {
+
         me: "", // uid của người đang chat (mình)
+
         user: { // Thông số mỗi user
             // id: { // User id
             //     user_id     : "", // user id
@@ -48,7 +58,7 @@
             //     chat_status : "", // online/away/offline
             //     user_level  : "", // cấp bậc trong diễn đàn
             //     chat_level  : "", // cấp bậc trong chatbox, chat level 2 sẽ có @
-            //     user_source : "" // htmlString của user
+            //     user_source : ""  // htmlString của user
             // }
         },
 
@@ -69,7 +79,7 @@
             //         cmd          : "", // Mã lệnh bắt đầu bằng / không có khoảng trắng
             //         cmd_plus     : "", // Thông tin thêm cho lệnh cmd(nếu có)
             //         mess_source  : "", // htmlString của toàn bộ tin nhắn
-            //         mess_content : "" // htmlString phần nội dung
+            //         mess_content : ""  // htmlString phần nội dung
             //     }]
             // }
         },
@@ -127,6 +137,7 @@
                 html: '<source src="' + Name + '.ogg" type="audio/ogg" /><source src="' + Name + '.mp3" type="audio/mpeg" />'
             }).appendTo("body");
         }
+
     };
 
     // Đặt và lấy giá trị cookie
@@ -169,7 +180,8 @@
                 path = "/";
             }
             document.cookie = name + "=" + value + "; path=" + path + expires + domain + ';';
-        },
+        }
+
     };
 
     /**
@@ -180,6 +192,7 @@
      * @return {String}             Giá trị thời gian đã chuyển đổi
      */
     Z.date = function(type, time) {
+
         var format;
         switch (type) {
 
@@ -209,6 +222,7 @@
                 break;
         }
         return format;
+
     };
 
     /**
@@ -224,11 +238,12 @@
      * @param {htmlString} Dữ liệu tin nhắn mới
      */
     var newMessage = function(Messages) {
+
         if (Messages) {
 
             var arr = $.parseHTML(Messages); // Chuyển htmlString tin nhắn thành HTML
 
-            $.each(arr, function(i, val) { // Duyệt qua từng tin
+            $.each(arr, function(index, val) { // Duyệt qua từng tin
 
                 var $this = $(this); // Đặt biến cho tin nhắn đang xét
 
@@ -354,11 +369,11 @@
                 Z.data.all_mess_length += 1;
                 Z.data.new_mess = newMess;
 
-                callback.messageEach();
+                callback.messageEach.call(Z.data, newMess, index);
 
             });
 
-            callback.messageAll();
+            callback.messageAll.call(Z.data);
 
             var $arrMember = $($.parseHTML(chatbox_memberlist));
 
@@ -400,7 +415,7 @@
                     Z.data.me = user_id;
                 }
 
-                Z.data.user[user_id] = {
+                var newUser = {
                     user_id: user_id,
                     user_name: user_name,
                     user_color: user_color,
@@ -410,13 +425,16 @@
                     user_source: user_source
                 };
 
-                callback.userEach();
+                Z.data.user[user_id] = newUser;
+
+                callback.userEach.call(Z.data, newUser, index);
 
             });
 
-            callback.userAll();
+            callback.userAll.call(Z.data);
 
         }
+
     };
 
     /**
@@ -428,11 +446,10 @@
 
         if (chatsource.indexOf("<!DOCTYPE html PUBLIC") === 0) { // Lỗi do logout hoặc bị ban
             if (chatsource.indexOf("You have been banned from the ChatBox") !== -1) {
-                alert("Bạn đã bị cấm truy cập chatbox!");
+                callback.banned.call(Z.data);
             } else {
-                alert("Mất kết nối đến máy chủ. Vui lòng đăng nhập lại!");
+                callback.logout.call(Z.data);
             }
-            clearInterval(refreshFunction);
             return false;
 
         } else { // Đã login
@@ -467,6 +484,7 @@
             }
 
             Z.firstTime = false;
+
         }
     };
 
@@ -476,43 +494,47 @@
      * @param {Boolearn} Nếu đặt true sẽ sử dụng chế độ refresh
      */
     Z.update = function(refresh) {
-        callback.update();
+
+        callback.update.call(Z.data);
         var url = "http://devs.cf/chatbox/chatbox_actions.forum?archives=1";
         var f5 = "";
         if (refresh) {
             f5 = "&mode=refresh";
         }
-        callback.beforeLoad();
+        callback.beforeLoad.call(Z.data);
         $.get(url + f5).done(function(data) {
             getDone(data);
-            callback.afterLoad();
+            callback.afterLoad.call(Z.data);
         }).fail(function(data) {
             if (data.responseText.indexOf("document.getElementById('refresh_auto')") === 0) {
                 // Xử lý khi bị disconnect
-                callback.disconnect();
+                callback.disconnect.call(Z.data);
             } else {
                 // Xử lý cho các lỗi khác không phải do disconnect như mất kết nối internet (có thể xảy ra do refresh trang trong lúc đang tải)
-                callback.notLoaded();
+                callback.notLoaded.call(Z.data);
             }
         });
+
     };
 
     /**
      * Cập nhật tự động và dừng tự cập nhật
      */
-    var refreshFunction;
     Z.refresh = {
+
         start: function() {
             Z.update();
             refreshFunction = setInterval(function() {
                 Z.update(true);
             }, 5000);
-            callback.autoUpdate();
+            callback.autoUpdate.call(Z.data);
         },
+
         stop: function() {
             clearInterval(refreshFunction);
-            callback.stopUpdate();
+            callback.stopUpdate.call(Z.data);
         }
+
     };
 
     /**
@@ -524,9 +546,10 @@
      * @param  {Number} strike    0/1 Thuộc tính chữ gạch bỏ
      * @param  {Color}  color     Mã màu HEX(không có #) Thuộc tính màu chữ
      */
-    Z.send = function(val,bold,italic,underline,strike,color) {
+    Z.send = function(val, bold, italic, underline, strike, color) {
+
         Z.lastTyped = val;
-        callback.beforeSend();
+        callback.beforeSend.call(Z.data);
         $.post("/chatbox/chatbox_actions.forum?archives=1", {
             mode: "send",
             sent: val,
@@ -538,12 +561,13 @@
         }).done(function() {
             // Cập nhật tin nhắn
             Z.update(true);
-            callback.doneSend();
+            callback.doneSend.call(Z.data);
         }).fail(function() {
-            callback.failSend();
+            callback.failSend.call(Z.data);
             // Xử lý cho lỗi mất kết nối internet (có thể xảy ra do refresh trang trong lúc đang tải)
         }).always(function() {
-            callback.afterSend();
+            callback.afterSend.call(Z.data);
         });
+        
     }
 })(jQuery);

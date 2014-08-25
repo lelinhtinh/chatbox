@@ -13,10 +13,10 @@
 
     // Các đối tượng jQuery thành phần Chatbox
     var elements = {
-        header    : Z.create.block("header", "block", "zzChat"),
-        meWrap    : Z.create.block("meWrap", "block", ""),
-        me        : Z.create.block("me", "title", ""),
-        titleWrap : Z.create.block("titleWrap", "block", ""),
+        header    : Z.create.block("header"),
+        meWrap    : Z.create.block("meWrap"),
+        me        : Z.create.block("me", "title"),
+        titleWrap : Z.create.block("titleWrap"),
         buzz      : Z.create.input("buzz", "button", "Buzz"),
     };
 
