@@ -496,7 +496,7 @@
     Z.update = function(refresh) {
 
         callback.update.call(Z.data);
-        var url = "http://devs.cf/chatbox/chatbox_actions.forum?archives=1";
+        var url = "/chatbox/chatbox_actions.forum?archives=1";
         var f5 = "";
         if (refresh) {
             f5 = "&mode=refresh";
@@ -568,6 +568,6 @@
         }).always(function() {
             callback.afterSend.call(Z.data);
         });
-        
+
     }
 })(jQuery);
