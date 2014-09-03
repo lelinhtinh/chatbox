@@ -45,9 +45,8 @@
         return this;
 
     };
-
     Z.data = {
-
+        lang: 0,
         me: "", // uid của người đang chat (mình)
 
         user: { // Thông số mỗi user
@@ -183,6 +182,16 @@
         }
 
     };
+    /* Translate function */
+    Z.t = function (a) {
+        if (Z.data["lang"] !== null && Z.data.lang[a] !== undefined) {
+            return Z.data.lang[a]
+        }
+        else {
+            return a
+        }
+
+    }
 
     /**
      * Chuyển đổi định dạng thời gian

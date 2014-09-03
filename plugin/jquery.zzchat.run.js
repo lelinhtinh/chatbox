@@ -33,7 +33,20 @@
         $messenger.focus();
         return false;
     };
-
+    Z.data.lang = {
+        "Login": "Đăng nhập",
+        "Logout": "Thoát",
+        "Auto. refresh": "Tự cập nhật",
+        "Auto. login": "Tự đăng nhập",
+        "Bold": "Đậm",
+        "Italic": "Nghiêng",
+        "Strike": "???",
+        "Underline": "Đường bên dưới",
+        "Private messages": "Trò chuyện riêng",
+        "Kick this user": "Đuổi ra khỏi chatbox",
+        "Ban this user": "Cấm truy cập chatbox",
+        "Promote this user": "Thăng cấp quản lý"
+    };
     /**
      * Tạo nhanh thẻ li trong menu action
      *
@@ -118,10 +131,6 @@
 
         // Để cập nhật liên tục, sử dụng:
         // Z.refresh.start();
-        var htmlHolder = [];
-                for (var key in Z.holder) {
-            htmlHolder.push(Z.holder[key]);
-        }
         return this.html(htmlHolder);
     };
 
