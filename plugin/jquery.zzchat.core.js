@@ -35,7 +35,7 @@
             autoUpdate: function() {}, // Tự cập nhật tin nhắn
             stopUpdate: function() {}, // Dừng cập nhật tin nhắn
 
-            beforeSend: function() {}, // Trước lúc gửi tin            
+            beforeSend: function() {}, // Trước lúc gửi tin
             doneSend: function() {}, // Gửi tin thành công
             failSend: function() {}, // Gửi tin lỗi
             afterSend: function() {} // Sau khi gửi tin, bao gồm cả gửi lỗi lẫn thành công
@@ -46,7 +46,7 @@
 
     };
     Z.data = {
-        lang: 0,
+
         me: "", // uid của người đang chat (mình)
 
         user: { // Thông số mỗi user
@@ -72,7 +72,7 @@
             //     mess_length  : "", // Tổng số tin trong phòng chat
             //     message      : [{
             //         room_id      : "", // Id phòng chat
-            //         mess_dateUTC : "", // Thời điểm nhắn tin, định dạng UTC, chuyển từ thông tin trong chatbox 
+            //         mess_dateUTC : "", // Thời điểm nhắn tin, định dạng UTC, chuyển từ thông tin trong chatbox
             //         mess_date    : "", // Thời điểm nhắn tin, định dạng hh:mm:ss dd/mm/yy trong chatbox
             //         poster_id    : "", // Id người nhắn tin đó
             //         cmd          : "", // Mã lệnh bắt đầu bằng / không có khoảng trắng
@@ -182,16 +182,6 @@
         }
 
     };
-    /* Translate function */
-    Z.t = function (a) {
-        if (Z.data["lang"] !== null && Z.data.lang[a] !== undefined) {
-            return Z.data.lang[a]
-        }
-        else {
-            return a
-        }
-
-    }
 
     /**
      * Chuyển đổi định dạng thời gian
@@ -354,7 +344,7 @@
 
                 var newMess = {
                     room_id: room_id, // Id phòng chat
-                    mess_dateUTC: mess_dateUTC, // Thời điểm nhắn tin, định dạng UTC, chuyển từ thông tin trong chatbox 
+                    mess_dateUTC: mess_dateUTC, // Thời điểm nhắn tin, định dạng UTC, chuyển từ thông tin trong chatbox
                     mess_date: mess_date, // Thời điểm nhắn tin, định dạng hh:mm:ss dd/mm/yy trong chatbox
                     poster_id: poster_id, // Id người nhắn tin đó
                     cmd: cmd, // Mã lệnh bắt đầu bằng / không có khoảng trắng
@@ -365,7 +355,7 @@
                 newMessData.push(newMess);
 
                 Z.data.chatroom[room_id] = { // Thời điểm tạo phòng và user_id người tạo
-                    room_dateUTC: mess_dateUTC, // Thời điểm nhắn tin, định dạng UTC, chuyển từ thông tin trong chatbox 
+                    room_dateUTC: mess_dateUTC, // Thời điểm nhắn tin, định dạng UTC, chuyển từ thông tin trong chatbox
                     room_date: room_date, // Thời điểm nhắn tin, định dạng hh:mm:ss dd/mm/yy trong chatbox
                     starter_id: starter_id, // Id người tạo phòng
                     room_name: room_name, // Tên phòng
@@ -470,7 +460,7 @@
              * chatbox_memberlist  Thành viên đang truy cập
              * chatbox_last_update Thời điểm cập nhật cuối
              */
-            eval(chatsource); // Chuyển đổi để các biến chạy được    
+            eval(chatsource); // Chuyển đổi để các biến chạy được
 
             var newChatboxMessages, thisLastMess;
             if (chatbox_messages) { // Nếu có tin nhắn
