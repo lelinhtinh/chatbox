@@ -9,30 +9,34 @@
 
 (function($) {
 
-    var Z = $.zzchat;
+    "use strict";
 
-    // Các đối tượng jQuery thành phần Chatbox
-    var elements = {
-        header    : Z.create.block("header"),
-        meWrap    : Z.create.block("meWrap"),
-        me        : Z.create.block("me", "title"),
-        titleWrap : Z.create.block("titleWrap"),
-        buzz      : Z.create.input("buzz", "button", "Buzz"),
-    };
+    var Z = $.zzchat,
 
-    var active_id  = "publish" // Id của phòng chat đang sử dụng
-    var oldMessage = ""; // Nội dung tin nhắn vừa nhập vào để phục hồi khi lỗi
+        // Các đối tượng jQuery thành phần Chatbox
+        ele = {
+            header: Z.create.block("header"),
+            meWrap: Z.create.block("meWrap"),
+            me: Z.create.block("me", "title"),
+            titleWrap: Z.create.block("titleWrap"),
+            buzz: Z.create.input("buzz", "button", "Buzz"),
+            mess: Z.create.input("mess", "text")
+        },
+
+        active_id = "publish", // Id của phòng chat đang sử dụng
+        oldMessage = ""; // Nội dung tin nhắn vừa nhập vào để phục hồi khi lỗi
 
     /**
      * Copy nickname vào khung soạn thảo
      *
      * @param {String} Nickname người dùng
      */
-    var copy_user_name = function(user_name) {
-        $messenger[0].value += user_name;
-        $messenger.focus();
+    function copy_user_name(user_name) {
+        ele.mess[0].value += user_name;
+        ele.mess.focus();
         return false;
-    };
+    }
+
     Z.data.lang = {
         "Login": "Đăng nhập",
         "Logout": "Thoát",
@@ -40,8 +44,8 @@
         "Auto. login": "Tự đăng nhập",
         "Bold": "Đậm",
         "Italic": "Nghiêng",
-        "Strike": "???",
-        "Underline": "Đường bên dưới",
+        "Strike": "Gạng bỏ",
+        "Underline": "Gạch chân",
         "Private messages": "Trò chuyện riêng",
         "Kick this user": "Đuổi ra khỏi chatbox",
         "Ban this user": "Cấm truy cập chatbox",
@@ -55,7 +59,7 @@
      * @param {String} user_name Nickname dùng trong mã lệnh
      * @param {String} txt       Nội dung thẻ li
      */
-    var quickAction = function(ele, cmd, user_name, txt) {
+    function quickAction(ele, cmd, user_name, txt) {
         if (user_name) {
             user_name = " " + user_name;
         } else {
@@ -66,7 +70,7 @@
             "data-action": "/" + cmd + user_name,
             text: txt
         }).appendTo(ele);
-    };
+    }
 
     $.fn.zzchat = function(options) {
 
@@ -123,17 +127,59 @@
                 console.log("autoUpdate");
             }, // Tự cập nhật tin nhắn
             stopUpdate: function() {
-                console.log("stopUpdate");
-            } // Dừng cập nhật tin nhắn
+                    console.log("stopUpdate");
+                } // Dừng cập nhật tin nhắn
+        });
+        $.zzchat({ // Thiết lập cho các hàm callback
+            beforeLoad: function() {
+                console.log("beforeLoad");
+            }, // Trước mỗi lần tải dữ liệu
+            afterLoad: function() {
+                console.log("afterLoad");
+                console.log(Z.data);
+            }, // Sau mỗi lần tải dữ liệu
+            disconnect: function() {
+                console.log("disconnect");
+                $.post("/chatbox/chatbox_actions.forum?archives=1", { // Gửi tin nhắn rỗng để connect
+                    mode: "send",
+                    sent: ""
+                }).done(function() {
+                    Z.update();
+                    console.log("connect");
+                });
+            }, // Khi bị disconnect
+            notLoaded: function() {
+                console.log("notLoaded");
+            }, // Khi gặp lỗi tải dữ liệu mà không phải bị disconnect
+            messageEach: function() {
+                console.log("messageEach");
+            }, // Hoàn thành xử lý từng tin nhắn
+            messageAll: function() {
+                console.log("messageAll");
+            }, // Hoàn thành xử lý tất cả tin nhắn
+            userEach: function() {
+                console.log("userEach");
+            }, // Hoàn thành xử lý từng thành viên
+            userAll: function() {
+                console.log("userAll");
+            }, // Hoàn thành xử lý tất cả thành viên
+            update: function() {
+                console.log("update");
+            }, // Cập nhật tin nhắn
+            autoUpdate: function() {
+                console.log("autoUpdate");
+            }, // Tự cập nhật tin nhắn
+            stopUpdate: function() {
+                    console.log("stopUpdate");
+                } // Dừng cập nhật tin nhắn
         });
 
         Z.update(); // Tải dữ liệu chatbox
 
         // Để cập nhật liên tục, sử dụng:
         // Z.refresh.start();
-        return this.html(htmlHolder);
     };
 
-})(jQuery);
+}(jQuery));
 
 $("#chatbox-forumvi").zzchat();
