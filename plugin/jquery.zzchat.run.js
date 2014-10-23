@@ -7,7 +7,7 @@
  * Licensed under the MIT license - http://opensource.org/licenses/MIT
  */
 
-(function($) {
+(function ($) {
 
     "use strict";
 
@@ -72,7 +72,7 @@
         }).appendTo(ele);
     }
 
-    $.fn.zzchat = function(options) {
+    $.fn.zzchat = function (options) {
 
         // Thông số mặc định
         var settings = $.extend({
@@ -88,44 +88,88 @@
 
 
         $.zzchat({ // Thiết lập cho các hàm callback
-            beforeLoad: function() {
+            beforeLoad: function () {
                 console.log("beforeLoad");
             }, // Trước mỗi lần tải dữ liệu
-            afterLoad: function() {
+            afterLoad: function () {
                 console.log("afterLoad");
                 console.log(Z.data);
             }, // Sau mỗi lần tải dữ liệu
-            disconnect: function() {
+            disconnect: function () {
                 console.log("disconnect");
                 $.post("/chatbox/chatbox_actions.forum?archives=1", { // Gửi tin nhắn rỗng để connect
                     mode: "send",
                     sent: ""
-                }).done(function() {
+                }).done(function () {
                     Z.update();
                     console.log("connect");
                 });
             }, // Khi bị disconnect
-            notLoaded: function() {
+            notLoaded: function () {
                 console.log("notLoaded");
             }, // Khi gặp lỗi tải dữ liệu mà không phải bị disconnect
-            messageEach: function() {
+            messageEach: function () {
                 console.log("messageEach");
             }, // Hoàn thành xử lý từng tin nhắn
-            messageAll: function() {
+            messageAll: function () {
                 console.log("messageAll");
             }, // Hoàn thành xử lý tất cả tin nhắn
-            userEach: function() {
+            userEach: function () {
                 console.log("userEach");
             }, // Hoàn thành xử lý từng thành viên
-            userAll: function() {
+            userAll: function () {
                 console.log("userAll");
             }, // Hoàn thành xử lý tất cả thành viên
-            update: function() {
+            update: function () {
                 console.log("update");
             }, // Cập nhật tin nhắn
-            autoUpdate: function() {
+            autoUpdate: function () {
                 console.log("autoUpdate");
             }, // Tự cập nhật tin nhắn
+            stopUpdate: function () {
+                console.log("stopUpdate");
+            } // Dừng cập nhật tin nhắn
+        });
+        $.zzchat({ // Thiết lập cho các hàm callback
+            beforeLoad: function () {
+                console.log("beforeLoad");
+            }, // Trước mỗi lần tải dữ liệu
+            afterLoad: function () {
+                console.log("afterLoad");
+                console.log(Z.data);
+            }, // Sau mỗi lần tải dữ liệu
+            disconnect: function () {
+                console.log("disconnect");
+                $.post("/chatbox/chatbox_actions.forum?archives=1", { // Gửi tin nhắn rỗng để connect
+                    mode: "send",
+                    sent: ""
+                }).done(function () {
+                    Z.update();
+                    console.log("connect");
+                });
+            }, // Khi bị disconnect
+            notLoaded: function () {
+                console.log("notLoaded");
+            }, // Khi gặp lỗi tải dữ liệu mà không phải bị disconnect
+            messageEach: function () {
+                console.log("messageEach");
+            }, // Hoàn thành xử lý từng tin nhắn
+            messageAll: function () {
+                console.log("messageAll");
+            }, // Hoàn thành xử lý tất cả tin nhắn
+            userEach: function () {
+                console.log("userEach");
+            }, // Hoàn thành xử lý từng thành viên
+            userAll: function () {
+                console.log("userAll");
+            }, // Hoàn thành xử lý tất cả thành viên
+            update: function () {
+                console.log("update");
+            }, // Cập nhật tin nhắn
+            autoUpdate: function () {
+                console.log("autoUpdate");
+            }, // Tự cập nhật tin nhắn
+<<<<<<< HEAD
             stopUpdate: function() {
                     console.log("stopUpdate");
                 } // Dừng cập nhật tin nhắn
@@ -172,6 +216,11 @@
             stopUpdate: function() {
                     console.log("stopUpdate");
                 } // Dừng cập nhật tin nhắn
+=======
+            stopUpdate: function () {
+                console.log("stopUpdate");
+            } // Dừng cập nhật tin nhắn
+>>>>>>> origin/master
         });
 
         Z.update(); // Tải dữ liệu chatbox

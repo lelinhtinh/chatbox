@@ -7,38 +7,40 @@
  * Licensed under the MIT license - http://opensource.org/licenses/MIT
  */
 
-(function($) {
+(function ($) {
+
+    "use strict";
 
     var callback = {},
-        refreshFunction;
+        refreshFunction,
 
-    var Z = $.zzchat = function(options) {
+        Z = $.zzchat = function (options) {
 
         // Thông số mặc định
-        callback = $.extend({
+        var callback = $.extend({
 
-            beforeLoad: function() {}, // Trước mỗi lần tải dữ liệu
-            afterLoad: function() {}, // Sau mỗi lần tải dữ liệu
+            beforeLoad: function () {}, // Trước mỗi lần tải dữ liệu
+            afterLoad: function () {}, // Sau mỗi lần tải dữ liệu
 
-            disconnect: function() {}, // Khi bị disconnect
-            banned: function() {}, // Khi bị banned
-            logout: function() {}, // Khi bị logout
-            notLoaded: function() {}, // Khi gặp lỗi tải dữ liệu mà không phải bị disconnect
+            disconnect: function () {}, // Khi bị disconnect
+            banned: function () {}, // Khi bị banned
+            logout: function () {}, // Khi bị logout
+            notLoaded: function () {}, // Khi gặp lỗi tải dữ liệu mà không phải bị disconnect
 
-            messageEach: function() {}, // Hoàn thành xử lý từng tin nhắn
-            messageAll: function() {}, // Hoàn thành xử lý tất cả tin nhắn
+            messageEach: function () {}, // Hoàn thành xử lý từng tin nhắn
+            messageAll: function () {}, // Hoàn thành xử lý tất cả tin nhắn
 
-            userEach: function() {}, // Hoàn thành xử lý từng thành viên
-            userAll: function() {}, // Hoàn thành xử lý tất cả thành viên
+            userEach: function () {}, // Hoàn thành xử lý từng thành viên
+            userAll: function () {}, // Hoàn thành xử lý tất cả thành viên
 
-            update: function() {}, // Cập nhật tin nhắn
-            autoUpdate: function() {}, // Tự cập nhật tin nhắn
-            stopUpdate: function() {}, // Dừng cập nhật tin nhắn
+            update: function () {}, // Cập nhật tin nhắn
+            autoUpdate: function () {}, // Tự cập nhật tin nhắn
+            stopUpdate: function () {}, // Dừng cập nhật tin nhắn
 
-            beforeSend: function() {}, // Trước lúc gửi tin
-            doneSend: function() {}, // Gửi tin thành công
-            failSend: function() {}, // Gửi tin lỗi
-            afterSend: function() {} // Sau khi gửi tin, bao gồm cả gửi lỗi lẫn thành công
+            beforeSend: function () {}, // Trước lúc gửi tin
+            doneSend: function () {}, // Gửi tin thành công
+            failSend: function () {}, // Gửi tin lỗi
+            afterSend: function () {} // Sau khi gửi tin, bao gồm cả gửi lỗi lẫn thành công
 
         }, options);
 
@@ -94,7 +96,7 @@
 
     Z.create = {
 
-        block: function(Id, Type, Content) {
+        block: function (Id, Type, Content) {
             Id = "chatbox-block-" + Id;
             if (Type !== null) {
                 Id = "chatbox-" + Type + "-" + Id;
@@ -108,7 +110,7 @@
             return $div;
         },
 
-        input: function(Id, Type, Val) {
+        input: function (Id, Type, Val) {
             Id = "chatbox-button-" + Id;
             if (Type !== null) {
                 Id = "chatbox-" + Type + "-" + Id;
@@ -123,14 +125,14 @@
             return $input;
         },
 
-        checkbox: function(Id, Content) {
+        checkbox: function (Id, Content) {
             return $("<div>", {
                 id: "chatbox-checkbox-" + Id,
                 html: '<input type="checkbox" id="chatbox-checkbox-input-' + Id + '" name="' + Id + '" checked /><label for="chatbox-checkbox-input-' + Id + '">' + Content + '</label>'
             });
         },
 
-        audio: function(Name) {
+        audio: function (Name) {
             return $("<audio>", {
                 id: "chatbox-audio-" + Name,
                 html: '<source src="' + Name + '.ogg" type="audio/ogg" /><source src="' + Name + '.mp3" type="audio/mpeg" />'
@@ -147,7 +149,7 @@
          *
          * @param {String} Tên cookie
          */
-        get: function(name) {
+        get: function (name) {
             cname = name + '=';
             cpos = document.cookie.indexOf(cname);
             if (cpos != -1) {
@@ -169,7 +171,7 @@
          * @param3 {Boolean} sticky Thời gian lưu trữ theo session hoặc vĩnh viễn
          * @param4 {URL}     path   Đường dẫn trang lưu trữ
          */
-        set: function(name, value, sticky, path) {
+        set: function (name, value, sticky, path) {
             expires = "";
             domain = "";
             if (sticky) {
@@ -190,35 +192,35 @@
      * @param  {String/Number} time Giá trị thời gian
      * @return {String}             Giá trị thời gian đã chuyển đổi
      */
-    Z.date = function(type, time) {
+    Z.date = function (type, time) {
 
         var format;
         switch (type) {
 
             // Chuyển thông số thời gian từ định dạng hh:mm:ss dd/mm/yy sang dạng chuẩn UTC
-            case "utc":
-                time = time.split(/\s|\/|:/);
-                format = Date.UTC("20" + time[5], (time[4] - 1), time[3], (time[0] - 7), time[1], time[2], 0);
-                break;
+        case "utc":
+            time = time.split(/\s|\/|:/);
+            format = Date.UTC("20" + time[5], (time[4] - 1), time[3], (time[0] - 7), time[1], time[2], 0);
+            break;
 
-                // Chuyển thông số thời gian từ định dạng UTC sang dạng hh:mm:ss dd/mm/yy
-            case "def":
-                var a = (new Date(time)).toString().split(/\s/);
-                format = a[4] + " " + a[2] + "/" + {
-                    Jan: "01",
-                    Feb: "02",
-                    Mar: "03",
-                    Apr: "04",
-                    May: "05",
-                    Jun: "06",
-                    Jul: "07",
-                    Aug: "08",
-                    Sep: "09",
-                    Oct: "10",
-                    Nov: "11",
-                    Dec: "12"
-                }[a[1]] + "/" + a[3].slice(2);
-                break;
+            // Chuyển thông số thời gian từ định dạng UTC sang dạng hh:mm:ss dd/mm/yy
+        case "def":
+            var a = (new Date(time)).toString().split(/\s/);
+            format = a[4] + " " + a[2] + "/" + {
+                Jan: "01",
+                Feb: "02",
+                Mar: "03",
+                Apr: "04",
+                May: "05",
+                Jun: "06",
+                Jul: "07",
+                Aug: "08",
+                Sep: "09",
+                Oct: "10",
+                Nov: "11",
+                Dec: "12"
+            }[a[1]] + "/" + a[3].slice(2);
+            break;
         }
         return format;
 
@@ -236,13 +238,13 @@
      *
      * @param {htmlString} Dữ liệu tin nhắn mới
      */
-    var newMessage = function(Messages) {
+    var newMessage = function (Messages) {
 
         if (Messages) {
 
             var arr = $.parseHTML(Messages); // Chuyển htmlString tin nhắn thành HTML
 
-            $.each(arr, function(index, val) { // Duyệt qua từng tin
+            $.each(arr, function (index, val) { // Duyệt qua từng tin
 
                 var $this = $(this); // Đặt biến cho tin nhắn đang xét
 
@@ -289,7 +291,7 @@
                     room_id = arrPMess[5];
                     starter_id = room_id.match(/\d+_(\d+)/)[1];
                     chatters = arrPMess[8].split("|");
-                    others = $.grep(chatters, function(n, i) {
+                    others = $.grep(chatters, function (n, i) {
                         return (n !== starter_id);
                     });
                     room_name = arrPMess[7];
@@ -376,7 +378,7 @@
 
             var $arrMember = $($.parseHTML(chatbox_memberlist));
 
-            $arrMember.find("a").each(function(index, val) {
+            $arrMember.find("a").each(function (index, val) {
 
                 var $this = $(this);
 
@@ -441,7 +443,7 @@
      *
      * $param {htmlString} Dữ liệu tin nhắn
      */
-    var getDone = function(chatsource) {
+    var getDone = function (chatsource) {
 
         if (chatsource.indexOf("<!DOCTYPE html PUBLIC") === 0) { // Lỗi do logout hoặc bị ban
             if (chatsource.indexOf("You have been banned from the ChatBox") !== -1) {
@@ -492,7 +494,7 @@
      *
      * @param {Boolearn} Nếu đặt true sẽ sử dụng chế độ refresh
      */
-    Z.update = function(refresh) {
+    Z.update = function (refresh) {
 
         callback.update.call(Z.data);
         var url = "/chatbox/chatbox_actions.forum?archives=1";
@@ -501,10 +503,10 @@
             f5 = "&mode=refresh";
         }
         callback.beforeLoad.call(Z.data);
-        $.get(url + f5).done(function(data) {
+        $.get(url + f5).done(function (data) {
             getDone(data);
             callback.afterLoad.call(Z.data);
-        }).fail(function(data) {
+        }).fail(function (data) {
             if (data.responseText.indexOf("document.getElementById('refresh_auto')") === 0) {
                 // Xử lý khi bị disconnect
                 callback.disconnect.call(Z.data);
@@ -521,15 +523,15 @@
      */
     Z.refresh = {
 
-        start: function() {
+        start: function () {
             Z.update();
-            refreshFunction = setInterval(function() {
+            refreshFunction = setInterval(function () {
                 Z.update(true);
             }, 5000);
             callback.autoUpdate.call(Z.data);
         },
 
-        stop: function() {
+        stop: function () {
             clearInterval(refreshFunction);
             callback.stopUpdate.call(Z.data);
         }
@@ -545,7 +547,7 @@
      * @param  {Number} strike    0/1 Thuộc tính chữ gạch bỏ
      * @param  {Color}  color     Mã màu HEX(không có #) Thuộc tính màu chữ
      */
-    Z.send = function(val, bold, italic, underline, strike, color) {
+    Z.send = function (val, bold, italic, underline, strike, color) {
 
         Z.lastTyped = val;
         callback.beforeSend.call(Z.data);
@@ -557,14 +559,14 @@
             sunderline: underline,
             sstrike: strike,
             scolor: color
-        }).done(function() {
+        }).done(function () {
             // Cập nhật tin nhắn
             Z.update(true);
             callback.doneSend.call(Z.data);
-        }).fail(function() {
+        }).fail(function () {
             callback.failSend.call(Z.data);
             // Xử lý cho lỗi mất kết nối internet (có thể xảy ra do refresh trang trong lúc đang tải)
-        }).always(function() {
+        }).always(function () {
             callback.afterSend.call(Z.data);
         });
 
