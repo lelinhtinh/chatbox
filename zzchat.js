@@ -693,7 +693,7 @@ var update = function() {
 var autoUpdate = function() { // Tự cập nhật mỗi 5s
     refreshFunction = setInterval(function() {
         update();
-    }, 5000);
+    }, 3000);
 };
 
 $.post("/chatbox/chatbox_actions.forum?archives=1", {
